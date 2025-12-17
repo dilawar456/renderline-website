@@ -270,7 +270,7 @@ button {
 }
 
 .logo img {
-    height: 50px;
+    height: 80px;
     width: auto;
     filter: invert(1);
     transition: var(--transition);

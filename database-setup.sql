@@ -11,23 +11,40 @@
 CREATE TABLE IF NOT EXISTS site_content (
     id SERIAL PRIMARY KEY,
     hero_heading TEXT DEFAULT 'Architectural Vision Redefined.',
-    hero_subheading TEXT DEFAULT 'VOG WAVE Design Studio creates emotive, high-end visualization for the Middle East''s most ambitious architectural projects.',
+    hero_subheading TEXT DEFAULT 'RenderLine creates emotive, high-end visualization for the most ambitious architectural projects.',
     hero_image TEXT DEFAULT 'assets/images/render40.jpg',
-    about_name TEXT DEFAULT 'Ali Hamza',
+    about_name TEXT DEFAULT 'Dilawar Ali',
     about_title TEXT DEFAULT 'Founder & Creative Director',
-    about_bio TEXT DEFAULT 'Welcome to VOG WAVE Design Studio – where architectural dreams transform into breathtaking visual realities.',
-    about_image TEXT DEFAULT 'assets/images/ali-hamza.jpg',
+    about_bio TEXT DEFAULT 'Welcome to RenderLine – where architectural dreams transform into breathtaking visual realities.',
+    about_image TEXT DEFAULT 'assets/images/dilawar-ali.jpg',
     stat_projects TEXT DEFAULT '200+',
     stat_clients TEXT DEFAULT '50+',
     stat_experience TEXT DEFAULT '5+',
-    contact_email TEXT DEFAULT 'designstudio813@gmail.com',
-    contact_whatsapp TEXT DEFAULT '923140735267',
-    contact_location TEXT DEFAULT 'Riyadh / Jeddah, Saudi Arabia',
+    contact_email TEXT DEFAULT 'inforenderline@gmail.com',
+    contact_whatsapp TEXT DEFAULT '923104544040',
+    contact_location TEXT DEFAULT 'Lahore, Pakistan',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Insert default content
-INSERT INTO site_content (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
+-- Insert or Update default content
+INSERT INTO site_content (id, hero_subheading, about_name, about_bio, about_image, contact_email, contact_whatsapp, contact_location) 
+VALUES (1, 
+        'RenderLine creates emotive, high-end visualization for the most ambitious architectural projects.',
+        'Dilawar Ali',
+        'Welcome to RenderLine – where architectural dreams transform into breathtaking visual realities.',
+        'assets/images/dilawar-ali.jpg',
+        'inforenderline@gmail.com',
+        '923104544040',
+        'Lahore, Pakistan'
+) 
+ON CONFLICT (id) DO UPDATE SET
+    hero_subheading = EXCLUDED.hero_subheading,
+    about_name = EXCLUDED.about_name,
+    about_bio = EXCLUDED.about_bio,
+    about_image = EXCLUDED.about_image,
+    contact_email = EXCLUDED.contact_email,
+    contact_whatsapp = EXCLUDED.contact_whatsapp,
+    contact_location = EXCLUDED.contact_location;
 
 -- =============================================
 -- 2. SERVICES TABLE
