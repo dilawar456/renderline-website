@@ -33,9 +33,9 @@
 
         .profile-image {
             width: 100%;
-            border-radius: 8px;
-            box-shadow: 0 0 60px rgba(212, 175, 55, 0.3);
-            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 0 60px rgba(0, 212, 255, 0.2);
+            border: 2px solid rgba(0, 212, 255, 0.3);
         }
 
         .profile-badge {
@@ -43,14 +43,15 @@
             bottom: -20px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--accent-gold);
-            color: #000;
+            background: var(--gradient-primary);
+            color: #fff;
             padding: 0.75rem 2rem;
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             white-space: nowrap;
+            border-radius: 50px;
         }
 
         .about-content h1 {
@@ -59,7 +60,7 @@
         }
 
         .about-content .title {
-            color: var(--text-gold);
+            color: var(--primary);
             font-size: 1.1rem;
             text-transform: uppercase;
             letter-spacing: 0.15em;
@@ -74,7 +75,7 @@
         }
 
         .about-content p strong {
-            color: var(--text-gold);
+            color: var(--primary);
         }
 
         .stats-row {
@@ -88,7 +89,7 @@
 
         .stat-item h3 {
             font-size: 2.5rem;
-            color: var(--text-gold);
+            color: var(--primary);
             margin-bottom: 0.25rem;
         }
 
@@ -115,8 +116,8 @@
         }
 
         .spec-tag:hover {
-            border-color: var(--text-gold);
-            color: var(--text-gold);
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
         @media (max-width: 900px) {
