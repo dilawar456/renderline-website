@@ -7,20 +7,21 @@
 const SUPABASE_URL = 'https://ywqtjgtqwbylkgofogxe.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3cXRqZ3Rxd2J5bGtnb2ZvZ3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0OTg5NzksImV4cCI6MjA4MTA3NDk3OX0.H3UvyEVXcLIaqWFPRfsVlFYvJvaA2VeD44aVcDJdDjM';
 
-// Initialize Supabase Client
-let supabase = null;
+// Initialize Supabase Client - use var to allow redeclaration if needed
+var supabaseDb = null;
 
-if (window.supabase) {
-    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+if (typeof window !== 'undefined' && window.supabase && window.supabase.createClient) {
+    supabaseDb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log('✅ Supabase client initialized');
 } else {
-    console.error('RenderLine: Supabase JS library not loaded. Check script tags in HTML.');
+    console.error('❌ RenderLine: Supabase JS library not loaded. Check script tags in HTML.');
 }
 
 // Check if Supabase is configured
 function isSupabaseConfigured() {
     const validUrl = SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL';
     const validKey = SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
-    const clientExists = supabase !== null;
+    const clientExists = supabaseDb !== null;
 
     if (!validUrl) console.warn('Supabase URL not configured');
     if (!validKey) console.warn('Supabase Key not configured');
@@ -40,7 +41,7 @@ async function adminLogin(email, password) {
         return { error: { message: 'Supabase not configured. Please add your credentials.' } };
     }
 
-    const { data, error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabaseDb.auth.signInWithPassword({
         email: email,
         password: password
     });
@@ -52,7 +53,7 @@ async function adminLogin(email, password) {
 async function adminLogout() {
     if (!isSupabaseConfigured()) return;
 
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabaseDb.auth.signOut();
     return { error };
 }
 
@@ -60,7 +61,7 @@ async function adminLogout() {
 async function getCurrentUser() {
     if (!isSupabaseConfigured()) return null;
 
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await supabaseDb.auth.getUser();
     return user;
 }
 
@@ -81,7 +82,7 @@ async function getPortfolioItems(category = 'all') {
         return { data: null, error: null };
     }
 
-    let query = supabase
+    let query = supabaseDb
         .from('portfolio_items')
         .select('*')
         .order('created_at', { ascending: false });
@@ -98,7 +99,7 @@ async function getPortfolioItems(category = 'all') {
 async function addPortfolioItem(item) {
     if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseDb
         .from('portfolio_items')
         .insert([item])
         .select();
@@ -110,7 +111,7 @@ async function addPortfolioItem(item) {
 async function updatePortfolioItem(id, updates) {
     if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseDb
         .from('portfolio_items')
         .update(updates)
         .eq('id', id)
@@ -123,7 +124,7 @@ async function updatePortfolioItem(id, updates) {
 async function deletePortfolioItem(id) {
     if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
 
-    const { error } = await supabase
+    const { error } = await supabaseDb
         .from('portfolio_items')
         .delete()
         .eq('id', id);
@@ -143,14 +144,14 @@ async function uploadImage(file, bucket = 'portfolio-images') {
     const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
     const filePath = `${fileName}`;
 
-    const { data, error } = await supabase.storage
+    const { data, error } = await supabaseDb.storage
         .from(bucket)
         .upload(filePath, file);
 
     if (error) return { error };
 
     // Get public URL
-    const { data: urlData } = supabase.storage
+    const { data: urlData } = supabaseDb.storage
         .from(bucket)
         .getPublicUrl(filePath);
 
@@ -161,7 +162,7 @@ async function uploadImage(file, bucket = 'portfolio-images') {
 async function deleteImage(filePath, bucket = 'portfolio-images') {
     if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
 
-    const { error } = await supabase.storage
+    const { error } = await supabaseDb.storage
         .from(bucket)
         .remove([filePath]);
 
@@ -179,7 +180,7 @@ async function submitContactForm(formData) {
         return { error: null, fallback: true };
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseDb
         .from('contacts')
         .insert([{
             name: formData.name,
@@ -199,7 +200,7 @@ async function submitContactForm(formData) {
 async function getContactMessages(status = 'all') {
     if (!isSupabaseConfigured()) return { data: [], error: null };
 
-    let query = supabase
+    let query = supabaseDb
         .from('contacts')
         .select('*')
         .order('created_at', { ascending: false });
@@ -216,7 +217,7 @@ async function getContactMessages(status = 'all') {
 async function updateContactStatus(id, status) {
     if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseDb
         .from('contacts')
         .update({ status, replied_at: status === 'replied' ? new Date().toISOString() : null })
         .eq('id', id)
@@ -233,7 +234,7 @@ async function updateContactStatus(id, status) {
 async function getSiteContent() {
     if (!isSupabaseConfigured()) return { data: null, error: null };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseDb
         .from('site_content')
         .select('*')
         .single();
@@ -245,7 +246,7 @@ async function getSiteContent() {
 async function updateSiteContent(updates) {
     if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseDb
         .from('site_content')
         .upsert({ id: 1, ...updates })
         .select();
@@ -261,7 +262,7 @@ async function updateSiteContent(updates) {
 async function getServices() {
     if (!isSupabaseConfigured()) return { data: null, error: null };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseDb
         .from('services')
         .select('*')
         .order('order', { ascending: true });
@@ -273,7 +274,7 @@ async function getServices() {
 async function updateService(id, updates) {
     if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseDb
         .from('services')
         .update(updates)
         .eq('id', id)
