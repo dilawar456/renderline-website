@@ -38,8 +38,9 @@
 
         .hero-line-3 {
             animation: textLoop3 6s ease-in-out infinite;
-            color: var(--primary);
         }
+
+
 
         @keyframes textLoop1 {
 
@@ -418,8 +419,8 @@
         <div class="container">
             <div class="why-grid">
                 <div>
-                    <h2>Why RenderLine?</h2>
-                    <ul class="benefits-list">
+                    <h2 id="whyHeading">Why RenderLine?</h2>
+                    <ul class="benefits-list" id="whyList">
                         <li><span>✔</span> Architect-first collaborative workflow</li>
                         <li><span>✔</span> Realistic lighting & material accuracy</li>
                         <li><span>✔</span> Industry-leading software & techniques</li>
@@ -438,11 +439,12 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
-            <h2>Ready to Visualize Your Vision?</h2>
-            <p>Let's discuss your project. Get a free consultation and custom quote today.</p>
+            <h2 id="ctaHeading">Ready to Visualize Your Vision?</h2>
+            <p id="ctaText">Let's discuss your project. Get a free consultation and custom quote today.</p>
             <div class="cta-buttons">
                 <a href="contact.html" class="btn btn-primary">Contact Us</a>
-                <a href="https://wa.me/923114544040" class="btn btn-whatsapp" target="_blank">WhatsApp: 0311-4544040</a>
+                <a href="https://wa.me/923114544040" class="btn btn-whatsapp" target="_blank"
+                    id="ctaWhatsappBtn">WhatsApp: 0311-4544040</a>
             </div>
         </div>
     </section>
@@ -480,7 +482,10 @@
         </svg>
     </a>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
     <script src="script.js"></script>
+    <script src="cms.js"></script>
 
     <script>
         // Hero Carousel
@@ -501,6 +506,12 @@
             showSlide(parseInt(d.dataset.slide));
             auto = setInterval(() => showSlide((currentSlide + 1) % slides.length), 5000);
         }));
+
+        // Hero text color - standard toggle handled by CSS class
+        function updateHeroColors() {
+            // Left empty as we will handle via CSS rules now
+        }
+
     </script>
 </body>
 

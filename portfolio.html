@@ -340,7 +340,7 @@
     <!-- Hero -->
     <section class="portfolio-hero">
         <div class="container">
-            <h1>Our Portfolio</h1>
+            <h1>Our <span>Portfolio</span></h1>
             <p>A complete collection of 70+ high-end architectural visualizations and walkthrough animations.</p>
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">All</button>
@@ -366,6 +366,23 @@
             <p class="text-center" style="max-width: 500px; margin: 0 auto 3rem;">Cinematic architectural animations for
                 real estate marketing.</p>
 
+            <!-- YouTube Embeds (loaded from Admin Panel) -->
+            <div class="video-grid" style="margin-bottom: 2rem;">
+                <div id="youtubeEmbed1" class="video-embed-container">
+                    <!-- YouTube embed will be loaded here by CMS -->
+                </div>
+                <div id="youtubeEmbed2" class="video-embed-container">
+                    <!-- YouTube embed will be loaded here by CMS -->
+                </div>
+                <div id="youtubeEmbed3" class="video-embed-container">
+                    <!-- YouTube embed will be loaded here by CMS -->
+                </div>
+                <div id="youtubeEmbed4" class="video-embed-container">
+                    <!-- YouTube embed will be loaded here by CMS -->
+                </div>
+            </div>
+
+            <!-- Local videos fallback -->
             <div class="video-grid">
                 <div class="video-card" data-video="assets/videos/1.mp4">
                     <div class="video-thumb">
@@ -440,143 +457,10 @@
         </svg>
     </a>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
     <script src="script.js"></script>
-    <script>
-        // All portfolio images
-        const allImages = [
-            ...Array.from({ length: 40 }, (_, i) => `assets/images/render${i + 1}.jpg`),
-            ...Array.from({ length: 19 }, (_, i) => `assets/images/render_png${i + 1}.png`),
-            'assets/images/Scene 10.png', 'assets/images/Scene 14.png', 'assets/images/Scene 16.png',
-            'assets/images/Scene 17.png', 'assets/images/Scene 18.png', 'assets/images/Scene 19.png',
-            'assets/images/Scene 20.png', 'assets/images/Scene 21.png',
-            'assets/images/render41.png', 'assets/images/1.jpg'
-        ];
-
-        const categories = ['exterior', 'interior', 'commercial'];
-        const grid = document.getElementById('portfolioGrid');
-        const portfolioSection = document.getElementById('portfolioSection');
-        const videoSection = document.getElementById('videoSection');
-
-        // Render portfolio grid - CLEAN, NO TEXT
-        allImages.forEach((src, index) => {
-            const category = categories[index % 3];
-            const item = document.createElement('div');
-            item.className = 'portfolio-item';
-            item.dataset.category = category;
-            item.innerHTML = `<img src="${src}" alt="Project ${index + 1}" loading="lazy" onerror="this.parentElement.remove()">`;
-            grid.appendChild(item);
-        });
-
-        // Filter functionality
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const filter = btn.dataset.filter;
-
-                if (filter === 'animation') {
-                    portfolioSection.style.display = 'none';
-                    videoSection.style.display = 'block';
-                    videoSection.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    portfolioSection.style.display = 'block';
-                    videoSection.style.display = 'none';
-
-                    document.querySelectorAll('.portfolio-item').forEach(item => {
-                        if (filter === 'all' || item.dataset.category === filter) {
-                            item.style.display = 'block';
-                        } else {
-                            item.style.display = 'none';
-                        }
-                    });
-                }
-            });
-        });
-
-        // Image Lightbox
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
-        const lightboxClose = document.getElementById('lightboxClose');
-        const lightboxPrev = document.getElementById('lightboxPrev');
-        const lightboxNext = document.getElementById('lightboxNext');
-        const currentIndexEl = document.getElementById('currentIndex');
-        const totalCountEl = document.getElementById('totalCount');
-
-        let portfolioImages = [];
-        let currentIndex = 0;
-
-        setTimeout(() => {
-            portfolioImages = Array.from(document.querySelectorAll('.portfolio-item img'));
-            totalCountEl.textContent = portfolioImages.length;
-
-            portfolioImages.forEach((img, index) => {
-                img.addEventListener('click', () => openLightbox(index));
-            });
-        }, 300);
-
-        function openLightbox(index) {
-            currentIndex = index;
-            updateLightbox();
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeLightbox() {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        function updateLightbox() {
-            if (portfolioImages[currentIndex]) {
-                lightboxImg.src = portfolioImages[currentIndex].src;
-                currentIndexEl.textContent = currentIndex + 1;
-            }
-        }
-
-        lightboxClose.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
-        lightboxNext.addEventListener('click', () => { currentIndex = (currentIndex + 1) % portfolioImages.length; updateLightbox(); });
-        lightboxPrev.addEventListener('click', () => { currentIndex = (currentIndex - 1 + portfolioImages.length) % portfolioImages.length; updateLightbox(); });
-
-        document.addEventListener('keydown', (e) => {
-            if (!lightbox.classList.contains('active')) return;
-            if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % portfolioImages.length; updateLightbox(); }
-            if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + portfolioImages.length) % portfolioImages.length; updateLightbox(); }
-        });
-
-        // Video Lightbox
-        const videoLightbox = document.getElementById('videoLightbox');
-        const videoPlayer = document.getElementById('videoPlayer');
-        const videoLightboxClose = document.getElementById('videoLightboxClose');
-
-        document.querySelectorAll('.video-card').forEach(card => {
-            card.addEventListener('click', () => {
-                const videoSrc = card.dataset.video;
-                videoPlayer.src = videoSrc;
-                videoLightbox.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                videoPlayer.play();
-            });
-        });
-
-        videoLightboxClose.addEventListener('click', () => {
-            videoLightbox.classList.remove('active');
-            document.body.style.overflow = '';
-            videoPlayer.pause();
-            videoPlayer.src = '';
-        });
-
-        videoLightbox.addEventListener('click', (e) => {
-            if (e.target === videoLightbox) {
-                videoLightbox.classList.remove('active');
-                document.body.style.overflow = '';
-                videoPlayer.pause();
-                videoPlayer.src = '';
-            }
-        });
-    </script>
+    <script src="cms.js"></script>
 </body>
 
 </html>

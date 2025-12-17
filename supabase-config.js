@@ -8,13 +8,25 @@ const SUPABASE_URL = 'https://ywqtjgtqwbylkgofogxe.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3cXRqZ3Rxd2J5bGtnb2ZvZ3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0OTg5NzksImV4cCI6MjA4MTA3NDk3OX0.H3UvyEVXcLIaqWFPRfsVlFYvJvaA2VeD44aVcDJdDjM';
 
 // Initialize Supabase Client
-const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+let supabase = null;
+
+if (window.supabase) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} else {
+    console.error('RenderLine: Supabase JS library not loaded. Check script tags in HTML.');
+}
 
 // Check if Supabase is configured
 function isSupabaseConfigured() {
-    return SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL' &&
-        SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY' &&
-        supabase !== null;
+    const validUrl = SUPABASE_URL !== 'YOUR_SUPABASE_PROJECT_URL';
+    const validKey = SUPABASE_ANON_KEY !== 'YOUR_SUPABASE_ANON_KEY';
+    const clientExists = supabase !== null;
+
+    if (!validUrl) console.warn('Supabase URL not configured');
+    if (!validKey) console.warn('Supabase Key not configured');
+    if (!clientExists) console.warn('Supabase Client not initialized (window.supabase missing)');
+
+    return validUrl && validKey && clientExists;
 }
 
 // =============================================

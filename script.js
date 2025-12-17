@@ -15,8 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    window.addEventListener('scroll', updateNavbar);
-    updateNavbar();
+    if (navbar) {
+        window.addEventListener('scroll', updateNavbar);
+        updateNavbar();
+    }
 
     // --- Mobile Menu Toggle ---
     if (mobileToggle) {
@@ -52,4 +54,99 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // --- LIGHTBOX LOGIC ---
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+        const currentIndexEl = document.getElementById('currentIndex');
+        const totalCountEl = document.getElementById('totalCount');
+
+        let currentImages = []; // Array of sources or objects
+        let currentIndex = 0;
+
+        // Expose to window for CMS or other scripts
+        window.openLightbox = function (index, allImageSources) {
+            if (allImageSources && Array.isArray(allImageSources)) {
+                currentImages = allImageSources;
+            } else {
+                // Fallback: scarp DOM if explicit array not passed
+                if (currentImages.length === 0) {
+                    currentImages = Array.from(document.querySelectorAll('.portfolio-item img')).map(img => img.src);
+                }
+            }
+
+            currentIndex = index;
+            if (totalCountEl) totalCountEl.textContent = currentImages.length;
+            updateLightbox();
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function updateLightbox() {
+            if (currentImages[currentIndex]) {
+                const src = typeof currentImages[currentIndex] === 'string' ? currentImages[currentIndex] : currentImages[currentIndex].image_url;
+                lightboxImg.src = src;
+                if (currentIndexEl) currentIndexEl.textContent = currentIndex + 1;
+            }
+        }
+
+        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        if (lightboxNext) lightboxNext.addEventListener('click', () => { currentIndex = (currentIndex + 1) % currentImages.length; updateLightbox(); });
+        if (lightboxPrev) lightboxPrev.addEventListener('click', () => { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; updateLightbox(); });
+
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % currentImages.length; updateLightbox(); }
+            if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + currentImages.length) % currentImages.length; updateLightbox(); }
+        });
+    }
+
+    // --- VIDEO LIGHTBOX LOGIC ---
+    const videoLightbox = document.getElementById('videoLightbox');
+    if (videoLightbox) {
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoLightboxClose = document.getElementById('videoLightboxClose');
+
+        // Expose openVideoLightbox
+        window.openVideoLightbox = function (videoSrc) {
+            videoPlayer.src = videoSrc;
+            videoLightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            videoPlayer.play();
+        }
+
+        // Attach listeners to existing static cards (if any)
+        document.querySelectorAll('.video-card').forEach(card => {
+            card.addEventListener('click', () => {
+                window.openVideoLightbox(card.dataset.video);
+            });
+        });
+
+        if (videoLightboxClose) videoLightboxClose.addEventListener('click', () => {
+            videoLightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            videoPlayer.pause();
+            videoPlayer.src = '';
+        });
+
+        videoLightbox.addEventListener('click', (e) => {
+            if (e.target === videoLightbox) {
+                videoLightbox.classList.remove('active');
+                document.body.style.overflow = '';
+                videoPlayer.pause();
+                videoPlayer.src = '';
+            }
+        });
+    }
 });

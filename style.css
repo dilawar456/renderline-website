@@ -58,60 +58,342 @@
     --transition-fast: 0.2s ease;
 }
 
-/* Light Mode Theme */
+/* Light Mode Theme - IMPROVED */
 body.light-mode {
-    --bg-dark: #f5f5f5;
+    --bg-dark: #f0f0f0;
     --bg-card: #ffffff;
-    --bg-card-hover: #fafafa;
-    --bg-surface: #f0f0f0;
+    --bg-card-hover: #f8f8f8;
+    --bg-surface: #e5e5e5;
 
-    --text-white: #1a1a1a;
+    --text-white: #111111;
     --text-light: #333333;
-    --text-muted: #666666;
+    --text-muted: #555555;
     --text-dark: #ffffff;
 
     --border-dark: rgba(0, 0, 0, 0.1);
     --glass-bg: rgba(255, 255, 255, 0.9);
-    --gradient-dark: linear-gradient(135deg, #f5f5f5 0%, #ffffff 50%, #f5f5f5 100%);
+    --gradient-dark: linear-gradient(135deg, #f0f0f0 0%, #ffffff 50%, #f0f0f0 100%);
 }
 
+/* Navbar Light Mode */
 body.light-mode .navbar {
     background: rgba(255, 255, 255, 0.95);
-    border-bottom: 1px solid var(--border-dark);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 body.light-mode .navbar.scrolled {
     background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .nav-links a {
+    color: #333;
+}
+
+body.light-mode .nav-links a:hover,
+body.light-mode .nav-links a.active {
+    color: #d4af37;
+    /* Gold */
+}
+
+/* Hero Light Mode - HALF GOLD HALF BLACK */
+body.light-mode .hero {
+    background: #e0e0e0;
 }
 
 body.light-mode .hero-overlay {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(245, 245, 245, 0.95) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.9) 100%);
 }
 
-body.light-mode .footer {
-    background: #1a1a1a;
+body.light-mode .hero-content h1 {
+    color: #111 !important;
 }
 
-body.light-mode .footer,
-body.light-mode .footer h3,
-body.light-mode .footer a,
-body.light-mode .footer p {
-    color: #fff;
+/* Specific Line Coloring for Index Hero */
+body.light-mode .hero-line-1,
+body.light-mode .hero-line-2,
+body.light-mode .hero-line-3 {
+    color: #000 !important;
+    text-shadow: none !important;
+    -webkit-text-fill-color: #000 !important;
 }
 
-body.light-mode .footer a:hover {
-    color: var(--primary);
+/* General Headings with Spans */
+body.light-mode h1 span,
+body.light-mode h2 span {
+    color: #d4af37 !important;
 }
 
+body.light-mode .hero-content p {
+    color: #333 !important;
+    font-weight: 500;
+}
+
+body.light-mode .hero-badge {
+    color: #222 !important;
+    background: rgba(212, 175, 55, 0.12) !important;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+body.light-mode .hero-buttons .btn {
+    background: var(--primary);
+    color: #000;
+    border-color: var(--primary);
+}
+
+body.light-mode .hero-buttons .btn:hover {
+    background: #b8960c;
+}
+
+/* Section Backgrounds Light Mode */
+body.light-mode section {
+    background-color: #f0f0f0;
+}
+
+body.light-mode .about-section,
+body.light-mode .services-section,
+body.light-mode .why-section {
+    background: #ffffff;
+}
+
+body.light-mode [style*="background: var(--bg-card)"],
+body.light-mode [style*="background:var(--bg-card)"] {
+    background: #ffffff !important;
+}
+
+body.light-mode [style*="background: var(--bg-dark)"],
+body.light-mode [style*="background:var(--bg-dark)"] {
+    background: #f0f0f0 !important;
+}
+
+/* Text Visibility Light Mode */
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode h4,
+body.light-mode h5 {
+    color: #111;
+}
+
+body.light-mode p,
+body.light-mode li {
+    color: #444;
+}
+
+body.light-mode .text-muted,
+body.light-mode [class*="text-muted"] {
+    color: #666 !important;
+}
+
+/* Cards Light Mode */
+body.light-mode .service-card,
+body.light-mode .portfolio-card,
+body.light-mode .skill-item,
+body.light-mode .info-block,
+body.light-mode .contact-info,
+body.light-mode .contact-form-wrapper {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.08);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.04);
+}
+
+body.light-mode .service-card:hover,
+body.light-mode .portfolio-card:hover {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+body.light-mode .service-card h3,
+body.light-mode .service-card p {
+    color: #111;
+}
+
+/* About Page Light Mode */
+body.light-mode .about-hero-section,
+body.light-mode .about-grid,
+body.light-mode .profile-image-wrapper {
+    background: #ffffff;
+}
+
+body.light-mode .about-content h1,
+body.light-mode .about-content p,
+body.light-mode .about-content .title {
+    color: #111;
+}
+
+body.light-mode .about-content .title {
+    color: #d4af37;
+    font-weight: 600;
+}
+
+body.light-mode .stat-item h3 {
+    color: #d4af37;
+}
+
+body.light-mode .stat-item p {
+    color: #555;
+}
+
+body.light-mode .stats-row {
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Expertise & Tools Section Light Mode */
+body.light-mode .skill-item,
+body.light-mode [style*="border: 1px solid var(--border-dark)"] {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #111 !important;
+}
+
+body.light-mode .skill-item:hover {
+    border-color: var(--primary) !important;
+    background: #fffdf5 !important;
+}
+
+/* Why Section Light Mode */
+body.light-mode .benefits-list li {
+    color: #333;
+}
+
+body.light-mode .benefits-list span {
+    color: #d4af37;
+}
+
+/* CTA Section Light Mode - LIGHT VERSION */
 body.light-mode .cta-section {
-    background: #1a1a1a;
-    color: #fff;
+    background: #e0e0e0 !important;
+    position: relative;
+    z-index: 10;
 }
 
-body.light-mode .cta-section h2,
+body.light-mode .cta-section h2 {
+    color: #111 !important;
+}
+
 body.light-mode .cta-section p {
-    color: #fff;
+    color: #333 !important;
+}
+
+/* Footer Light Mode - LIGHT THEME */
+body.light-mode .footer {
+    background: #e8e8e8 !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .footer h3 {
+    color: #111 !important;
+    -webkit-text-fill-color: #111 !important;
+    background: none !important;
+}
+
+body.light-mode .footer p,
+body.light-mode .footer-brand p,
+body.light-mode .footer-contact p {
+    color: #555 !important;
+}
+
+body.light-mode .footer a,
+body.light-mode .footer-links a {
+    color: #333 !important;
+}
+
+body.light-mode .footer a:hover,
+body.light-mode .footer-links a:hover {
+    color: #d4af37 !important;
+}
+
+body.light-mode .footer-bottom {
+    background: #dbdbdb !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light-mode .footer-bottom p {
+    color: #666 !important;
+}
+
+/* Form Inputs Light Mode */
+body.light-mode input,
+body.light-mode textarea,
+body.light-mode select {
+    background: #fff !important;
+    color: #1a1a1a !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+body.light-mode input::placeholder,
+body.light-mode textarea::placeholder {
+    color: #888 !important;
+}
+
+body.light-mode label {
+    color: #333 !important;
+}
+
+/* Portfolio Page Light Mode */
+body.light-mode .portfolio-hero,
+body.light-mode .portfolio-grid-section {
+    background: #f5f5f5;
+}
+
+body.light-mode .filter-btn {
+    background: #fff;
+    color: #333;
+    border-color: rgba(0, 0, 0, 0.15);
+}
+
+body.light-mode .filter-btn:hover,
+body.light-mode .filter-btn.active {
+    background: var(--primary);
+    color: #000;
+}
+
+/* Services Page Light Mode */
+body.light-mode .services-hero {
+    background: linear-gradient(180deg, #f5f5f5, #fff);
+}
+
+body.light-mode .services-grid-section {
+    background: #f5f5f5;
+}
+
+body.light-mode .service-card .card-content {
+    background: #fff;
+}
+
+body.light-mode .service-card .service-icon {
+    color: #1a1a1a;
+}
+
+body.light-mode .timeline-badge {
+    background: rgba(212, 175, 55, 0.15);
+    color: var(--primary-dark);
+}
+
+/* Modal Light Mode */
+body.light-mode .service-modal .modal-content,
+body.light-mode .modal-body {
+    background: #fff;
+}
+
+body.light-mode .modal-body h2,
+body.light-mode .modal-body h4,
+body.light-mode .modal-body p {
+    color: #1a1a1a;
+}
+
+body.light-mode .modal-features span {
+    background: #f5f5f5;
+    color: #333;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .modal-highlights div {
+    color: #333;
+}
+
+/* WhatsApp Float Light Mode */
+body.light-mode .whatsapp-float {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Theme Toggle Button */
@@ -134,6 +416,12 @@ body.light-mode .cta-section p {
     background: var(--primary);
     color: #000;
     border-color: var(--primary);
+}
+
+body.light-mode .theme-toggle {
+    background: #f5f5f5;
+    border-color: rgba(0, 0, 0, 0.15);
+    color: var(--primary-dark);
 }
 
 /* ============ ANIMATIONS ============ */
@@ -892,7 +1180,7 @@ p {
 
 .footer-bottom {
     margin-top: 1.5rem;
-    padding-top: 1rem;
+    padding: 1rem 0;
     text-align: center;
     border-top: 1px solid var(--border-dark);
 }
@@ -900,6 +1188,7 @@ p {
 .footer-bottom p {
     font-size: 0.8rem;
     color: var(--text-muted);
+    margin: 0;
 }
 
 /* ============ WHATSAPP FLOAT ============ */

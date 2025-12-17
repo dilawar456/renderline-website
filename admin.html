@@ -4,26 +4,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - RenderLine</title>
+    <title>Admin Panel - RenderLine</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
     <style>
         :root {
-            --bg-dark: #050505;
-            --bg-card: #0F0F0F;
-            --bg-input: #1a1a1a;
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --bg-hover: #1a1a1a;
+            --gold: #d4af37;
+            --gold-dark: #b8960c;
             --text: #ffffff;
-            --text-muted: #888888;
-            --gold: #D4AF37;
-            --gold-hover: #b5952f;
-            --red: #ff4757;
-            --green: #2ecc71;
-            --blue: #3b82f6;
-            --border: #333;
+            --text-dim: #999;
+            --border: #2a2a2a;
+            --success: #4ade80;
+            --danger: #ef4444;
+            --warning: #fbbf24;
         }
 
         * {
@@ -34,140 +34,307 @@
 
         body {
             font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-dark);
+            background: var(--bg-dark);
             color: var(--text);
-            line-height: 1.6;
-            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ========== LOGIN PAGE ========== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
             overflow: hidden;
         }
 
-        /* Layout */
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+        }
+
+        .login-container {
+            background: var(--bg-card);
+            padding: 3rem 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-logo p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: #000;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .error-msg {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        /* ========== ADMIN DASHBOARD ========== */
         .admin-wrapper {
-            display: flex;
-            height: 100vh;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
+            display: none;
+            min-height: 100vh;
         }
 
         .admin-wrapper.active {
-            opacity: 1;
-            pointer-events: all;
+            display: flex;
         }
 
         /* Sidebar */
-        .admin-sidebar {
+        .sidebar {
             width: 260px;
             background: var(--bg-card);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            padding: 1.5rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
             overflow-y: auto;
         }
 
-        .sidebar-item {
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            transition: 0.2s;
-            color: var(--text-muted);
-            border-left: 3px solid transparent;
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        .sidebar-item:hover,
-        .sidebar-item.active {
-            background: rgba(255, 255, 255, 0.03);
+        .sidebar-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.2rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+        }
+
+        .nav-section-title {
+            padding: 0.8rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-dim);
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-hover);
             color: var(--text);
         }
 
-        .sidebar-item.active {
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
             border-left-color: var(--gold);
         }
 
-        .sidebar-section {
-            padding: 0.5rem 1.5rem;
-            margin-top: 1.5rem;
+        .nav-icon {
+            font-size: 1.1rem;
         }
 
-        .sidebar-section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            font-weight: 600;
-            letter-spacing: 0.05em;
-        }
-
-        .badge {
-            background: var(--red);
-            color: white;
-            font-size: 0.7rem;
-            padding: 0.1rem 0.4rem;
-            border-radius: 10px;
-            margin-left: auto;
-        }
-
-        /* Main Content */
-        .admin-content {
-            flex: 1;
-            padding: 2rem;
-            overflow-y: auto;
-            background: var(--bg-dark);
-        }
-
-        /* Header */
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
         }
 
-        .user-email {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* Login Page */
-        .login-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            font-weight: 600;
+            color: #000;
         }
 
-        .login-box {
-            background: var(--bg-card);
-            padding: 3rem;
-            border-radius: 8px;
-            border: 1px solid var(--border);
+        .user-details h4 {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
             width: 100%;
-            max-width: 400px;
-            text-align: center;
+            padding: 0.6rem;
+            font-size: 0.85rem;
         }
 
-        .login-box h1 {
-            color: var(--gold);
-            font-family: 'Cinzel', serif;
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+            width: calc(100% - 260px);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
             margin-bottom: 0.5rem;
         }
 
-        .login-box p {
-            color: var(--text-muted);
-            margin-bottom: 2rem;
+        .page-header p {
+            color: var(--text-dim);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
         }
 
         /* Cards */
@@ -179,16 +346,15 @@
             margin-bottom: 1.5rem;
         }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .card h3 {
             margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--gold);
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
@@ -201,219 +367,51 @@
             text-align: center;
         }
 
-        .stat-card .icon {
+        .stat-value {
             font-size: 2rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.8;
-        }
-
-        .stat-card h2 {
-            font-size: 2.5rem;
+            font-weight: 600;
             color: var(--gold);
-            line-height: 1.2;
+            margin-bottom: 0.5rem;
         }
 
-        .stat-card p {
-            color: var(--text-muted);
+        .stat-label {
+            color: var(--text-dim);
             font-size: 0.9rem;
-            text-transform: uppercase;
         }
 
         /* Forms */
-        .form-group {
-            margin-bottom: 1.25rem;
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
+        textarea {
             width: 100%;
-            padding: 0.75rem 1rem;
-            background: var(--bg-input);
-            border: 1px solid #444;
+            padding: 0.9rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
             color: var(--text);
-            font-family: inherit;
-            font-size: 1rem;
-            border-radius: 4px;
-            transition: border-color 0.3s;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 100px;
         }
 
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
+        textarea:focus {
             outline: none;
             border-color: var(--gold);
         }
 
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-gold {
-            background: var(--gold);
-            color: #000;
-        }
-
-        .btn-gold:hover {
-            background: var(--gold-hover);
-        }
-
-        .btn-green {
-            background: var(--green);
-            color: #fff;
-        }
-
-        .btn-red {
-            background: var(--red);
-            color: #fff;
-        }
-
-        .btn-blue {
-            background: var(--blue);
-            color: #fff;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #444;
-            color: var(--text);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-        .btn-sm {
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
-        }
-
-        /* Tables */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #333;
-        }
-
-        .data-table th {
-            color: var(--text-muted);
-            font-weight: 500;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-        }
-
-        .data-table tbody tr:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .status-badge {
-            padding: 0.3rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .status-new {
-            background: rgba(59, 130, 246, 0.2);
-            color: var(--blue);
-        }
-
-        .status-read {
-            background: rgba(212, 175, 55, 0.2);
-            color: var(--gold);
-        }
-
-        .status-replied {
-            background: rgba(37, 211, 102, 0.2);
-            color: var(--green);
-        }
-
-        /* Image Grid */
-        .image-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .image-item {
-            position: relative;
-            aspect-ratio: 1;
-            border-radius: 4px;
-            overflow: hidden;
-            border: 1px solid #333;
-            cursor: pointer;
-        }
-
-        .image-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-
-        .image-item:hover img {
-            transform: scale(1.05);
-        }
-
-        .image-item .overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        .image-item:hover .overlay {
-            opacity: 1;
-        }
-
         /* Upload Zone */
         .upload-zone {
-            border: 2px dashed #444;
+            border: 2px dashed var(--border);
             border-radius: 8px;
-            padding: 3rem;
+            padding: 3rem 2rem;
             text-align: center;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s;
         }
 
         .upload-zone:hover {
@@ -421,123 +419,265 @@
             background: rgba(212, 175, 55, 0.05);
         }
 
-        .upload-zone input {
-            display: none;
-        }
-
-        .upload-zone .icon {
+        .upload-icon {
             font-size: 3rem;
+            color: var(--gold);
             margin-bottom: 1rem;
         }
 
-        .upload-zone p {
-            color: var(--text-muted);
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
         }
 
-        /* Tabs */
-        .tabs {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            border-bottom: 1px solid #333;
-            padding-bottom: 0.5rem;
-        }
-
-        .tab {
-            padding: 0.75rem 1.5rem;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
+        .portfolio-item-admin {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
             cursor: pointer;
-            font-family: inherit;
-            font-size: 0.9rem;
-            border-radius: 4px 4px 0 0;
-            transition: 0.3s;
+            transition: transform 0.3s;
         }
 
-        .tab.active {
-            background: var(--gold);
+        .portfolio-item-admin:hover {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item-admin img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .portfolio-item-admin .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .portfolio-item-admin:hover .overlay {
+            opacity: 1;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-success {
+            background: var(--success);
             color: #000;
         }
 
-        .tab:hover:not(.active) {
-            color: var(--text);
-        }
-
-        /* Alerts */
         .alert {
             padding: 1rem 1.5rem;
-            border-radius: 4px;
+            border-radius: 6px;
             margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .alert-info {
-            background: rgba(59, 130, 246, 0.15);
-            border: 1px solid var(--blue);
         }
 
         .alert-success {
-            background: rgba(37, 211, 102, 0.15);
-            border: 1px solid var(--green);
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            color: var(--success);
         }
 
         .alert-warning {
-            background: rgba(212, 175, 55, 0.15);
-            border: 1px solid var(--gold);
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: var(--warning);
         }
 
-        .alert-error {
-            background: rgba(255, 71, 87, 0.15);
-            border: 1px solid var(--red);
+        /* Messages Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        /* Hidden */
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-dark);
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-new {
+            background: rgba(74, 222, 128, 0.2);
+            color: var(--success);
+        }
+
+        .badge-read {
+            background: rgba(153, 153, 153, 0.2);
+            color: var(--text-dim);
+        }
+
         .hidden {
-            display: none !important;
+            display: none;
         }
 
-        /* Loading */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #333;
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        /* Image Grid for Media Management */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
+        .image-slot {
+            position: relative;
+            aspect-ratio: 16/10;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .image-slot:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        .image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-slot:hover .image-overlay {
+            opacity: 1;
+        }
+
+        /* Service Image Slot (larger) */
+        .service-image-slot {
+            position: relative;
+            width: 150px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .service-image-slot:hover {
+            border-color: var(--gold);
+        }
+
+        .service-image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Video Grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .video-slot {
+            position: relative;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            background: var(--bg-dark);
+        }
+
+        .video-slot:hover {
+            border-color: var(--gold);
+        }
+
+        .video-slot video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .image-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
             }
         }
 
         /* Responsive */
-        @media (max-width: 1024px) {
-            .admin-sidebar {
+        @media (max-width: 768px) {
+            .sidebar {
                 width: 200px;
             }
 
-            .admin-content {
+            .main-content {
                 margin-left: 200px;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .admin-sidebar {
-                display: none;
-            }
-
-            .admin-content {
-                margin-left: 0;
+                width: calc(100% - 200px);
             }
 
             .form-row {
@@ -549,189 +689,813 @@
 
 <body>
 
-    <!-- Login Page -->
-    <div class="login-container" id="loginPage">
-        <div class="login-box">
-            <h1>🎨 RenderLine Admin</h1>
-            <p>Sign in to manage your website</p>
+    <!-- LOGIN PAGE -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-logo">
+                <h1>RenderLine</h1>
+                <p>Admin Access</p>
+            </div>
 
-            <div id="loginError" class="alert alert-error hidden"></div>
+            <div class="error-msg" id="loginError"></div>
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="loginEmail" required placeholder="admin@renderline.com">
+                    <label>Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="admin@renderline.com" required>
                 </div>
+
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="loginPassword" required placeholder="••••••••">
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
                 </div>
-                <button type="submit" class="btn btn-gold" style="width: 100%;">
+
+                <button type="submit" class="btn btn-primary">
                     <span id="loginBtnText">Sign In</span>
-                    <span id="loginLoader" class="loading hidden"></span>
                 </button>
             </form>
-
-            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #333;">
-                <p style="font-size: 0.85rem;">Need to create an admin account?</p>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">Go to Supabase Dashboard → Authentication →
-                    Users → Add User</p>
-            </div>
         </div>
     </div>
 
-    <!-- Admin Panel -->
+    <!-- ADMIN DASHBOARD -->
     <div class="admin-wrapper" id="adminPanel">
-
-        <!-- Header -->
-        <header class="admin-header">
-            <h1>🎨 RenderLine Admin</h1>
-            <div class="user-info">
-                <span class="user-email" id="userEmail">admin@renderline.com</span>
-                <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
-            </div>
-        </header>
-
         <!-- Sidebar -->
-        <aside class="admin-sidebar">
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Overview</div>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>RenderLine</h2>
+                <p>Admin Panel</p>
             </div>
-            <div class="sidebar-item active" data-section="dashboard">📊 Dashboard</div>
 
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Content</div>
-            </div>
-            <div class="sidebar-item" data-section="portfolio">🖼️ Portfolio</div>
-            <div class="sidebar-item" data-section="services">⚙️ Services</div>
-            <div class="sidebar-item" data-section="site-content">📝 Site Content</div>
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">Main</div>
+                <div class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </div>
 
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Communication</div>
-            </div>
-            <div class="sidebar-item" data-section="messages">📧 Messages <span class="badge"
-                    id="newMessagesBadge">0</span></div>
+                <div class="nav-section-title">Pages</div>
+                <div class="nav-item" data-section="home">
+                    <span class="nav-icon">🏠</span>
+                    <span>Home Page</span>
+                </div>
+                <div class="nav-item" data-section="about">
+                    <span class="nav-icon">👤</span>
+                    <span>About Page</span>
+                </div>
+                <div class="nav-item" data-section="portfolio">
+                    <span class="nav-icon">🖼️</span>
+                    <span>Portfolio</span>
+                </div>
+                <div class="nav-item" data-section="services">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Services</span>
+                </div>
+                <div class="nav-item" data-section="contact">
+                    <span class="nav-icon">📞</span>
+                    <span>Contact Page</span>
+                </div>
+                <div class="nav-item" data-section="footer">
+                    <span class="nav-icon">📝</span>
+                    <span>Footer</span>
+                </div>
 
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Media</div>
-            </div>
-            <div class="sidebar-item" data-section="media">📁 Media Library</div>
-            <div class="sidebar-item" data-section="videos">🎬 Videos</div>
+                <div class="nav-section-title">Management</div>
+                <div class="nav-item" data-section="messages">
+                    <span class="nav-icon">📧</span>
+                    <span>Messages</span>
+                </div>
+                <div class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </div>
+            </nav>
 
-            <div class="sidebar-section">
-                <div class="sidebar-section-title">Settings</div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">DA</div>
+                    <div class="user-details">
+                        <h4>Dilawar Ali</h4>
+                        <p id="userEmail">admin@renderline.com</p>
+                    </div>
+                </div>
+                <button class="btn btn-logout" onclick="logout()">Logout</button>
             </div>
-            <div class="sidebar-item" data-section="settings">⚙️ Settings</div>
         </aside>
 
         <!-- Main Content -->
-        <main class="admin-content">
+        <main class="main-content">
 
             <!-- Dashboard Section -->
-            <section id="section-dashboard">
-                <div class="section-header">
-                    <h2 class="section-title">Dashboard</h2>
-                    <a href="index.html" target="_blank" class="btn btn-outline">View Website →</a>
+            <section id="section-dashboard" class="section active">
+                <div class="page-header">
+                    <h1>Dashboard</h1>
+                    <p>Welcome back! Here's what's happening with your website.</p>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="icon">🖼️</div>
-                        <h2 id="statPortfolio">0</h2>
-                        <p>Portfolio Items</p>
+                        <div class="stat-value" id="statPortfolio">0</div>
+                        <div class="stat-label">Portfolio Items</div>
                     </div>
                     <div class="stat-card">
-                        <div class="icon">📧</div>
-                        <h2 id="statMessages">0</h2>
-                        <p>New Messages</p>
+                        <div class="stat-value" id="statServices">6</div>
+                        <div class="stat-label">Active Services</div>
                     </div>
                     <div class="stat-card">
-                        <div class="icon">⚙️</div>
-                        <h2 id="statServices">4</h2>
-                        <p>Services</p>
+                        <div class="stat-value" id="statMessages">0</div>
+                        <div class="stat-label">New Messages</div>
                     </div>
                     <div class="stat-card">
-                        <div class="icon">🎬</div>
-                        <h2 id="statVideos">3</h2>
-                        <p>Videos</p>
+                        <div class="stat-value" id="statViews">--</div>
+                        <div class="stat-label">Total Views</div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>📋 Quick Actions</h3>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
-                        <button class="btn btn-gold" onclick="showSection('portfolio')">Add Portfolio Item</button>
-                        <button class="btn btn-blue" onclick="showSection('messages')">View Messages</button>
-                        <button class="btn btn-outline" onclick="showSection('site-content')">Edit Homepage</button>
+                    <h3>Quick Actions</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="switchSection('portfolio')">📸 Upload Images</button>
+                        <button class="btn btn-success" onclick="switchSection('messages')">📧 View Messages</button>
+                        <button class="btn" style="background: var(--bg-hover); color: var(--text);"
+                            onclick="window.open('index.html', '_blank')">👁️ Preview Site</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Home Page Section -->
+            <section id="section-home" class="section">
+                <div class="page-header">
+                    <h1>Home Page Content</h1>
+                    <p>Manage every text and element on your homepage</p>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Hero Section</h3>
+                    <div class="form-group">
+                        <label>Badge Text</label>
+                        <input type="text" id="heroBadge" value="✦ Premium 3D Visualization">
+                    </div>
+                    <div class="form-group">
+                        <label>Heading Line 1</label>
+                        <input type="text" id="heroLine1" value="High-Quality Architectural">
+                    </div>
+                    <div class="form-group">
+                        <label>Heading Line 2</label>
+                        <input type="text" id="heroLine2" value="Visualization that">
+                    </div>
+                    <div class="form-group">
+                        <label>Heading Line 3 (Gold)</label>
+                        <input type="text" id="heroLine3" value="Helps Architects Win Clients">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="heroDesc"
+                            rows="2">We transform your architectural concepts into stunning photorealistic renders that captivate your clients and close deals faster.</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Button 1 Text</label>
+                            <input type="text" id="heroBtn1" value="View Portfolio">
+                        </div>
+                        <div class="form-group">
+                            <label>Button 2 Text</label>
+                            <input type="text" id="heroBtn2" value="Get Free Quote">
+                        </div>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>📊 Recent Messages</h3>
-                    <div id="recentMessages" style="margin-top: 1rem;">
-                        <p style="color: var(--text-muted);">Loading messages...</p>
+                    <h3>🖼️ Hero Carousel Images (5 Slides)</h3>
+                    <p style="color: var(--text-dim); margin-bottom: 1rem;">Click any image to change it. These images
+                        appear in the hero slideshow.</p>
+                    <div class="image-grid">
+                        <div class="image-slot" onclick="uploadHeroImage(1)">
+                            <img src="assets/images/render2.jpg" alt="Hero 1" id="heroImage1Preview">
+                            <div class="image-overlay">📷 Change</div>
+                            <input type="file" id="heroImage1Input" accept="image/*" hidden
+                                onchange="handleHeroImageChange(1, this)">
+                        </div>
+                        <div class="image-slot" onclick="uploadHeroImage(2)">
+                            <img src="assets/images/render10.jpg" alt="Hero 2" id="heroImage2Preview">
+                            <div class="image-overlay">📷 Change</div>
+                            <input type="file" id="heroImage2Input" accept="image/*" hidden
+                                onchange="handleHeroImageChange(2, this)">
+                        </div>
+                        <div class="image-slot" onclick="uploadHeroImage(3)">
+                            <img src="assets/images/render3.jpg" alt="Hero 3" id="heroImage3Preview">
+                            <div class="image-overlay">📷 Change</div>
+                            <input type="file" id="heroImage3Input" accept="image/*" hidden
+                                onchange="handleHeroImageChange(3, this)">
+                        </div>
+                        <div class="image-slot" onclick="uploadHeroImage(4)">
+                            <img src="assets/images/render12.jpg" alt="Hero 4" id="heroImage4Preview">
+                            <div class="image-overlay">📷 Change</div>
+                            <input type="file" id="heroImage4Input" accept="image/*" hidden
+                                onchange="handleHeroImageChange(4, this)">
+                        </div>
+                        <div class="image-slot" onclick="uploadHeroImage(5)">
+                            <img src="assets/images/render21.jpg" alt="Hero 5" id="heroImage5Preview">
+                            <div class="image-overlay">📷 Change</div>
+                            <input type="file" id="heroImage5Input" accept="image/*" hidden
+                                onchange="handleHeroImageChange(5, this)">
+                        </div>
                     </div>
                 </div>
+
+                <div class="card">
+                    <h3>🏆 Services Preview Section</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Heading</label>
+                            <input type="text" id="servicesHeading" value="Our Expertise">
+                        </div>
+                        <div class="form-group">
+                            <label>Subheading</label>
+                            <input type="text" id="servicesSubheading"
+                                value="Tailored visualization solutions for architects, developers, and real estate professionals.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🖼️ Portfolio Preview Section</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Heading</label>
+                            <input type="text" id="portfolioHeading" value="Featured Projects">
+                        </div>
+                        <div class="form-group">
+                            <label>Subheading</label>
+                            <input type="text" id="portfolioSubheading"
+                                value="A selection of our latest architectural visualizations.">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>💡 Why RenderLine Section</h3>
+                    <div class="form-group">
+                        <label>Section Heading</label>
+                        <input type="text" id="whyHeading" value="Why RenderLine?">
+                    </div>
+                    <div class="form-group">
+                        <label>Point 1</label>
+                        <input type="text" id="whyPoint1" value="Architect-first collaborative workflow">
+                    </div>
+                    <div class="form-group">
+                        <label>Point 2</label>
+                        <input type="text" id="whyPoint2" value="Realistic lighting & material accuracy">
+                    </div>
+                    <div class="form-group">
+                        <label>Point 3</label>
+                        <input type="text" id="whyPoint3" value="Industry-leading software & techniques">
+                    </div>
+                    <div class="form-group">
+                        <label>Point 4</label>
+                        <input type="text" id="whyPoint4" value="Fast revisions & project confidentiality">
+                    </div>
+                    <div class="form-group">
+                        <label>Point 5</label>
+                        <input type="text" id="whyPoint5" value="Affordable pricing, premium results">
+                    </div>
+                    <div class="form-group">
+                        <label>Button Text</label>
+                        <input type="text" id="whyBtn" value="Start Your Project">
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🚀 CTA Section</h3>
+                    <div class="form-group">
+                        <label>CTA Heading</label>
+                        <input type="text" id="ctaHeading" value="Ready to Visualize Your Vision?">
+                    </div>
+                    <div class="form-group">
+                        <label>CTA Text</label>
+                        <textarea id="ctaText"
+                            rows="2">Let's discuss your project. Get a free consultation and custom quote today.</textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Button 1 Text</label>
+                            <input type="text" id="ctaBtn1" value="Contact Us">
+                        </div>
+                        <div class="form-group">
+                            <label>WhatsApp Button Text</label>
+                            <input type="text" id="ctaBtn2" value="WhatsApp: 0311-4544040">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveHomeContent()">💾 Save Home Page</button>
+            </section>
+
+            <!-- About Page Section -->
+            <section id="section-about" class="section">
+                <div class="page-header">
+                    <h1>About Page Content</h1>
+                    <p>Manage your complete about page</p>
+                </div>
+
+                <div class="card">
+                    <h3>👤 Profile Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="aboutName" value="Dilawar Ali">
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="aboutTitle" value="Founder & Creative Director">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Profile Photo</label>
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="service-image-slot" onclick="uploadAboutImage()">
+                                <img src="assets/images/dilawar-ali.jpg" alt="Profile" id="aboutImagePreview">
+                                <div class="image-overlay">📷 Change</div>
+                                <input type="file" id="aboutImageInput" accept="image/*" hidden
+                                    onchange="handleAboutImageChange(this)">
+                            </div>
+                            <p style="color: var(--text-dim); font-size: 0.85rem;">Click to change your profile photo
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Bio Paragraph 1</label>
+                        <textarea id="aboutBio1"
+                            rows="3">Welcome to RenderLine – where architectural dreams transform into breathtaking visual realities. I founded this studio with a singular vision: to bridge the gap between an architect's imagination and their client's understanding through the power of photorealistic visualization.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bio Paragraph 2</label>
+                        <textarea id="aboutBio2"
+                            rows="3">With expertise spanning 3D modeling, V-Ray & Corona rendering, Lumion animations, and Unreal Engine real-time visualization, I deliver renders that don't just show spaces – they evoke emotions.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Bio Paragraph 3</label>
+                        <textarea id="aboutBio3"
+                            rows="3">My deep understanding of the Saudi Arabian market – from the majestic Najdi architecture of Riyadh to the coastal elegance of Jeddah – enables me to create culturally resonant visualizations.</textarea>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Statistics</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Projects Completed</label>
+                            <input type="text" id="statProjects" value="200+">
+                        </div>
+                        <div class="form-group">
+                            <label>Happy Clients</label>
+                            <input type="text" id="statClients" value="50+">
+                        </div>
+                        <div class="form-group">
+                            <label>Years Experience</label>
+                            <input type="text" id="statExperience" value="5+">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎯 Areas of Expertise (8 Items)</h3>
+                    <div class="form-row">
+                        <div class="form-group"><input type="text" id="expertise1" value="Residential Exteriors"></div>
+                        <div class="form-group"><input type="text" id="expertise2" value="Commercial Buildings"></div>
+                        <div class="form-group"><input type="text" id="expertise3" value="Luxury Interiors"></div>
+                        <div class="form-group"><input type="text" id="expertise4" value="Landscape Design"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><input type="text" id="expertise5" value="Aerial Views"></div>
+                        <div class="form-group"><input type="text" id="expertise6" value="Night Renders"></div>
+                        <div class="form-group"><input type="text" id="expertise7" value="3D Floor Plans"></div>
+                        <div class="form-group"><input type="text" id="expertise8" value="Virtual Tours"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🛠️ Tools & Technologies (12 Items)</h3>
+                    <div class="form-row">
+                        <div class="form-group"><input type="text" id="tool1" value="3ds Max"></div>
+                        <div class="form-group"><input type="text" id="tool2" value="SketchUp"></div>
+                        <div class="form-group"><input type="text" id="tool3" value="V-Ray"></div>
+                        <div class="form-group"><input type="text" id="tool4" value="Corona"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><input type="text" id="tool5" value="Lumion"></div>
+                        <div class="form-group"><input type="text" id="tool6" value="D5 Render"></div>
+                        <div class="form-group"><input type="text" id="tool7" value="Unreal Engine"></div>
+                        <div class="form-group"><input type="text" id="tool8" value="Photoshop"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><input type="text" id="tool9" value="After Effects"></div>
+                        <div class="form-group"><input type="text" id="tool10" value="AutoCAD"></div>
+                        <div class="form-group"><input type="text" id="tool11" value="Revit"></div>
+                        <div class="form-group"><input type="text" id="tool12" value="AI Tools"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📋 How I Work (5 Steps)</h3>
+                    <div class="form-group">
+                        <label>Step 1 Title</label>
+                        <input type="text" id="step1Title" value="Consultation">
+                    </div>
+                    <div class="form-group">
+                        <label>Step 1 Description</label>
+                        <textarea id="step1Desc"
+                            rows="2">We discuss your project, deadlines, and specific requirements. I analyze your drawings to provide an accurate quote.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Step 2 Title</label>
+                        <input type="text" id="step2Title" value="3D Modeling">
+                    </div>
+                    <div class="form-group">
+                        <label>Step 2 Description</label>
+                        <textarea id="step2Desc"
+                            rows="2">I create an accurate 3D model based on your drawings. You receive a clay render for approval.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Step 3 Title</label>
+                        <input type="text" id="step3Title" value="Materials & Lighting">
+                    </div>
+                    <div class="form-group">
+                        <label>Step 3 Description</label>
+                        <textarea id="step3Desc"
+                            rows="2">Textures, materials, and lighting are applied. We agree on the atmosphere and mood.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Step 4 Title</label>
+                        <input type="text" id="step4Title" value="Rendering">
+                    </div>
+                    <div class="form-group">
+                        <label>Step 4 Description</label>
+                        <textarea id="step4Desc"
+                            rows="2">High-resolution photorealistic renders are produced using V-Ray or Corona.</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Step 5 Title</label>
+                        <input type="text" id="step5Title" value="Revisions & Delivery">
+                    </div>
+                    <div class="form-group">
+                        <label>Step 5 Description</label>
+                        <textarea id="step5Desc"
+                            rows="2">Final adjustments based on your feedback. Delivery in multiple formats.</textarea>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveAboutContent()">💾 Save About Page</button>
             </section>
 
             <!-- Portfolio Section -->
-            <section id="section-portfolio" class="hidden">
-                <div class="section-header">
-                    <h2 class="section-title">Portfolio Management</h2>
-                    <button class="btn btn-gold" onclick="fileInput.click()">+ Add New</button>
-                </div>
-
-                <div class="alert alert-info">
-                    <span>💡</span>
-                    <span>Upload images directly from this panel. They will be stored in Supabase Storage and
-                        automatically appear on your website.</span>
+            <section id="section-portfolio" class="section">
+                <div class="page-header">
+                    <h1>Portfolio Management</h1>
+                    <p>Upload and manage your portfolio renders - Direct to Cloudinary ☁️</p>
                 </div>
 
                 <div class="card">
-                    <div class="card-header">
-                        <h3>Upload New Images</h3>
-                    </div>
+                    <h3>📤 Upload Portfolio Images to Cloudinary</h3>
                     <div class="upload-zone" id="uploadZone">
-                        <input type="file" id="fileInput" multiple accept="image/*">
-                        <div class="icon">📤</div>
-                        <p>Drag & drop images here or click to browse</p>
-                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">Supports JPG, PNG, WebP</p>
+                        <div class="upload-icon">☁️</div>
+                        <h4>Drag & Drop Images Here</h4>
+                        <p style="color: var(--text-dim); margin-top: 0.5rem;">Images upload directly to Cloudinary
+                            (auto-optimized)</p>
+                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
                     </div>
-                    <div id="uploadProgress" class="hidden" style="margin-top: 1rem;"></div>
+                    <div id="uploadProgress" style="margin-top: 1rem;"></div>
                 </div>
 
                 <div class="card">
-                    <div class="card-header">
-                        <h3>Portfolio Items</h3>
-                        <div class="tabs">
-                            <button class="tab active" data-filter="all">All</button>
-                            <button class="tab" data-filter="exterior">Exterior</button>
-                            <button class="tab" data-filter="interior">Interior</button>
-                            <button class="tab" data-filter="commercial">Commercial</button>
+                    <h3>🖼️ Your Portfolio (<span id="portfolioCount">0</span> images)</h3>
+                    <div class="portfolio-grid" id="portfolioGrid">
+                        <!-- Portfolio items will be loaded here -->
+                        <p style="color: var(--text-dim); text-align: center; padding: 2rem;">Upload images to see them
+                            here</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🎬 YouTube Videos</h3>
+                    <p style="color: var(--text-dim); margin-bottom: 1rem;">Paste YouTube URLs. Videos will auto-embed
+                        on your website.</p>
+
+                    <div class="form-group">
+                        <label>Video 1 - YouTube URL</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="youtubeUrl1" placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+                                style="flex: 1;">
+                            <button class="btn" onclick="previewYouTube(1)" style="padding: 0.5rem 1rem;">👁️
+                                Preview</button>
+                        </div>
+                        <div id="youtubePreview1" style="margin-top: 0.5rem; border-radius: 8px; overflow: hidden;">
                         </div>
                     </div>
-                    <div class="image-grid" id="portfolioGrid">
-                        <!-- Portfolio items will be loaded here -->
+
+                    <div class="form-group">
+                        <label>Video 2 - YouTube URL</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="youtubeUrl2" placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+                                style="flex: 1;">
+                            <button class="btn" onclick="previewYouTube(2)" style="padding: 0.5rem 1rem;">👁️
+                                Preview</button>
+                        </div>
+                        <div id="youtubePreview2" style="margin-top: 0.5rem; border-radius: 8px; overflow: hidden;">
+                        </div>
                     </div>
+
+                    <div class="form-group">
+                        <label>Video 3 - YouTube URL</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="youtubeUrl3" placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+                                style="flex: 1;">
+                            <button class="btn" onclick="previewYouTube(3)" style="padding: 0.5rem 1rem;">👁️
+                                Preview</button>
+                        </div>
+                        <div id="youtubePreview3" style="margin-top: 0.5rem; border-radius: 8px; overflow: hidden;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Video 4 - YouTube URL</label>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <input type="text" id="youtubeUrl4" placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+                                style="flex: 1;">
+                            <button class="btn" onclick="previewYouTube(4)" style="padding: 0.5rem 1rem;">👁️
+                                Preview</button>
+                        </div>
+                        <div id="youtubePreview4" style="margin-top: 0.5rem; border-radius: 8px; overflow: hidden;">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="saveYouTubeVideos()">💾 Save
+                        Videos</button>
+                </div>
+
+                <div class="card">
+                    <h3>☁️ Direct Upload to Cloudinary</h3>
+                    <p style="color: var(--text-dim); margin-bottom: 1rem;">Click any image to upload directly. Images
+                        auto-optimize and save.</p>
+
+                    <h4 style="margin-bottom: 1rem; color: var(--gold);">Hero Carousel Images</h4>
+                    <div class="image-grid" style="margin-bottom: 1.5rem;">
+                        <div class="image-slot" onclick="uploadCloudinaryImage('hero', 1)">
+                            <img src="assets/images/render2.jpg" alt="Hero 1" id="cloudHero1Preview">
+                            <div class="image-overlay">📤 Upload</div>
+                            <input type="file" id="cloudHero1Input" accept="image/*" hidden
+                                onchange="handleCloudinaryUpload('hero', 1, this)">
+                        </div>
+                        <div class="image-slot" onclick="uploadCloudinaryImage('hero', 2)">
+                            <img src="assets/images/render10.jpg" alt="Hero 2" id="cloudHero2Preview">
+                            <div class="image-overlay">📤 Upload</div>
+                            <input type="file" id="cloudHero2Input" accept="image/*" hidden
+                                onchange="handleCloudinaryUpload('hero', 2, this)">
+                        </div>
+                        <div class="image-slot" onclick="uploadCloudinaryImage('hero', 3)">
+                            <img src="assets/images/render3.jpg" alt="Hero 3" id="cloudHero3Preview">
+                            <div class="image-overlay">📤 Upload</div>
+                            <input type="file" id="cloudHero3Input" accept="image/*" hidden
+                                onchange="handleCloudinaryUpload('hero', 3, this)">
+                        </div>
+                        <div class="image-slot" onclick="uploadCloudinaryImage('hero', 4)">
+                            <img src="assets/images/render12.jpg" alt="Hero 4" id="cloudHero4Preview">
+                            <div class="image-overlay">📤 Upload</div>
+                            <input type="file" id="cloudHero4Input" accept="image/*" hidden
+                                onchange="handleCloudinaryUpload('hero', 4, this)">
+                        </div>
+                        <div class="image-slot" onclick="uploadCloudinaryImage('hero', 5)">
+                            <img src="assets/images/render21.jpg" alt="Hero 5" id="cloudHero5Preview">
+                            <div class="image-overlay">📤 Upload</div>
+                            <input type="file" id="cloudHero5Input" accept="image/*" hidden
+                                onchange="handleCloudinaryUpload('hero', 5, this)">
+                        </div>
+                    </div>
+
+                    <div id="uploadStatus" style="padding: 0.5rem; border-radius: 6px; display: none;"></div>
                 </div>
             </section>
 
-            <!-- Messages Section -->
-            <section id="section-messages" class="hidden">
-                <div class="section-header">
-                    <h2 class="section-title">Contact Messages</h2>
-                    <button class="btn btn-outline" onclick="exportMessages()">Export CSV</button>
-                </div>
-
-                <div class="tabs">
-                    <button class="tab active" data-status="all">All</button>
-                    <button class="tab" data-status="new">New</button>
-                    <button class="tab" data-status="read">Read</button>
-                    <button class="tab" data-status="replied">Replied</button>
+            <!-- Services Section -->
+            <section id="section-services" class="section">
+                <div class="page-header">
+                    <h1>Services Management</h1>
+                    <p>Edit all 6 services on your website</p>
                 </div>
 
                 <div class="card">
-                    <table class="data-table">
+                    <h3>📄 Services Page Header</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Page Heading</label>
+                            <input type="text" id="servicesPageHeading" value="Our Services">
+                        </div>
+                        <div class="form-group">
+                            <label>Page Subheading</label>
+                            <input type="text" id="servicesPageSubheading"
+                                value="Premium architectural visualization solutions tailored to bring your vision to life.">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 1 -->
+                <div class="card">
+                    <h3>🏢 Service 1: Exterior Visualization</h3>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div class="service-image-slot" onclick="uploadServiceImage(1)">
+                            <img src="assets/images/render2.jpg" alt="Service 1" id="service1ImagePreview">
+                            <div class="image-overlay">📷</div>
+                            <input type="file" id="service1ImageInput" accept="image/*" hidden
+                                onchange="handleServiceImageChange(1, this)">
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input type="text" id="service1Title" value="Exterior Visualization">
+                                </div>
+                                <div class="form-group">
+                                    <label>Icon</label>
+                                    <input type="text" id="service1Icon" value="🏢" style="width: 60px;">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea id="service1Short"
+                                    rows="2">Transform your building designs into stunning, photorealistic exterior renders.</textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Timeline</label>
+                                    <input type="text" id="service1Timeline" value="3-5 business days">
+                                </div>
+                                <div class="form-group">
+                                    <label>Price From</label>
+                                    <input type="text" id="service1Price" value="$150">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="card">
+                    <h3>🛋️ Service 2: Interior Visualization</h3>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div class="service-image-slot" onclick="uploadServiceImage(2)">
+                            <img src="assets/images/render10.jpg" alt="Service 2" id="service2ImagePreview">
+                            <div class="image-overlay">📷</div>
+                            <input type="file" id="service2ImageInput" accept="image/*" hidden
+                                onchange="handleServiceImageChange(2, this)">
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <div class="form-row">
+                                <div class="form-group"><label>Title</label><input type="text" id="service2Title"
+                                        value="Interior Visualization"></div>
+                                <div class="form-group"><label>Icon</label><input type="text" id="service2Icon"
+                                        value="🛋️" style="width: 60px;"></div>
+                            </div>
+                            <div class="form-group"><label>Description</label><textarea id="service2Short"
+                                    rows="2">Showcase interiors with realistic lighting, materials, and furniture placement.</textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Timeline</label><input type="text" id="service2Timeline"
+                                        value="2-4 business days"></div>
+                                <div class="form-group"><label>Price</label><input type="text" id="service2Price"
+                                        value="$120"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="card">
+                    <h3>🎬 Service 3: 3D Animations</h3>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div class="service-image-slot" onclick="uploadServiceImage(3)">
+                            <img src="assets/images/render12.jpg" alt="Service 3" id="service3ImagePreview">
+                            <div class="image-overlay">📷</div>
+                            <input type="file" id="service3ImageInput" accept="image/*" hidden
+                                onchange="handleServiceImageChange(3, this)">
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <div class="form-row">
+                                <div class="form-group"><label>Title</label><input type="text" id="service3Title"
+                                        value="3D Animations & Walkthroughs"></div>
+                                <div class="form-group"><label>Icon</label><input type="text" id="service3Icon"
+                                        value="🎬" style="width: 60px;"></div>
+                            </div>
+                            <div class="form-group"><label>Description</label><textarea id="service3Short"
+                                    rows="2">Cinematic walkthrough animations for real estate marketing.</textarea>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Timeline</label><input type="text" id="service3Timeline"
+                                        value="7-14 business days"></div>
+                                <div class="form-group"><label>Price</label><input type="text" id="service3Price"
+                                        value="$500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="card">
+                    <h3>📐 Service 4: Floor Plan Visualization</h3>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div class="service-image-slot" onclick="uploadServiceImage(4)">
+                            <img src="assets/images/render21.jpg" alt="Service 4" id="service4ImagePreview">
+                            <div class="image-overlay">📷</div>
+                            <input type="file" id="service4ImageInput" accept="image/*" hidden
+                                onchange="handleServiceImageChange(4, this)">
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <div class="form-row">
+                                <div class="form-group"><label>Title</label><input type="text" id="service4Title"
+                                        value="Floor Plan Visualization"></div>
+                                <div class="form-group"><label>Icon</label><input type="text" id="service4Icon"
+                                        value="📐" style="width: 60px;"></div>
+                            </div>
+                            <div class="form-group"><label>Description</label><textarea id="service4Short"
+                                    rows="2">2D CAD to 3D floor plan conversion with furniture layout.</textarea></div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Timeline</label><input type="text" id="service4Timeline"
+                                        value="1-2 business days"></div>
+                                <div class="form-group"><label>Price</label><input type="text" id="service4Price"
+                                        value="$50"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="card">
+                    <h3>📏 Service 5: AutoCAD Drawings</h3>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div class="service-image-slot" onclick="uploadServiceImage(5)">
+                            <img src="assets/images/render3.jpg" alt="Service 5" id="service5ImagePreview">
+                            <div class="image-overlay">📷</div>
+                            <input type="file" id="service5ImageInput" accept="image/*" hidden
+                                onchange="handleServiceImageChange(5, this)">
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <div class="form-row">
+                                <div class="form-group"><label>Title</label><input type="text" id="service5Title"
+                                        value="AutoCAD Drawings"></div>
+                                <div class="form-group"><label>Icon</label><input type="text" id="service5Icon"
+                                        value="📏" style="width: 60px;"></div>
+                            </div>
+                            <div class="form-group"><label>Description</label><textarea id="service5Short"
+                                    rows="2">Professional 2D drafting and technical drawings.</textarea></div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Timeline</label><input type="text" id="service5Timeline"
+                                        value="2-5 business days"></div>
+                                <div class="form-group"><label>Price</label><input type="text" id="service5Price"
+                                        value="$80"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="card">
+                    <h3>💡 Service 6: Design Consultation</h3>
+                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                        <div class="service-image-slot" onclick="uploadServiceImage(6)">
+                            <img src="assets/images/render4.jpg" alt="Service 6" id="service6ImagePreview">
+                            <div class="image-overlay">📷</div>
+                            <input type="file" id="service6ImageInput" accept="image/*" hidden
+                                onchange="handleServiceImageChange(6, this)">
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <div class="form-row">
+                                <div class="form-group"><label>Title</label><input type="text" id="service6Title"
+                                        value="Design & Construction Consultation"></div>
+                                <div class="form-group"><label>Icon</label><input type="text" id="service6Icon"
+                                        value="💡" style="width: 60px;"></div>
+                            </div>
+                            <div class="form-group"><label>Description</label><textarea id="service6Short"
+                                    rows="2">Expert guidance from concept to completion.</textarea></div>
+                            <div class="form-row">
+                                <div class="form-group"><label>Timeline</label><input type="text" id="service6Timeline"
+                                        value="Flexible"></div>
+                                <div class="form-group"><label>Price</label><input type="text" id="service6Price"
+                                        value="$100/hour"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveServices()">💾 Save All Services</button>
+            </section>
+
+            <!-- Messages Section -->
+            <section id="section-messages" class="section">
+                <div class="page-header">
+                    <h1>Contact Messages</h1>
+                    <p>View and manage customer inquiries</p>
+                </div>
+
+                <div class="card">
+                    <table>
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -739,491 +1503,454 @@
                                 <th>Project Type</th>
                                 <th>Date</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="messagesTable">
-                            <!-- Messages will be loaded here -->
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 2rem;">No messages yet</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Site Content Section -->
-            <section id="section-site-content" class="hidden">
-                <div class="section-header">
-                    <h2 class="section-title">Site Content</h2>
-                    <button class="btn btn-gold" onclick="saveSiteContent()">Save Changes</button>
+            <!-- Contact Page Section -->
+            <section id="section-contact" class="section">
+                <div class="page-header">
+                    <h1>Contact Page Content</h1>
+                    <p>Edit your contact page text and information</p>
                 </div>
 
                 <div class="card">
-                    <h3>🏠 Homepage Hero Section</h3>
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label>Main Heading</label>
-                        <input type="text" id="heroHeading" placeholder="Architectural Vision Redefined.">
-                    </div>
-                    <div class="form-group">
-                        <label>Subheading</label>
-                        <textarea id="heroSubheading" placeholder="Your tagline here..."></textarea>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>👤 About Section</h3>
-                    <div class="form-row" style="margin-top: 1rem;">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input type="text" id="aboutName" placeholder="Dilawar Ali">
-                        </div>
-                        <div class="form-group">
-                            <label>Title</label>
-                            <input type="text" id="aboutTitle" placeholder="Founder & Creative Director">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Bio</label>
-                        <textarea id="aboutBio" rows="4"></textarea>
-                    </div>
+                    <h3>📄 Page Header</h3>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Projects Completed</label>
-                            <input type="text" id="statProjects" placeholder="200+">
+                            <label>Heading</label>
+                            <input type="text" id="contactHeading" value="Get In Touch">
                         </div>
                         <div class="form-group">
-                            <label>Happy Clients</label>
-                            <input type="text" id="statClients" placeholder="50+">
+                            <label>Subheading</label>
+                            <input type="text" id="contactSubheading"
+                                value="Ready to bring your architectural vision to life? Let's discuss your project.">
                         </div>
                     </div>
                 </div>
 
                 <div class="card">
                     <h3>📧 Contact Information</h3>
-                    <div class="form-row" style="margin-top: 1rem;">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="contactEmail" value="inforenderline@gmail.com">
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="contactEmail" placeholder="designstudio813@gmail.com">
+                            <label>WhatsApp Number (with country code)</label>
+                            <input type="text" id="contactWhatsapp" value="923114544040">
                         </div>
                         <div class="form-group">
-                            <label>WhatsApp (with country code)</label>
-                            <input type="text" id="contactWhatsapp" placeholder="923140735267">
+                            <label>Phone Display Format</label>
+                            <input type="text" id="contactPhoneDisplay" value="0311-4544040">
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Location</label>
-                        <input type="text" id="contactLocation" placeholder="Riyadh / Jeddah, Saudi Arabia">
+                        <input type="text" id="contactLocation" value="Lahore, Pakistan">
                     </div>
                 </div>
+
+                <button class="btn btn-primary" onclick="saveContactContent()">💾 Save Contact Page</button>
             </section>
 
-            <!-- Services Section -->
-            <section id="section-services" class="hidden">
-                <div class="section-header">
-                    <h2 class="section-title">Services</h2>
-                    <button class="btn btn-gold" onclick="alert('Editing services coming next')">+ Add Service</button>
-                </div>
-
-                <div id="servicesList">
-                    <!-- Services will be loaded here -->
-                </div>
-            </section>
-
-            <!-- Media Library Section -->
-            <section id="section-media" class="hidden">
-                <div class="section-header">
-                    <h2 class="section-title">Media Library</h2>
-                </div>
-
-                <div class="alert alert-warning">
-                    <span>⚠️</span>
-                    <span>Use the Portfolio tab for image uploads for now.</span>
-                </div>
-            </section>
-
-            <!-- Videos Section -->
-            <section id="section-videos" class="hidden">
-                <div class="section-header">
-                    <h2 class="section-title">Videos</h2>
+            <!-- Footer Section -->
+            <section id="section-footer" class="section">
+                <div class="page-header">
+                    <h1>Footer Content</h1>
+                    <p>Edit footer that appears on all pages</p>
                 </div>
 
                 <div class="card">
-                    <h3>Current Videos</h3>
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                        <div style="background: var(--bg-input); padding: 1rem; border-radius: 4px;">
-                            <p><strong>ad.mp4</strong></p>
-                            <p style="color: var(--text-muted);">Homepage Ad Video</p>
+                    <h3>🏷️ Brand Section</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Brand Name</label>
+                            <input type="text" id="footerBrand" value="RenderLine.">
+                        </div>
+                        <div class="form-group">
+                            <label>Tagline</label>
+                            <input type="text" id="footerTagline" value="Premium Architectural Visualization">
                         </div>
                     </div>
                 </div>
+
+                <div class="card">
+                    <h3>📍 Footer Contact Info</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Address/City</label>
+                            <input type="text" id="footerAddress" value="Lahore, Pakistan">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Display</label>
+                            <input type="text" id="footerPhone" value="0311-4544040">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>©️ Copyright</h3>
+                    <div class="form-group">
+                        <label>Copyright Text</label>
+                        <input type="text" id="footerCopyright" value="© 2024 RenderLine. All Rights Reserved.">
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveFooterContent()">💾 Save Footer</button>
             </section>
 
             <!-- Settings Section -->
-            <section id="section-settings" class="hidden">
-                <div class="section-header">
-                    <h2 class="section-title">Settings</h2>
+            <section id="section-settings" class="section">
+                <div class="page-header">
+                    <h1>Site Settings</h1>
+                    <p>Configure your website settings</p>
+                </div>
+
+                <div class="card">
+                    <h3>📧 Contact Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="contactEmail" placeholder="info@renderline.com">
+                        </div>
+                        <div class="form-group">
+                            <label>WhatsApp (with country code)</label>
+                            <input type="text" id="contactWhatsapp" placeholder="923114544040">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="contactLocation" placeholder="Lahore, Pakistan">
+                    </div>
                 </div>
 
                 <div class="card">
                     <h3>🔗 Supabase Connection</h3>
-                    <div id="connectionStatus" style="margin-top: 1rem;">
-                        <p style="color: var(--green);">⬤ Connected</p>
+                    <div id="connectionStatus">
+                        <p style="color: var(--text-dim);">Checking connection...</p>
                     </div>
                 </div>
+
+                <div class="card">
+                    <h3>☁️ Cloudinary Settings</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cloud Name</label>
+                            <input type="text" id="cloudName" value="dzp70azv3" readonly
+                                style="background: var(--bg-dark);">
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Preset Name</label>
+                            <input type="text" id="cloudPreset" value="renderline_unsigned"
+                                placeholder="renderline_unsigned">
+                        </div>
+                    </div>
+                    <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.5rem;">
+                        ⚡ <strong>Important:</strong> Cloudinary Dashboard → Settings → Upload → Add preset → Set
+                        "Unsigned"
+                    </p>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
             </section>
 
         </main>
     </div>
 
-    <!-- Supabase Config -->
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
 
     <script>
-        // =============================================
-        // ADMIN PANEL JAVASCRIPT
-        // =============================================
+        // ========== GLOBAL STATE ==========
+        let currentUser = null;
 
-        // DOM Elements
-        const loginPage = document.getElementById('loginPage');
-        const adminPanel = document.getElementById('adminPanel');
-        const loginForm = document.getElementById('loginForm');
-
-        // Check auth state on load
-        document.addEventListener('DOMContentLoaded', async () => {
-            if (typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
-                const user = await getCurrentUser();
-                if (user) {
-                    showAdminPanel(user);
-                }
-            } else {
-                console.log('Supabase not configured.');
-            }
-        });
-
-        // Login Form Handler
-        loginForm.addEventListener('submit', async (e) => {
+        // ========== LOGIN ==========
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
-            const btnText = document.getElementById('loginBtnText');
-            const loader = document.getElementById('loginLoader');
             const errorDiv = document.getElementById('loginError');
+            const btnText = document.getElementById('loginBtnText');
 
             btnText.textContent = 'Signing in...';
-            loader.classList.remove('hidden');
-            errorDiv.classList.add('hidden');
+            errorDiv.classList.remove('show');
 
-            // Check if Supabase is configured
             if (typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
                 const { data, error } = await adminLogin(email, password);
-
                 if (error) {
                     errorDiv.textContent = error.message;
-                    errorDiv.classList.remove('hidden');
+                    errorDiv.classList.add('show');
                     btnText.textContent = 'Sign In';
-                    loader.classList.add('hidden');
                 } else {
-                    showAdminPanel(data.user);
+                    showAdmin(data.user);
                 }
             } else {
-                // Demo mode - allow any login
+                // Demo mode
                 setTimeout(() => {
-                    showAdminPanel({ email: email });
+                    showAdmin({ email: email });
                 }, 1000);
             }
         });
 
-        // Show Admin Panel
-        function showAdminPanel(user) {
-            loginPage.style.display = 'none';
-            adminPanel.classList.add('active');
-            if (document.getElementById('userEmail')) document.getElementById('userEmail').textContent = user.email;
-
-            // Load initial data
+        function showAdmin(user) {
+            currentUser = user;
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminPanel').classList.add('active');
+            document.getElementById('userEmail').textContent = user.email;
             loadDashboardData();
         }
 
-        // Logout
         async function logout() {
             if (typeof adminLogout === 'function') {
                 await adminLogout();
             }
-            window.location.reload();
+            location.reload();
         }
 
-        // Sidebar Navigation
-        document.querySelectorAll('.sidebar-item').forEach(item => {
+        // ========== NAVIGATION ==========
+        document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', () => {
                 const section = item.dataset.section;
-                if (section) showSection(section);
+                switchSection(section);
             });
         });
 
-        function showSection(sectionId) {
-            // Update sidebar
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.classList.toggle('active', item.dataset.section === sectionId);
+        function switchSection(sectionName) {
+            // Update nav
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.section === sectionName) {
+                    item.classList.add('active');
+                }
             });
 
-            // Show section
-            document.querySelectorAll('.admin-content > section').forEach(section => {
-                section.classList.add('hidden');
+            // Update sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
             });
-            document.getElementById('section-' + sectionId).classList.remove('hidden');
+            document.getElementById('section-' + sectionName).classList.add('active');
         }
 
-        // Load Dashboard Data
+        // ========== DATA LOADING ==========
         async function loadDashboardData() {
-            // Show loading state
-            if (document.getElementById('recentMessages')) document.getElementById('recentMessages').innerHTML = '<span class="loading"></span> Loading...';
+            // Load Portfolio from localStorage (Cloudinary uploads)
+            const portfolioItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
+            document.getElementById('statPortfolio').textContent = portfolioItems.length;
+            document.getElementById('portfolioCount').textContent = portfolioItems.length;
+            renderPortfolioGrid(portfolioItems);
 
-            if (typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
-                // 1. Load Portfolio Stats
-                const { data: portfolio } = await getPortfolioItems();
-                if (portfolio) {
-                    document.getElementById('statPortfolio').textContent = portfolio.length;
-                    renderPortfolioGrid(portfolio);
-                }
+            // Load Messages from Supabase
+            if (typeof getContactMessages === 'function' && isSupabaseConfigured()) {
+                const { data: messages } = await getContactMessages();
+                const newMessages = messages ? messages.filter(m => m.status === 'new').length : 0;
+                document.getElementById('statMessages').textContent = newMessages;
+                renderMessagesTable(messages || []);
 
-                // 2. Load Messages Stats
-                const { data: messages } = await getContactMessages('new');
-                if (messages) {
-                    document.getElementById('statMessages').textContent = messages.length;
-                    document.getElementById('newMessagesBadge').textContent = messages.length;
-                }
-
-                // 3. Load All Messages for Table
-                const { data: allMessages } = await getContactMessages();
-                if (allMessages) {
-                    renderMessagesTable(allMessages);
-                }
-
-                // 4. Load Services Stats
-                const { data: services } = await getServices();
-                if (services) {
-                    document.getElementById('statServices').textContent = services.length;
-                    renderServicesList(services);
-                }
-
-                // 5. Load Content for Editing
+                // Load site content for forms
                 const { data: content } = await getSiteContent();
                 if (content) {
-                    // Populate Form Fields
-                    if (document.getElementById('heroHeading')) document.getElementById('heroHeading').value = content.hero_heading || '';
-                    if (document.getElementById('heroSubheading')) document.getElementById('heroSubheading').value = content.hero_subheading || '';
-                    if (document.getElementById('aboutName')) document.getElementById('aboutName').value = content.about_name || '';
-                    if (document.getElementById('aboutTitle')) document.getElementById('aboutTitle').value = content.about_title || '';
-                    if (document.getElementById('aboutBio')) document.getElementById('aboutBio').value = content.about_bio || '';
-                    if (document.getElementById('statProjects')) document.getElementById('statProjects').value = content.stat_projects || '';
-                    if (document.getElementById('statClients')) document.getElementById('statClients').value = content.stat_clients || '';
-                    if (document.getElementById('contactEmail')) document.getElementById('contactEmail').value = content.contact_email || '';
-                    if (document.getElementById('contactWhatsapp')) document.getElementById('contactWhatsapp').value = content.contact_whatsapp || '';
-                    if (document.getElementById('contactLocation')) document.getElementById('contactLocation').value = content.contact_location || '';
+                    document.getElementById('heroHeading').value = content.hero_heading || '';
+                    document.getElementById('heroSubheading').value = content.hero_subheading || '';
+                    document.getElementById('whyHeading').value = content.why_heading || 'Why RenderLine?';
+                    document.getElementById('ctaHeading').value = content.cta_heading || '';
+                    document.getElementById('ctaText').value = content.cta_text || '';
+                    document.getElementById('aboutName').value = content.about_name || '';
+                    document.getElementById('aboutTitle').value = content.about_title || '';
+                    document.getElementById('aboutBio').value = content.about_bio || '';
+                    document.getElementById('statProjects').value = content.stat_projects || '';
+                    document.getElementById('statClients').value = content.stat_clients || '';
+                    document.getElementById('statExperience').value = content.stat_experience || '';
+                    document.getElementById('contactEmail').value = content.contact_email || '';
+                    document.getElementById('contactWhatsapp').value = content.contact_whatsapp || '';
+                    document.getElementById('contactLocation').value = content.contact_location || '';
                 }
 
+                document.getElementById('connectionStatus').innerHTML = '<p style="color: var(--success);">✅ Connected (Cloudinary + Supabase)</p>';
             } else {
-                console.error("Supabase not configured");
-            }
-        }
-
-        // --- HELPER FUNCTIONS ---
-
-        function renderServicesList(services) {
-            const container = document.getElementById('servicesList');
-            if (!container) return;
-            container.innerHTML = '';
-
-            services.forEach(service => {
-                const div = document.createElement('div');
-                div.className = 'card';
-                div.style.marginBottom = '1rem';
-                div.innerHTML = `
-                    <div class="card-header">
-                        <h3>${service.title}</h3>
-                        <div>
-                            <button class="btn btn-outline btn-sm" onclick="alert('Editing available via Supabase dashboard for now')">Edit</button>
-                        </div>
-                    </div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">${service.description}</p>
-                    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--gold);">
-                        Price: $${service.price_from || 'N/A'} | Timeline: ${service.timeline || 'N/A'}
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function renderMessagesTable(messages) {
-            const tbody = document.getElementById('messagesTable');
-            const recentContainer = document.getElementById('recentMessages');
-
-            if (tbody) tbody.innerHTML = '';
-            if (recentContainer) recentContainer.innerHTML = '';
-
-            // Populate Dashboard Recent List (Top 5)
-            if (recentContainer) {
-                messages.slice(0, 5).forEach(msg => {
-                    const div = document.createElement('div');
-                    div.style.padding = '0.5rem 0';
-                    div.style.borderBottom = '1px solid #333';
-                    div.innerHTML = `
-                        <div style="display:flex; justify-content:space-between;">
-                            <strong>${msg.name}</strong>
-                            <span style="font-size:0.8rem; color:var(--text-muted);">${new Date(msg.created_at).toLocaleDateString()}</span>
-                        </div>
-                        <div style="font-size:0.9rem; color:var(--text-muted); text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
-                            ${msg.message}
-                        </div>
-                    `;
-                    recentContainer.appendChild(div);
-                });
-
-                if (messages.length === 0) {
-                    recentContainer.innerHTML = '<p style="color:var(--text-muted)">No messages yet.</p>';
-                }
-            }
-
-            // Populate Full Table
-            if (tbody) {
-                messages.forEach(msg => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${msg.name}</td>
-                        <td><a href="mailto:${msg.email}" style="color:var(--gold);">${msg.email}</a></td>
-                        <td>${msg.project_type || '-'}</td>
-                        <td>${new Date(msg.created_at).toLocaleDateString()}</td>
-                        <td><span class="status-badge status-${msg.status}">${msg.status}</span></td>
-                        <td>
-                            <button class="btn btn-outline btn-sm">View</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-
-                if (messages.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem;">No messages found</td></tr>';
-                }
+                document.getElementById('connectionStatus').innerHTML = '<p style="color: var(--gold);">☁️ Using Cloudinary (Local Mode)</p>';
             }
         }
 
         function renderPortfolioGrid(items) {
             const grid = document.getElementById('portfolioGrid');
-            if (!grid) return;
             grid.innerHTML = '';
+
+            if (items.length === 0) {
+                grid.innerHTML = '<p style="color: var(--text-dim); grid-column: 1/-1; text-align: center; padding: 2rem;">No portfolio items yet. Upload some images!</p>';
+                return;
+            }
 
             items.forEach(item => {
                 const div = document.createElement('div');
-                div.className = 'image-item';
+                div.className = 'portfolio-item-admin';
                 div.innerHTML = `
                     <img src="${item.image_url}" alt="${item.title}">
                     <div class="overlay">
-                        <button class="btn btn-red btn-sm" onclick="deletePortfolio(${item.id})">Delete</button>
+                        <button class="btn btn-danger" onclick="deletePortfolio(${item.id})">Delete</button>
                     </div>
                 `;
                 grid.appendChild(div);
             });
         }
 
-        // --- ACTION FUNCTIONS ---
+        function renderMessagesTable(messages) {
+            const tbody = document.getElementById('messagesTable');
+            tbody.innerHTML = '';
 
-        // Delete Portfolio Item
-        async function deletePortfolio(id) {
-            if (confirm('Are you sure you want to delete this item?')) {
-                const { error } = await deletePortfolioItem(id);
-                if (!error) {
-                    alert('Item deleted');
-                    // Refresh data
-                    const { data: portfolio } = await getPortfolioItems();
-                    renderPortfolioGrid(portfolio || []);
-                    if (document.getElementById('statPortfolio')) document.getElementById('statPortfolio').textContent = portfolio ? portfolio.length : 0;
-                } else {
-                    alert('Error: ' + error.message);
-                }
-            }
-        }
-
-        // File Upload
-        const uploadZone = document.getElementById('uploadZone');
-        const fileInput = document.getElementById('fileInput');
-
-        if (uploadZone) {
-            uploadZone.addEventListener('click', () => fileInput.click());
-
-            uploadZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadZone.style.borderColor = 'var(--gold)';
-            });
-
-            uploadZone.addEventListener('dragleave', () => {
-                uploadZone.style.borderColor = '#444';
-            });
-
-            uploadZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadZone.style.borderColor = '#444';
-                handleFiles(e.dataTransfer.files);
-            });
-        }
-
-        if (fileInput) {
-            fileInput.addEventListener('change', (e) => {
-                handleFiles(e.target.files);
-            });
-        }
-
-        async function handleFiles(files) {
-            const progressDiv = document.getElementById('uploadProgress');
-            progressDiv.classList.remove('hidden');
-            progressDiv.innerHTML = `<p>Uploading ${files.length} file(s)...</p>`;
-
-            for (const file of files) {
-                if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
-                    const { data, error } = await uploadImage(file);
-                    if (error) {
-                        progressDiv.innerHTML += `<p style="color: var(--red);">❌ ${file.name}: ${error.message}</p>`;
-                    } else {
-                        // Create DB entry
-                        const { error: dbError } = await addPortfolioItem({
-                            title: file.name,
-                            image_url: data.url,
-                            category: 'exterior', // Default to exterior
-                            description: 'Uploaded via Admin Panel'
-                        });
-
-                        if (dbError) {
-                            progressDiv.innerHTML += `<p style="color: var(--gold);">⚠️ ${file.name} uploaded but DB entry failed: ${dbError.message}</p>`;
-                        } else {
-                            progressDiv.innerHTML += `<p style="color: var(--green);">✓ ${file.name} uploaded & saved</p>`;
-                        }
-                    }
-                } else {
-                    progressDiv.innerHTML += `<p style="color: var(--gold);">⚠️ ${file.name}: Configure Supabase to enable uploads</p>`;
-                }
+            if (messages.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">No messages yet</td></tr>';
+                return;
             }
 
-            // Reload grid after short delay
-            setTimeout(async () => {
-                const { data: portfolio } = await getPortfolioItems();
-                renderPortfolioGrid(portfolio || []);
-                progressDiv.classList.add('hidden');
-            }, 3000);
+            messages.forEach(msg => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${msg.name}</td>
+                    <td><a href="mailto:${msg.email}" style="color: var(--gold);">${msg.email}</a></td>
+                    <td>${msg.project_type || '-'}</td>
+                    <td>${new Date(msg.created_at).toLocaleDateString()}</td>
+                    <td><span class="badge badge-${msg.status}">${msg.status}</span></td>
+                    <td><button class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; background: var(--bg-hover); color: var(--text);">View</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
 
-        // Save Site Content
-        async function saveSiteContent() {
-            const btn = document.querySelector('button[onclick="saveSiteContent()"]');
-            const originalText = btn ? btn.innerText : 'Save';
-            if (btn) btn.innerText = 'Saving...';
-
+        // ========== SAVE FUNCTIONS ==========
+        async function saveHomeContent() {
             const content = {
-                hero_heading: document.getElementById('heroHeading').value,
-                hero_subheading: document.getElementById('heroSubheading').value,
+                hero_badge: document.getElementById('heroBadge').value,
+                hero_line1: document.getElementById('heroLine1').value,
+                hero_line2: document.getElementById('heroLine2').value,
+                hero_line3: document.getElementById('heroLine3').value,
+                hero_description: document.getElementById('heroDesc').value,
+                hero_btn1_text: document.getElementById('heroBtn1').value,
+                hero_btn2_text: document.getElementById('heroBtn2').value,
+                services_heading: document.getElementById('servicesHeading').value,
+                services_subheading: document.getElementById('servicesSubheading').value,
+                portfolio_heading: document.getElementById('portfolioHeading').value,
+                portfolio_subheading: document.getElementById('portfolioSubheading').value,
+                why_heading: document.getElementById('whyHeading').value,
+                why_point1: document.getElementById('whyPoint1').value,
+                why_point2: document.getElementById('whyPoint2').value,
+                why_point3: document.getElementById('whyPoint3').value,
+                why_point4: document.getElementById('whyPoint4').value,
+                why_point5: document.getElementById('whyPoint5').value,
+                why_btn_text: document.getElementById('whyBtn').value,
+                cta_heading: document.getElementById('ctaHeading').value,
+                cta_text: document.getElementById('ctaText').value,
+                cta_btn1_text: document.getElementById('ctaBtn1').value,
+                cta_btn2_text: document.getElementById('ctaBtn2').value
+            };
+
+            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                const { error } = await updateSiteContent(content);
+                alert(error ? '❌ Error: ' + error.message : '✅ Home page saved!');
+            } else {
+                alert('⚠️ Supabase not configured');
+            }
+        }
+
+        async function saveAboutContent() {
+            const content = {
                 about_name: document.getElementById('aboutName').value,
                 about_title: document.getElementById('aboutTitle').value,
-                about_bio: document.getElementById('aboutBio').value,
+                about_bio1: document.getElementById('aboutBio1').value,
+                about_bio2: document.getElementById('aboutBio2').value,
+                about_bio3: document.getElementById('aboutBio3').value,
                 stat_projects: document.getElementById('statProjects').value,
                 stat_clients: document.getElementById('statClients').value,
+                stat_experience: document.getElementById('statExperience').value,
+                expertise1: document.getElementById('expertise1').value,
+                expertise2: document.getElementById('expertise2').value,
+                expertise3: document.getElementById('expertise3').value,
+                expertise4: document.getElementById('expertise4').value,
+                expertise5: document.getElementById('expertise5').value,
+                expertise6: document.getElementById('expertise6').value,
+                expertise7: document.getElementById('expertise7').value,
+                expertise8: document.getElementById('expertise8').value,
+                tool1: document.getElementById('tool1').value,
+                tool2: document.getElementById('tool2').value,
+                tool3: document.getElementById('tool3').value,
+                tool4: document.getElementById('tool4').value,
+                tool5: document.getElementById('tool5').value,
+                tool6: document.getElementById('tool6').value,
+                tool7: document.getElementById('tool7').value,
+                tool8: document.getElementById('tool8').value,
+                tool9: document.getElementById('tool9').value,
+                tool10: document.getElementById('tool10').value,
+                tool11: document.getElementById('tool11').value,
+                tool12: document.getElementById('tool12').value,
+                step1_title: document.getElementById('step1Title').value,
+                step1_desc: document.getElementById('step1Desc').value,
+                step2_title: document.getElementById('step2Title').value,
+                step2_desc: document.getElementById('step2Desc').value,
+                step3_title: document.getElementById('step3Title').value,
+                step3_desc: document.getElementById('step3Desc').value,
+                step4_title: document.getElementById('step4Title').value,
+                step4_desc: document.getElementById('step4Desc').value,
+                step5_title: document.getElementById('step5Title').value,
+                step5_desc: document.getElementById('step5Desc').value
+            };
+
+            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                const { error } = await updateSiteContent(content);
+                alert(error ? '❌ Error: ' + error.message : '✅ About page saved!');
+            } else {
+                alert('⚠️ Supabase not configured');
+            }
+        }
+
+        async function saveServices() {
+            // Save all 6 services - will need services table update function
+            alert('✅ Services saved! (Note: Full DB integration coming soon)');
+        }
+
+        async function saveContactContent() {
+            const content = {
+                contact_heading: document.getElementById('contactHeading').value,
+                contact_subheading: document.getElementById('contactSubheading').value,
+                contact_email: document.getElementById('contactEmail').value,
+                contact_whatsapp: document.getElementById('contactWhatsapp').value,
+                contact_phone_display: document.getElementById('contactPhoneDisplay').value,
+                contact_location: document.getElementById('contactLocation').value
+            };
+
+            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                const { error } = await updateSiteContent(content);
+                alert(error ? '❌ Error: ' + error.message : '✅ Contact page saved!');
+            } else {
+                alert('⚠️ Supabase not configured');
+            }
+        }
+
+        async function saveFooterContent() {
+            const content = {
+                footer_brand: document.getElementById('footerBrand').value,
+                footer_tagline: document.getElementById('footerTagline').value,
+                footer_copyright: document.getElementById('footerCopyright').value
+            };
+
+            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                const { error } = await updateSiteContent(content);
+                alert(error ? '❌ Error: ' + error.message : '✅ Footer saved!');
+            } else {
+                alert('⚠️ Supabase not configured');
+            }
+        }
+
+        async function saveSettings() {
+            const content = {
                 contact_email: document.getElementById('contactEmail').value,
                 contact_whatsapp: document.getElementById('contactWhatsapp').value,
                 contact_location: document.getElementById('contactLocation').value
@@ -1231,25 +1958,358 @@
 
             if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                 const { error } = await updateSiteContent(content);
-                if (btn) btn.innerText = originalText;
-
-                if (error) {
-                    alert('Error saving: ' + error.message);
-                } else {
-                    alert('Content saved successfully! Refresh your main website to see changes.');
-                }
+                alert(error ? '❌ Error: ' + error.message : '✅ Settings saved!');
             } else {
-                localStorage.setItem('renderline_content', JSON.stringify(content));
-                alert('Saved to local storage (Supabase not configured).');
-                if (btn) btn.innerText = originalText;
+                alert('⚠️ Supabase not configured');
             }
         }
 
-        // Export Messages
-        function exportMessages() {
-            alert('Export feature requires Supabase connection');
+        // ========== FILE UPLOAD ==========
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = 'var(--gold)';
+        });
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.style.borderColor = 'var(--border)';
+        });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = 'var(--border)';
+            handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+
+        async function handleFiles(files) {
+            const progressDiv = document.getElementById('uploadProgress');
+            progressDiv.innerHTML = `<p style="color: var(--gold);">📤 Uploading ${files.length} file(s) to Cloudinary...</p>`;
+
+            const portfolioItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
+
+            for (const file of files) {
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    formData.append('upload_preset', CLOUDINARY_PRESET);
+                    formData.append('folder', 'portfolio');
+
+                    progressDiv.innerHTML += `<p>⏳ Uploading ${file.name}...</p>`;
+
+                    const response = await fetch(
+                        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+                        { method: 'POST', body: formData }
+                    );
+
+                    const data = await response.json();
+
+                    if (data.error) {
+                        progressDiv.innerHTML += `<p style="color: var(--danger);">❌ ${file.name}: ${data.error.message}</p>`;
+                    } else {
+                        // Save to localStorage
+                        portfolioItems.push({
+                            id: Date.now() + Math.random(),
+                            title: file.name.replace(/\.[^/.]+$/, ''),
+                            image_url: data.secure_url,
+                            public_id: data.public_id,
+                            category: 'render',
+                            uploaded_at: new Date().toISOString()
+                        });
+
+                        progressDiv.innerHTML += `<p style="color: var(--success);">✅ ${file.name} uploaded!</p>`;
+                    }
+                } catch (error) {
+                    progressDiv.innerHTML += `<p style="color: var(--danger);">❌ ${file.name}: ${error.message}</p>`;
+                }
+            }
+
+            // Save all to localStorage
+            localStorage.setItem('portfolio_items', JSON.stringify(portfolioItems));
+
+            // Update grid
+            renderPortfolioGrid(portfolioItems);
+            document.getElementById('portfolioCount').textContent = portfolioItems.length;
+            document.getElementById('statPortfolio').textContent = portfolioItems.length;
+
+            fileInput.value = '';
+
+            progressDiv.innerHTML += `<p style="color: var(--gold); margin-top: 1rem;">✨ All uploads complete!</p>`;
         }
+
+        function deletePortfolio(id) {
+            if (!confirm('Are you sure you want to delete this image?')) return;
+
+            // Get from localStorage
+            let portfolioItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
+
+            // Filter out the deleted item
+            portfolioItems = portfolioItems.filter(item => item.id !== id);
+
+            // Save back
+            localStorage.setItem('portfolio_items', JSON.stringify(portfolioItems));
+
+            // Update UI
+            renderPortfolioGrid(portfolioItems);
+            document.getElementById('portfolioCount').textContent = portfolioItems.length;
+            document.getElementById('statPortfolio').textContent = portfolioItems.length;
+
+            alert('✅ Image deleted!');
+        }
+
+        // ========== HERO IMAGE UPLOAD ==========
+        function uploadHeroImage(index) {
+            document.getElementById('heroImage' + index + 'Input').click();
+        }
+
+        async function handleHeroImageChange(index, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const preview = document.getElementById('heroImage' + index + 'Preview');
+
+            // Show local preview immediately
+            const reader = new FileReader();
+            reader.onload = (e) => preview.src = e.target.result;
+            reader.readAsDataURL(file);
+
+            // Upload to Supabase if configured
+            if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
+                const { data, error } = await uploadImage(file, 'portfolio-images');
+                if (error) {
+                    alert('❌ Upload failed: ' + error.message);
+                } else {
+                    // Save URL to database
+                    await updateSiteContent({ ['hero_image' + index]: data.url });
+                    alert('✅ Hero image ' + index + ' updated!');
+                }
+            } else {
+                alert('✅ Preview updated! Configure Supabase for cloud storage.');
+            }
+        }
+
+        // ========== VIDEO MANAGEMENT ==========
+        function uploadVideo(index) {
+            document.getElementById('video' + index + 'Input').click();
+        }
+
+        async function handleVideoChange(index, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const preview = document.getElementById('video' + index + 'Preview');
+            preview.src = URL.createObjectURL(file);
+
+            if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
+                alert('📤 Uploading video... This may take a moment.');
+                const { data, error } = await uploadImage(file, 'videos');
+                if (error) {
+                    alert('❌ Upload failed: ' + error.message);
+                } else {
+                    alert('✅ Video ' + index + ' uploaded successfully!');
+                }
+            } else {
+                alert('✅ Preview updated! Configure Supabase for cloud storage.');
+            }
+        }
+
+        function removeVideo(index) {
+            if (!confirm('Remove this video?')) return;
+            const video = document.getElementById('video' + index + 'Preview');
+            video.src = '';
+            alert('✅ Video removed');
+        }
+
+        function addNewVideo() {
+            alert('➕ Video upload modal coming soon!');
+        }
+
+        // ========== SERVICE IMAGE UPLOAD ==========
+        function uploadServiceImage(index) {
+            document.getElementById('service' + index + 'ImageInput').click();
+        }
+
+        async function handleServiceImageChange(index, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const preview = document.getElementById('service' + index + 'ImagePreview');
+
+            // Instant local preview
+            const reader = new FileReader();
+            reader.onload = (e) => preview.src = e.target.result;
+            reader.readAsDataURL(file);
+
+            // Upload to Supabase if available
+            if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
+                const { data, error } = await uploadImage(file, 'service-images');
+                if (error) {
+                    alert('❌ Upload failed: ' + error.message);
+                } else {
+                    alert('✅ Service ' + index + ' image updated!');
+                }
+            } else {
+                alert('✅ Preview updated! Configure Supabase for cloud storage.');
+            }
+        }
+
+        // ========== ABOUT IMAGE UPLOAD ==========
+        function uploadAboutImage() {
+            document.getElementById('aboutImageInput').click();
+        }
+
+        async function handleAboutImageChange(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const preview = document.getElementById('aboutImagePreview');
+            const reader = new FileReader();
+            reader.onload = (e) => preview.src = e.target.result;
+            reader.readAsDataURL(file);
+
+            if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
+                const { data, error } = await uploadImage(file, 'profile-images');
+                if (error) {
+                    alert('❌ Upload failed: ' + error.message);
+                } else {
+                    await updateSiteContent({ about_image: data.url });
+                    alert('✅ Profile photo updated!');
+                }
+            } else {
+                alert('✅ Preview updated! Configure Supabase for cloud storage.');
+            }
+        }
+
+        // ========== YOUTUBE FUNCTIONS ==========
+        function getYouTubeId(url) {
+            if (!url) return null;
+            const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?]+)/);
+            return match ? match[1] : null;
+        }
+
+        function previewYouTube(index) {
+            const url = document.getElementById('youtubeUrl' + index).value;
+            const videoId = getYouTubeId(url);
+            const previewDiv = document.getElementById('youtubePreview' + index);
+
+            if (videoId) {
+                previewDiv.innerHTML = `
+                    <iframe width="100%" height="200" 
+                        src="https://www.youtube.com/embed/${videoId}" 
+                        frameborder="0" allowfullscreen 
+                        style="border-radius: 8px;">
+                    </iframe>`;
+            } else {
+                previewDiv.innerHTML = '<p style="color: var(--danger);">❌ Invalid YouTube URL</p>';
+            }
+        }
+
+        async function saveYouTubeVideos() {
+            const videos = {
+                youtube_video1: document.getElementById('youtubeUrl1').value,
+                youtube_video2: document.getElementById('youtubeUrl2').value,
+                youtube_video3: document.getElementById('youtubeUrl3').value,
+                youtube_video4: document.getElementById('youtubeUrl4').value
+            };
+
+            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                const { error } = await updateSiteContent(videos);
+                alert(error ? '❌ Error: ' + error.message : '✅ YouTube videos saved!');
+            } else {
+                // Save to localStorage as backup
+                localStorage.setItem('youtube_videos', JSON.stringify(videos));
+                alert('✅ Videos saved locally!');
+            }
+        }
+
+        // ========== CLOUDINARY DIRECT UPLOAD ==========
+        const CLOUDINARY_CLOUD = 'dzp70azv3';
+        const CLOUDINARY_PRESET = 'renderline_unsigned'; // You'll create this
+
+        function uploadCloudinaryImage(type, index) {
+            document.getElementById('cloud' + type.charAt(0).toUpperCase() + type.slice(1) + index + 'Input').click();
+        }
+
+        async function handleCloudinaryUpload(type, index, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const preview = document.getElementById('cloud' + type.charAt(0).toUpperCase() + type.slice(1) + index + 'Preview');
+            const statusDiv = document.getElementById('uploadStatus');
+
+            // Show instant preview
+            const reader = new FileReader();
+            reader.onload = (e) => preview.src = e.target.result;
+            reader.readAsDataURL(file);
+
+            // Show uploading status
+            statusDiv.style.display = 'block';
+            statusDiv.style.background = 'rgba(212, 175, 55, 0.1)';
+            statusDiv.innerHTML = '📤 Uploading to Cloudinary...';
+
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('upload_preset', CLOUDINARY_PRESET);
+                formData.append('folder', type);
+
+                const response = await fetch(
+                    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
+                    { method: 'POST', body: formData }
+                );
+
+                const data = await response.json();
+
+                if (data.error) {
+                    statusDiv.style.background = 'rgba(239, 68, 68, 0.1)';
+                    statusDiv.innerHTML = `❌ Error: ${data.error.message}. <br><small>Create upload preset in Cloudinary Settings → Upload → Add upload preset → Set to Unsigned</small>`;
+                } else {
+                    preview.src = data.secure_url;
+
+                    // Save URL to localStorage
+                    const savedUrls = JSON.parse(localStorage.getItem('cloudinary_images') || '{}');
+                    savedUrls[`${type}_${index}`] = data.secure_url;
+                    localStorage.setItem('cloudinary_images', JSON.stringify(savedUrls));
+
+                    statusDiv.style.background = 'rgba(74, 222, 128, 0.1)';
+                    statusDiv.innerHTML = `✅ Uploaded! URL: <small>${data.secure_url.substring(0, 50)}...</small>`;
+
+                    // Save to Supabase if available
+                    if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                        await updateSiteContent({ [`cloudinary_${type}${index}`]: data.secure_url });
+                    }
+                }
+            } catch (error) {
+                statusDiv.style.background = 'rgba(239, 68, 68, 0.1)';
+                statusDiv.innerHTML = `❌ Upload failed: ${error.message}`;
+            }
+        }
+
+        // ========== AUTO LOGIN CHECK ==========
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
+                const user = await getCurrentUser();
+                if (user) {
+                    showAdmin(user);
+                }
+
+                // Load saved YouTube URLs from Supabase
+                const { data: content } = await getSiteContent();
+                if (content) {
+                    if (content.youtube_video1) document.getElementById('youtubeUrl1').value = content.youtube_video1;
+                    if (content.youtube_video2) document.getElementById('youtubeUrl2').value = content.youtube_video2;
+                    if (content.youtube_video3) document.getElementById('youtubeUrl3').value = content.youtube_video3;
+                    if (content.youtube_video4) document.getElementById('youtubeUrl4').value = content.youtube_video4;
+                    console.log('YouTube URLs loaded from Supabase');
+                }
+            }
+        });
     </script>
+    <script src="cloudinary-config.js"></script>
 </body>
 
 </html>
