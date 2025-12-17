@@ -2268,29 +2268,44 @@
                 );
 
                 const data = await response.json();
+                console.log('Cloudinary response:', data);
 
                 if (data.error) {
                     statusDiv.style.background = 'rgba(239, 68, 68, 0.1)';
                     statusDiv.innerHTML = `❌ Error: ${data.error.message}. <br><small>Create upload preset in Cloudinary Settings → Upload → Add upload preset → Set to Unsigned</small>`;
+                    alert('❌ Cloudinary error: ' + data.error.message);
                 } else {
                     preview.src = data.secure_url;
 
-                    // Save URL to localStorage
+                    // Save URL to localStorage immediately
                     const savedUrls = JSON.parse(localStorage.getItem('cloudinary_images') || '{}');
                     savedUrls[`${type}_${index}`] = data.secure_url;
                     localStorage.setItem('cloudinary_images', JSON.stringify(savedUrls));
+                    console.log('Saved to localStorage:', savedUrls);
 
                     statusDiv.style.background = 'rgba(74, 222, 128, 0.1)';
                     statusDiv.innerHTML = `✅ Uploaded! URL: <small>${data.secure_url.substring(0, 50)}...</small>`;
 
-                    // Save to Supabase if available
+                    // Save to Supabase
                     if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
-                        await updateSiteContent({ [`cloudinary_${type}${index}`]: data.secure_url });
+                        const dbColumn = `cloudinary_${type}${index}`;
+                        console.log('Saving to Supabase:', dbColumn, data.secure_url);
+                        const { error: dbError } = await updateSiteContent({ [dbColumn]: data.secure_url });
+                        if (dbError) {
+                            console.error('Supabase save error:', dbError);
+                            statusDiv.innerHTML += `<br><small style="color: orange;">⚠️ Cloud save failed: ${dbError.message}</small>`;
+                        } else {
+                            console.log('Saved to Supabase successfully');
+                            statusDiv.innerHTML += `<br><small style="color: lime;">✓ Saved to cloud database</small>`;
+                        }
                     }
+                    alert('✅ Image uploaded and saved!');
                 }
             } catch (error) {
+                console.error('Upload error:', error);
                 statusDiv.style.background = 'rgba(239, 68, 68, 0.1)';
                 statusDiv.innerHTML = `❌ Upload failed: ${error.message}`;
+                alert('❌ Upload failed: ' + error.message);
             }
         }
 

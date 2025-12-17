@@ -757,6 +757,7 @@ p {
     gap: 5px;
     cursor: pointer;
     padding: 0.5rem;
+    z-index: 1100;
 }
 
 .mobile-toggle span {
@@ -764,6 +765,49 @@ p {
     height: 2px;
     background: var(--text-white);
     transition: var(--transition);
+}
+
+/* Mobile Menu Styles - Always included */
+@media (max-width: 900px) {
+    .mobile-toggle {
+        display: flex !important;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 75%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transition: right 0.3s ease;
+        z-index: 1050;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links li {
+        margin: 0;
+    }
+
+    .nav-links a {
+        font-size: 1.1rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .nav-actions .btn {
+        display: none;
+    }
 }
 
 /* ============ HERO CAROUSEL ============ */
