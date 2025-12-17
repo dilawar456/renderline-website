@@ -247,8 +247,7 @@ async function updateSiteContent(updates) {
 
     const { data, error } = await supabase
         .from('site_content')
-        .update(updates)
-        .eq('id', 1)
+        .upsert({ id: 1, ...updates })
         .select();
 
     return { data, error };

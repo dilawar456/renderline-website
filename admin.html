@@ -2216,13 +2216,18 @@
                 youtube_video4: document.getElementById('youtubeUrl4').value
             };
 
+            // Always save local backup immediately
+            localStorage.setItem('youtube_videos', JSON.stringify(videos));
+
             if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                 const { error } = await updateSiteContent(videos);
-                alert(error ? '❌ Error: ' + error.message : '✅ YouTube videos saved!');
+                if (error) {
+                    alert('⚠️ Saved locally, but cloud sync failed: ' + error.message);
+                } else {
+                    alert('✅ YouTube videos saved (Cloud + Local)!');
+                }
             } else {
-                // Save to localStorage as backup
-                localStorage.setItem('youtube_videos', JSON.stringify(videos));
-                alert('✅ Videos saved locally!');
+                alert('✅ Videos saved locally (Cloud not configured)!');
             }
         }
 
