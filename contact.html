@@ -98,12 +98,15 @@
                         <div class="form-group">
                             <label for="project_type">Project Type</label>
                             <select id="project_type" name="project_type"
-                                style="width: 100%; padding: 1rem; background: #fff; border: 1px solid #ddd; font-family: var(--font-body);">
+                                style="width: 100%; padding: 1rem; background: var(--bg-card); color: var(--text-light); border: 1px solid var(--border-dark); font-family: var(--font-body); border-radius: 8px;">
                                 <option value="">Select a service...</option>
                                 <option value="Exterior Visualization">Exterior Visualization</option>
                                 <option value="Interior Visualization">Interior Visualization</option>
                                 <option value="3D Animation / Walkthrough">3D Animation / Walkthrough</option>
                                 <option value="Floor Plan Visualization">Floor Plan Visualization</option>
+                                <option value="AutoCAD Architecture Drawings">AutoCAD Architecture Drawings</option>
+                                <option value="Design & Construction Consultation">Design & Construction Consultation
+                                </option>
                                 <option value="Other">Other</option>
                             </select>
                         </div>
@@ -171,6 +174,26 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
     <script>
+        // Auto-fill project type from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const serviceParam = urlParams.get('service');
+
+        if (serviceParam) {
+            const projectTypeSelect = document.getElementById('project_type');
+            const serviceMap = {
+                'exterior': 'Exterior Visualization',
+                'interior': 'Interior Visualization',
+                'animation': '3D Animation / Walkthrough',
+                'floorplan': 'Floor Plan Visualization',
+                'autocad': 'AutoCAD Architecture Drawings',
+                'consultation': 'Design & Construction Consultation'
+            };
+
+            if (serviceMap[serviceParam]) {
+                projectTypeSelect.value = serviceMap[serviceParam];
+            }
+        }
+
         // Form submission handler with Supabase integration
         const form = document.getElementById('contactForm');
         const successMessage = document.getElementById('successMessage');

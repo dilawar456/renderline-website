@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navbar = document.querySelector('.navbar');
     const navLinks = document.querySelector('.nav-links');
     const mobileToggle = document.getElementById('mobileToggle');
+    const themeToggle = document.getElementById('themeToggle');
 
     // --- Navbar Scroll Effect ---
     function updateNavbar() {
@@ -21,6 +22,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileToggle) {
         mobileToggle.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+        });
+    }
+
+    // --- Dark/Light Theme Toggle ---
+    if (themeToggle) {
+        // Check saved theme
+        const savedTheme = localStorage.getItem('renderline-theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.textContent = '☾';
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            themeToggle.textContent = isLight ? '☾' : '☀';
+            localStorage.setItem('renderline-theme', isLight ? 'light' : 'dark');
         });
     }
 
