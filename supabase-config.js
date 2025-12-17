@@ -1,6 +1,6 @@
 // =============================================
 // SUPABASE CONFIGURATION
-// VOG WAVE Design Studio
+// RenderLine Architecture Visualization
 // =============================================
 
 // Supabase credentials

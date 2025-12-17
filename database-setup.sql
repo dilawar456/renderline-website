@@ -1,6 +1,6 @@
 -- =============================================
 -- SUPABASE DATABASE SETUP
--- VOG WAVE Design Studio
+-- RenderLine Architecture Visualization
 -- =============================================
 -- Run this SQL in your Supabase SQL Editor:
 -- https://supabase.com/dashboard/project/YOUR_PROJECT/sql
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS site_content (
     stat_clients TEXT DEFAULT '50+',
     stat_experience TEXT DEFAULT '5+',
     contact_email TEXT DEFAULT 'inforenderline@gmail.com',
-    contact_whatsapp TEXT DEFAULT '923104544040',
+    contact_whatsapp TEXT DEFAULT '923114544040',
     contact_location TEXT DEFAULT 'Lahore, Pakistan',
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
@@ -34,7 +34,7 @@ VALUES (1,
         'Welcome to RenderLine – where architectural dreams transform into breathtaking visual realities.',
         'assets/images/dilawar-ali.jpg',
         'inforenderline@gmail.com',
-        '923104544040',
+        '923114544040',
         'Lahore, Pakistan'
 ) 
 ON CONFLICT (id) DO UPDATE SET

@@ -773,7 +773,7 @@
                     <div class="form-row" style="margin-top: 1rem;">
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" id="aboutName" placeholder="Ali Hamza">
+                            <input type="text" id="aboutName" placeholder="Dilawar Ali">
                         </div>
                         <div class="form-group">
                             <label>Title</label>
@@ -1239,7 +1239,7 @@
                     alert('Content saved successfully! Refresh your main website to see changes.');
                 }
             } else {
-                localStorage.setItem('vogwave_content', JSON.stringify(content));
+                localStorage.setItem('renderline_content', JSON.stringify(content));
                 alert('Saved to local storage (Supabase not configured).');
                 if (btn) btn.innerText = originalText;
             }
