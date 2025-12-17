@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | RenderLine</title>
+    <title>Portfolio | RenderLine - Architectural Visualization</title>
+    <meta name="description"
+        content="View our portfolio of 70+ photorealistic architectural renders including exterior, interior, and 3D walkthrough animations.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -16,12 +18,13 @@
         .portfolio-hero {
             padding: calc(var(--header-height) + 4rem) 0 3rem;
             text-align: center;
-            background: linear-gradient(180deg, var(--bg-dark), var(--bg-card));
+            background: var(--bg-card);
         }
 
         .portfolio-hero h1 {
             font-size: clamp(2.5rem, 5vw, 3.5rem);
             margin-bottom: 1rem;
+            color: var(--primary);
         }
 
         .portfolio-hero p {
@@ -45,143 +48,154 @@
             text-transform: uppercase;
             letter-spacing: 0.1em;
             transition: var(--transition);
-            border-radius: 50px;
+            border-radius: 4px;
             cursor: pointer;
         }
 
         .filter-btn:hover,
         .filter-btn.active {
-            background: var(--gradient-primary);
-            border-color: transparent;
-            color: #fff;
-        }
-
-        /* Portfolio Grid - CLEAN NO TEXT */
-        .portfolio-full-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding: 0;
-        }
-
-        .portfolio-full-grid img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            border-radius: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 2px solid transparent;
-        }
-
-        .portfolio-full-grid img:hover {
-            transform: scale(1.03);
+            background: var(--primary);
             border-color: var(--primary);
-            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.25);
+            color: #000;
+        }
+
+        /* Clean Portfolio Grid - NO TEXT */
+        .portfolio-grid-section {
+            background: var(--bg-dark);
+            padding: 2rem;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: var(--transition);
+            display: block;
+        }
+
+        .portfolio-item:hover img {
+            transform: scale(1.05);
         }
 
         /* Video Section */
         .video-section {
-            background: var(--bg-dark);
+            background: var(--bg-card);
+            padding: 4rem 0;
         }
 
         .video-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(450px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
         }
 
         .video-card {
-            background: var(--bg-card);
+            background: var(--bg-dark);
             border: 1px solid var(--border-dark);
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
             transition: var(--transition);
+            cursor: pointer;
         }
 
         .video-card:hover {
             border-color: var(--primary);
             transform: translateY(-5px);
-            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.15);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
         }
 
-        .video-card video {
+        .video-card .video-thumb {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .video-card .video-thumb img {
             width: 100%;
-            height: 280px;
+            height: 100%;
             object-fit: cover;
-            background: #000;
+        }
+
+        .video-card .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .video-card:hover .play-icon {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .video-card .play-icon::after {
+            content: '';
+            border-left: 16px solid #000;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            margin-left: 4px;
         }
 
         .video-card .video-info {
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         .video-card h4 {
             color: #fff;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
         }
 
         .video-card p {
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             margin: 0;
         }
 
-        @media (max-width: 1200px) {
-            .portfolio-full-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        @media (max-width: 800px) {
-            .portfolio-full-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-
-            .portfolio-full-grid img {
-                height: 200px;
-            }
-
-            .video-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 500px) {
-            .portfolio-full-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .portfolio-full-grid img {
-                height: 250px;
-            }
-        }
-
-        /* Custom Lightbox with Swipe Navigation */
-        .custom-lightbox {
+        /* Image Lightbox */
+        .lightbox {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.97);
-            z-index: 9999;
+            z-index: 10000;
             display: none;
             align-items: center;
             justify-content: center;
         }
 
-        .custom-lightbox.active {
+        .lightbox.active {
             display: flex;
         }
 
-        .custom-lightbox img {
+        .lightbox img {
             max-width: 90%;
             max-height: 85%;
             object-fit: contain;
             border: 2px solid var(--primary);
-            box-shadow: 0 0 80px rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
         }
 
         .lightbox-close {
@@ -191,8 +205,6 @@
             font-size: 3rem;
             color: #fff;
             cursor: pointer;
-            z-index: 10001;
-            transition: color 0.3s;
         }
 
         .lightbox-close:hover {
@@ -203,19 +215,16 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: #fff;
             cursor: pointer;
             padding: 1rem;
             background: rgba(0, 0, 0, 0.5);
             border-radius: 4px;
-            transition: 0.3s;
-            user-select: none;
-            z-index: 10001;
         }
 
         .lightbox-nav:hover {
-            background: var(--gradient-primary);
+            background: var(--primary);
             color: #000;
         }
 
@@ -233,10 +242,72 @@
             left: 50%;
             transform: translateX(-50%);
             color: #fff;
-            font-size: 1rem;
+            font-size: 0.9rem;
             background: rgba(0, 0, 0, 0.7);
-            padding: 0.5rem 1.5rem;
+            padding: 0.5rem 1.25rem;
             border-radius: 20px;
+        }
+
+        /* Video Lightbox */
+        .video-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.97);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-lightbox.active {
+            display: flex;
+        }
+
+        .video-lightbox video {
+            max-width: 90%;
+            max-height: 85%;
+            border-radius: 8px;
+        }
+
+        .video-lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3rem;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .video-lightbox-close:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 800px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+
+            .portfolio-item img {
+                height: 160px;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-item img {
+                height: 220px;
+            }
         }
     </style>
 </head>
@@ -257,7 +328,6 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle">☀</button>
                 <a href="contact.html" class="btn btn-primary">Let's Talk</a>
             </div>
             <div class="mobile-toggle" id="mobileToggle">
@@ -269,7 +339,7 @@
     <!-- Hero -->
     <section class="portfolio-hero">
         <div class="container">
-            <h1 class="text-gold">Our Portfolio</h1>
+            <h1>Our Portfolio</h1>
             <p>A complete collection of 70+ high-end architectural visualizations and walkthrough animations.</p>
             <div class="filter-buttons">
                 <button class="filter-btn active" data-filter="all">All</button>
@@ -281,57 +351,60 @@
         </div>
     </section>
 
-    <!-- Portfolio Grid -->
-    <section class="portfolio-full-grid" id="portfolioGrid">
-        <!-- Dynamic content loaded via JS -->
+    <!-- Portfolio Grid - CLEAN NO TEXT -->
+    <section class="portfolio-grid-section" id="portfolioSection">
+        <div class="portfolio-grid" id="portfolioGrid">
+            <!-- Dynamic content loaded via JS -->
+        </div>
     </section>
 
     <!-- Videos Section -->
-    <section class="video-section section-padding">
+    <section class="video-section" id="videoSection" style="display: none;">
         <div class="container">
             <h2 class="text-center">3D Walkthroughs & Animations</h2>
             <p class="text-center" style="max-width: 500px; margin: 0 auto 3rem;">Cinematic architectural animations for
                 real estate marketing.</p>
 
             <div class="video-grid">
-                <!-- Video 1 -->
-                <div class="video-card">
-                    <video controls poster="assets/images/render12.jpg">
-                        <source src="assets/videos/1.mp4" type="video/mp4">
-                        Your browser does not support video.
-                    </video>
+                <div class="video-card" data-video="assets/videos/1.mp4">
+                    <div class="video-thumb">
+                        <img src="assets/images/render12.jpg" alt="Animation 1">
+                        <div class="play-icon"></div>
+                    </div>
                     <div class="video-info">
                         <h4>House Animation 1</h4>
                         <p>Exterior walkthrough animation</p>
                     </div>
                 </div>
 
-                <!-- Video 2 -->
-                <div class="video-card">
-                    <video controls poster="assets/images/render21.jpg">
-                        <source src="assets/videos/2.mp4" type="video/mp4">
-                        Your browser does not support video.
-                    </video>
+                <div class="video-card" data-video="assets/videos/2.mp4">
+                    <div class="video-thumb">
+                        <img src="assets/images/render21.jpg" alt="Animation 2">
+                        <div class="play-icon"></div>
+                    </div>
                     <div class="video-info">
                         <h4>House Animation 2</h4>
                         <p>Interior walkthrough animation</p>
                     </div>
                 </div>
-
-                <!-- Ad Video - Will be added when you put ad.mp4 in videos folder -->
-                <div class="video-card" id="adVideo" style="display: none;">
-                    <video controls poster="assets/images/render40.jpg">
-                        <source src="assets/videos/ad.mp4" type="video/mp4">
-                        Your browser does not support video.
-                    </video>
-                    <div class="video-info">
-                        <h4>RenderLine Ad</h4>
-                        <p>Promotional video</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <span class="lightbox-nav lightbox-prev" id="lightboxPrev">&#10094;</span>
+        <img src="" alt="Portfolio Image" id="lightboxImg">
+        <span class="lightbox-nav lightbox-next" id="lightboxNext">&#10095;</span>
+        <div class="lightbox-counter"><span id="currentIndex">1</span> / <span id="totalCount">70</span></div>
+    </div>
+
+    <!-- Video Lightbox -->
+    <div class="video-lightbox" id="videoLightbox">
+        <span class="video-lightbox-close" id="videoLightboxClose">&times;</span>
+        <video id="videoPlayer" controls></video>
+    </div>
 
     <!-- Compact Footer -->
     <footer class="footer">
@@ -366,115 +439,61 @@
         </svg>
     </a>
 
-    <!-- Custom Lightbox with Swipe Navigation -->
-    <div class="custom-lightbox" id="lightbox">
-        <span class="lightbox-close" id="lightboxClose">&times;</span>
-        <span class="lightbox-nav lightbox-prev" id="lightboxPrev">&#10094;</span>
-        <img src="" alt="Portfolio Image" id="lightboxImg">
-        <span class="lightbox-nav lightbox-next" id="lightboxNext">&#10095;</span>
-        <div class="lightbox-counter"><span id="currentIndex">1</span> / <span id="totalCount">70</span></div>
-    </div>
-
     <script src="script.js"></script>
     <script>
-        // =============================================
-        // DYNAMIC PORTFOLIO - ALL 70 IMAGES
-        // =============================================
-
-        // All image files in assets/images folder
+        // All portfolio images
         const allImages = [
-            // JPG Renders (render1 to render40)
-            ...Array.from({ length: 40 }, (_, i) => ({ src: `assets/images/render${i + 1}.jpg`, ext: 'jpg' })),
-
-            // PNG Renders (render_png1 to render_png19)
-            ...Array.from({ length: 19 }, (_, i) => ({ src: `assets/images/render_png${i + 1}.png`, ext: 'png' })),
-
-            // Scene images
-            { src: 'assets/images/Scene 10.png', ext: 'png' },
-            { src: 'assets/images/Scene 14.png', ext: 'png' },
-            { src: 'assets/images/Scene 16.png', ext: 'png' },
-            { src: 'assets/images/Scene 17.png', ext: 'png' },
-            { src: 'assets/images/Scene 18.png', ext: 'png' },
-            { src: 'assets/images/Scene 19.png', ext: 'png' },
-            { src: 'assets/images/Scene 20.png', ext: 'png' },
-            { src: 'assets/images/Scene 21.png', ext: 'png' },
-
-            // render41 and 1.jpg
-            { src: 'assets/images/render41.png', ext: 'png' },
-            { src: 'assets/images/1.jpg', ext: 'jpg' },
+            ...Array.from({ length: 40 }, (_, i) => `assets/images/render${i + 1}.jpg`),
+            ...Array.from({ length: 19 }, (_, i) => `assets/images/render_png${i + 1}.png`),
+            'assets/images/Scene 10.png', 'assets/images/Scene 14.png', 'assets/images/Scene 16.png',
+            'assets/images/Scene 17.png', 'assets/images/Scene 18.png', 'assets/images/Scene 19.png',
+            'assets/images/Scene 20.png', 'assets/images/Scene 21.png',
+            'assets/images/render41.png', 'assets/images/1.jpg'
         ];
 
-        // Assign categories
         const categories = ['exterior', 'interior', 'commercial'];
-
-        // Render portfolio grid
         const grid = document.getElementById('portfolioGrid');
+        const portfolioSection = document.getElementById('portfolioSection');
+        const videoSection = document.getElementById('videoSection');
 
-        allImages.forEach((img, index) => {
+        // Render portfolio grid - CLEAN, NO TEXT
+        allImages.forEach((src, index) => {
             const category = categories[index % 3];
-            const card = document.createElement('div');
-            card.className = 'portfolio-card';
-            card.dataset.category = category;
-            card.innerHTML = `
-                <img src="${img.src}" alt="Render ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">
-                <div class="overlay">
-                    <h4>Project ${index + 1}</h4>
-                    <span>${category.charAt(0).toUpperCase() + category.slice(1)}</span>
-                </div>
-            `;
-            grid.appendChild(card);
+            const item = document.createElement('div');
+            item.className = 'portfolio-item';
+            item.dataset.category = category;
+            item.innerHTML = `<img src="${src}" alt="Project ${index + 1}" loading="lazy" onerror="this.parentElement.remove()">`;
+            grid.appendChild(item);
         });
 
         // Filter functionality
         const filterBtns = document.querySelectorAll('.filter-btn');
-        const videoSection = document.querySelector('.video-section');
-        const portfolioGrid = document.getElementById('portfolioGrid');
-
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 const filter = btn.dataset.filter;
 
-                // If Animation filter is clicked
                 if (filter === 'animation') {
-                    // Hide images grid, show videos
-                    portfolioGrid.style.display = 'none';
+                    portfolioSection.style.display = 'none';
                     videoSection.style.display = 'block';
-                    // Scroll to video section
                     videoSection.scrollIntoView({ behavior: 'smooth' });
                 } else {
-                    // Show images grid, keep videos visible
-                    portfolioGrid.style.display = 'grid';
+                    portfolioSection.style.display = 'block';
+                    videoSection.style.display = 'none';
 
-                    document.querySelectorAll('.portfolio-card').forEach(card => {
-                        if (filter === 'all' || card.dataset.category === filter) {
-                            card.style.display = 'block';
+                    document.querySelectorAll('.portfolio-item').forEach(item => {
+                        if (filter === 'all' || item.dataset.category === filter) {
+                            item.style.display = 'block';
                         } else {
-                            card.style.display = 'none';
+                            item.style.display = 'none';
                         }
                     });
                 }
             });
         });
 
-        // Check for ad video
-        const adVideo = document.getElementById('adVideo');
-        const adVideoSrc = adVideo.querySelector('source');
-
-        // Try to load ad video - if exists, show the card
-        fetch('assets/videos/ad.mp4', { method: 'HEAD' })
-            .then(response => {
-                if (response.ok) {
-                    adVideo.style.display = 'block';
-                }
-            })
-            .catch(() => { });
-
-        // =============================================
-        // LIGHTBOX WITH SWIPE NAVIGATION
-        // =============================================
-
+        // Image Lightbox
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightboxImg');
         const lightboxClose = document.getElementById('lightboxClose');
@@ -483,25 +502,21 @@
         const currentIndexEl = document.getElementById('currentIndex');
         const totalCountEl = document.getElementById('totalCount');
 
-        let allPortfolioImages = [];
-        let currentImageIndex = 0;
+        let portfolioImages = [];
+        let currentIndex = 0;
 
-        // Initialize lightbox after images are loaded
         setTimeout(() => {
-            allPortfolioImages = Array.from(document.querySelectorAll('.portfolio-full-grid img'));
-            totalCountEl.textContent = allPortfolioImages.length;
+            portfolioImages = Array.from(document.querySelectorAll('.portfolio-item img'));
+            totalCountEl.textContent = portfolioImages.length;
 
-            allPortfolioImages.forEach((img, index) => {
-                img.style.cursor = 'pointer';
-                img.addEventListener('click', () => {
-                    openLightbox(index);
-                });
+            portfolioImages.forEach((img, index) => {
+                img.addEventListener('click', () => openLightbox(index));
             });
-        }, 200);
+        }, 300);
 
         function openLightbox(index) {
-            currentImageIndex = index;
-            updateLightboxImage();
+            currentIndex = index;
+            updateLightbox();
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -511,122 +526,53 @@
             document.body.style.overflow = '';
         }
 
-        function updateLightboxImage() {
-            if (allPortfolioImages[currentImageIndex]) {
-                lightboxImg.src = allPortfolioImages[currentImageIndex].src;
-                currentIndexEl.textContent = currentImageIndex + 1;
+        function updateLightbox() {
+            if (portfolioImages[currentIndex]) {
+                lightboxImg.src = portfolioImages[currentIndex].src;
+                currentIndexEl.textContent = currentIndex + 1;
             }
         }
 
-        function nextImage() {
-            currentImageIndex = (currentImageIndex + 1) % allPortfolioImages.length;
-            updateLightboxImage();
-        }
-
-        function prevImage() {
-            currentImageIndex = (currentImageIndex - 1 + allPortfolioImages.length) % allPortfolioImages.length;
-            updateLightboxImage();
-        }
-
-        // Event Listeners
         lightboxClose.addEventListener('click', closeLightbox);
-        lightboxNext.addEventListener('click', nextImage);
-        lightboxPrev.addEventListener('click', prevImage);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        lightboxNext.addEventListener('click', () => { currentIndex = (currentIndex + 1) % portfolioImages.length; updateLightbox(); });
+        lightboxPrev.addEventListener('click', () => { currentIndex = (currentIndex - 1 + portfolioImages.length) % portfolioImages.length; updateLightbox(); });
 
-        // Close on background click
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) closeLightbox();
-        });
-
-        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (!lightbox.classList.contains('active')) return;
-
             if (e.key === 'Escape') closeLightbox();
-            if (e.key === 'ArrowRight') nextImage();
-            if (e.key === 'ArrowLeft') prevImage();
+            if (e.key === 'ArrowRight') { currentIndex = (currentIndex + 1) % portfolioImages.length; updateLightbox(); }
+            if (e.key === 'ArrowLeft') { currentIndex = (currentIndex - 1 + portfolioImages.length) % portfolioImages.length; updateLightbox(); }
         });
 
-        // Swipe support for mobile
-        let touchStartX = 0;
-        let touchEndX = 0;
+        // Video Lightbox
+        const videoLightbox = document.getElementById('videoLightbox');
+        const videoPlayer = document.getElementById('videoPlayer');
+        const videoLightboxClose = document.getElementById('videoLightboxClose');
 
-        lightbox.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
+        document.querySelectorAll('.video-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const videoSrc = card.dataset.video;
+                videoPlayer.src = videoSrc;
+                videoLightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                videoPlayer.play();
+            });
         });
 
-        lightbox.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+        videoLightboxClose.addEventListener('click', () => {
+            videoLightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            videoPlayer.pause();
+            videoPlayer.src = '';
         });
 
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0) {
-                    nextImage(); // Swipe left = next
-                } else {
-                    prevImage(); // Swipe right = prev
-                }
-            }
-        }
-    </script>
-    <!-- Supabase Integration -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-config.js"></script>
-    <script>
-        // Supabase Dynamic Portfolio Loading
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Only run if Supabase is actually configured
-            if (typeof getPortfolioItems === 'function' && typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
-                const grid = document.querySelector('.portfolio-full-grid');
-                if (!grid) return;
-
-                // Show loading indicator
-                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #888; padding: 2rem;">Loading projects from database...</div>';
-
-                const { data: items, error } = await getPortfolioItems();
-
-                if (items && items.length > 0) {
-                    grid.innerHTML = ''; // Clear loading
-
-                    items.forEach(item => {
-                        const div = document.createElement('div');
-                        div.className = 'portfolio-card';
-                        div.dataset.category = item.category || 'exterior';
-                        div.style.display = 'block'; // Ensure visible initially
-                        div.innerHTML = `
-                             <img src="${item.image_url}" alt="${item.title}" loading="lazy">
-                             <div class="overlay">
-                                 <h3>${item.title}</h3>
-                                 <span>${item.category}</span>
-                             </div>
-                         `;
-                        grid.appendChild(div);
-                    });
-
-                    // Re-initialize lightbox since we replaced the DOM elements
-                    setTimeout(() => {
-                        // Re-bind lightbox
-                        allPortfolioImages = Array.from(document.querySelectorAll('.portfolio-full-grid img'));
-                        if (document.getElementById('totalCount')) document.getElementById('totalCount').textContent = allPortfolioImages.length;
-
-                        allPortfolioImages.forEach((img, index) => {
-                            img.style.cursor = 'pointer';
-                            img.onclick = () => openLightbox(index);
-                        });
-
-                        // Re-apply current filter
-                        const activeBtn = document.querySelector('.filter-btn.active');
-                        if (activeBtn) activeBtn.click();
-
-                    }, 500);
-                } else {
-                    // If no items in DB, maybe fallback or show empty
-                    if (!error) grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #888; padding: 2rem;">No projects found. Add them via Admin Panel.</div>';
-                }
+        videoLightbox.addEventListener('click', (e) => {
+            if (e.target === videoLightbox) {
+                videoLightbox.classList.remove('active');
+                document.body.style.overflow = '';
+                videoPlayer.pause();
+                videoPlayer.src = '';
             }
         });
     </script>

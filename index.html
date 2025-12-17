@@ -14,6 +14,182 @@
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Hero Text Animation */
+        .hero-content h1 {
+            overflow: hidden;
+        }
+
+        .hero-line-1,
+        .hero-line-2,
+        .hero-line-3 {
+            display: block;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .hero-line-1.show {
+            animation: slideUp 0.8s ease forwards;
+        }
+
+        .hero-line-2.show {
+            animation: slideUp 0.8s ease 0.5s forwards;
+        }
+
+        .hero-line-3.show {
+            animation: slideUp 0.8s ease 1s forwards;
+            color: var(--primary);
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* About Section Redesign */
+        .about-section {
+            background: var(--bg-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .about-image::after {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .about-text .subtitle {
+            color: var(--primary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-text h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 1.5rem 0;
+            border-top: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Why Section - Logo on Right */
+        .why-section {
+            background: var(--bg-dark);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .why-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .why-logo-glow {
+            width: 300px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.5));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 60px rgba(212, 175, 55, 0.8));
+            }
+        }
+
+        @media (max-width: 900px) {
+
+            .about-grid,
+            .why-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .about-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .why-logo-container {
+                order: -1;
+            }
+
+            .why-logo-glow {
+                width: 200px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -32,7 +208,6 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle">☀</button>
                 <a href="contact.html" class="btn btn-primary">Let's Talk</a>
             </div>
             <div class="mobile-toggle" id="mobileToggle">
@@ -43,7 +218,6 @@
 
     <!-- Hero Section with Carousel -->
     <header class="hero">
-        <!-- Background Carousel -->
         <div class="hero-carousel">
             <div class="hero-slide active">
                 <img src="assets/images/render40.jpg" alt="Architectural Render">
@@ -62,14 +236,16 @@
             </div>
         </div>
 
-        <!-- Overlay -->
         <div class="hero-overlay"></div>
 
-        <!-- Content -->
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">✦ Premium 3D Visualization</div>
-                <h1>High-Quality Architectural Visualization<br><span>That Helps Architects Win Clients</span></h1>
+                <h1>
+                    <span class="hero-line-1">High-Quality Architectural</span>
+                    <span class="hero-line-2">Visualization that</span>
+                    <span class="hero-line-3">Helps Architects Win Clients</span>
+                </h1>
                 <p>We transform your architectural concepts into stunning photorealistic renders that captivate your
                     clients and close deals faster.</p>
                 <div class="hero-buttons">
@@ -79,7 +255,6 @@
             </div>
         </div>
 
-        <!-- Carousel Indicators -->
         <div class="hero-indicators">
             <button class="hero-dot active" data-slide="0"></button>
             <button class="hero-dot" data-slide="1"></button>
@@ -89,35 +264,34 @@
         </div>
     </header>
 
-    <!-- About Section -->
-    <section class="intro-section section-padding">
+    <!-- About Section - Redesigned -->
+    <section class="about-section section-padding">
         <div class="container">
-            <div class="intro-grid">
-                <div class="intro-text">
-                    <p class="subtitle">About the Studio</p>
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="assets/images/render40.jpg" alt="RenderLine Studio">
+                </div>
+                <div class="about-text">
+                    <p class="subtitle">About RenderLine</p>
                     <h2>Dilawar Ali</h2>
                     <p>At <strong>RenderLine</strong>, I specialize in bringing architectural concepts to life through
                         photorealistic visualization. With years of industry experience, I deliver renders that
                         captivate clients and help architects close deals faster.</p>
-                    <a href="about.html" class="btn" style="margin-top: 1rem;">Learn More About Me</a>
-                </div>
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <div class="icon">⚡</div>
-                        <h4>Fast 48-72 Hour Delivery</h4>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <h3>50+</h3>
+                            <p>Happy Clients</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>200+</h3>
+                            <p>Projects Done</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>5+</h3>
+                            <p>Years Experience</p>
+                        </div>
                     </div>
-                    <div class="feature-item">
-                        <div class="icon">✨</div>
-                        <h4>Photorealistic Quality</h4>
-                    </div>
-                    <div class="feature-item">
-                        <div class="icon">📐</div>
-                        <h4>Architect-First Approach</h4>
-                    </div>
-                    <div class="feature-item">
-                        <div class="icon">🔄</div>
-                        <h4>Unlimited Revisions</h4>
-                    </div>
+                    <a href="about.html" class="btn">Learn More About Me</a>
                 </div>
             </div>
         </div>
@@ -160,7 +334,7 @@
         </div>
     </section>
 
-    <!-- Portfolio Preview - CLEAN -->
+    <!-- Portfolio Preview -->
     <section class="section-padding" style="background: var(--bg-card);">
         <div class="container">
             <div class="text-center" style="margin-bottom: 2.5rem;">
@@ -191,15 +365,12 @@
         </div>
     </section>
 
-    <!-- Why Choose Us with Glowing Logo -->
+    <!-- Why Section - Logo on Right -->
     <section class="why-section section-padding">
         <div class="container">
             <div class="why-grid">
                 <div>
-                    <div class="why-header">
-                        <img src="assets/logo.png" alt="RenderLine" class="why-logo">
-                        <h2>Why RenderLine?</h2>
-                    </div>
+                    <h2>Why RenderLine?</h2>
                     <ul class="benefits-list">
                         <li><span>✔</span> Architect-first collaborative workflow</li>
                         <li><span>✔</span> Realistic lighting & material accuracy</li>
@@ -209,8 +380,8 @@
                     </ul>
                     <a href="contact.html" class="btn btn-primary" style="margin-top: 1.5rem;">Start Your Project</a>
                 </div>
-                <div class="why-image">
-                    <img src="assets/images/render40.jpg" alt="RenderLine Quality">
+                <div class="why-logo-container">
+                    <img src="assets/logo.png" alt="RenderLine" class="why-logo-glow">
                 </div>
             </div>
         </div>
@@ -263,8 +434,8 @@
 
     <script src="script.js"></script>
 
-    <!-- Hero Carousel Script -->
     <script>
+        // Hero Carousel
         const slides = document.querySelectorAll('.hero-slide');
         const dots = document.querySelectorAll('.hero-dot');
         let currentSlide = 0;
@@ -283,9 +454,17 @@
             auto = setInterval(() => showSlide((currentSlide + 1) % slides.length), 5000);
         }));
 
+        // Navbar scroll
         window.addEventListener('scroll', () => {
             document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 50);
         });
+
+        // Hero text animation
+        setTimeout(() => {
+            document.querySelector('.hero-line-1').classList.add('show');
+            document.querySelector('.hero-line-2').classList.add('show');
+            document.querySelector('.hero-line-3').classList.add('show');
+        }, 500);
     </script>
 </body>
 
