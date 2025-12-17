@@ -166,32 +166,37 @@ function formatPhoneNumber(phone) {
 async function loadPortfolio() {
     let items = [];
 
-    // First check localStorage (Cloudinary uploads from admin panel)
-    const localItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
-
-    if (localItems.length > 0) {
-        console.log('CMS: Loading portfolio from Cloudinary (localStorage)');
-        items = localItems;
-    } else {
-        // Try Supabase
+    // Try Supabase FIRST (cloud database with Cloudinary URLs)
+    if (typeof getPortfolioItems === 'function' && typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
         const { data, error } = await getPortfolioItems();
-
         if (data && data.length > 0) {
+            console.log('CMS: Loading portfolio from Supabase (Cloudinary URLs)');
             items = data;
-        } else {
-            // Fallback Static Data
-            console.log('CMS: Loading fallback portfolio');
-            const fallbackImages = [
-                ...Array.from({ length: 40 }, (_, i) => `assets/images/render${i + 1}.jpg`),
-                'assets/images/Scene 10.png', 'assets/images/Scene 14.png', 'assets/images/Scene 16.png'
-            ];
-            items = fallbackImages.map((src, i) => ({
-                id: -i,
-                title: `Project ${i + 1}`,
-                category: ['exterior', 'interior', 'commercial'][i % 3],
-                image_url: src
-            }));
         }
+    }
+
+    // If Supabase has no items, check localStorage (backup)
+    if (items.length === 0) {
+        const localItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
+        if (localItems.length > 0) {
+            console.log('CMS: Loading portfolio from localStorage');
+            items = localItems;
+        }
+    }
+
+    // If still no items, use fallback static images
+    if (items.length === 0) {
+        console.log('CMS: Loading fallback portfolio');
+        const fallbackImages = [
+            ...Array.from({ length: 40 }, (_, i) => `assets/images/render${i + 1}.jpg`),
+            'assets/images/Scene 10.png', 'assets/images/Scene 14.png', 'assets/images/Scene 16.png'
+        ];
+        items = fallbackImages.map((src, i) => ({
+            id: -i,
+            title: `Project ${i + 1}`,
+            category: ['exterior', 'interior', 'commercial'][i % 3],
+            image_url: src
+        }));
     }
 
     // Update Portfolio Page Grid

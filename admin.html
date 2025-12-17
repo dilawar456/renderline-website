@@ -1669,6 +1669,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-config.js"></script>
+    <script src="cloudinary-config.js"></script>
 
     <script>
         // ========== GLOBAL STATE ==========
@@ -1743,8 +1744,24 @@
 
         // ========== DATA LOADING ==========
         async function loadDashboardData() {
-            // Load Portfolio from localStorage (Cloudinary uploads)
-            const portfolioItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
+            let portfolioItems = [];
+
+            // Try to load Portfolio from Supabase first (Cloud storage)
+            if (typeof getPortfolioItems === 'function' && isSupabaseConfigured()) {
+                const { data: cloudItems, error } = await getPortfolioItems();
+                if (cloudItems && cloudItems.length > 0) {
+                    portfolioItems = cloudItems;
+                    console.log('Portfolio loaded from Supabase:', portfolioItems.length, 'items');
+                } else {
+                    // Fallback to localStorage
+                    portfolioItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
+                    console.log('Portfolio loaded from localStorage:', portfolioItems.length, 'items');
+                }
+            } else {
+                // Fallback to localStorage
+                portfolioItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
+            }
+
             document.getElementById('statPortfolio').textContent = portfolioItems.length;
             document.getElementById('portfolioCount').textContent = portfolioItems.length;
             renderPortfolioGrid(portfolioItems);
@@ -2010,25 +2027,44 @@
 
                     if (data.error) {
                         progressDiv.innerHTML += `<p style="color: var(--danger);">❌ ${file.name}: ${data.error.message}</p>`;
+                        progressDiv.innerHTML += `<p style="color: orange; font-size: 0.85rem;">⚠️ Make sure you created 'renderline_unsigned' upload preset in Cloudinary Dashboard → Settings → Upload → Add upload preset → Set to "Unsigned"</p>`;
                     } else {
-                        // Save to localStorage
-                        portfolioItems.push({
+                        const newItem = {
                             id: Date.now() + Math.random(),
                             title: file.name.replace(/\.[^/.]+$/, ''),
                             image_url: data.secure_url,
                             public_id: data.public_id,
                             category: 'render',
                             uploaded_at: new Date().toISOString()
-                        });
+                        };
 
-                        progressDiv.innerHTML += `<p style="color: var(--success);">✅ ${file.name} uploaded!</p>`;
+                        // Save to localStorage as backup
+                        portfolioItems.push(newItem);
+
+                        // Also save to Supabase database for cloud persistence
+                        if (typeof addPortfolioItem === 'function' && isSupabaseConfigured()) {
+                            const { error: dbError } = await addPortfolioItem({
+                                title: newItem.title,
+                                image_url: newItem.image_url,
+                                public_id: newItem.public_id,
+                                category: newItem.category
+                            });
+                            if (dbError) {
+                                console.error('Supabase save error:', dbError);
+                                progressDiv.innerHTML += `<p style="color: orange;">⚠️ ${file.name} uploaded to Cloudinary but cloud DB save failed</p>`;
+                            } else {
+                                progressDiv.innerHTML += `<p style="color: var(--success);">✅ ${file.name} uploaded to Cloudinary + saved to cloud DB!</p>`;
+                            }
+                        } else {
+                            progressDiv.innerHTML += `<p style="color: var(--success);">✅ ${file.name} uploaded to Cloudinary!</p>`;
+                        }
                     }
                 } catch (error) {
                     progressDiv.innerHTML += `<p style="color: var(--danger);">❌ ${file.name}: ${error.message}</p>`;
                 }
             }
 
-            // Save all to localStorage
+            // Save all to localStorage as backup
             localStorage.setItem('portfolio_items', JSON.stringify(portfolioItems));
 
             // Update grid
@@ -2038,7 +2074,7 @@
 
             fileInput.value = '';
 
-            progressDiv.innerHTML += `<p style="color: var(--gold); margin-top: 1rem;">✨ All uploads complete!</p>`;
+            progressDiv.innerHTML += `<p style="color: var(--gold); margin-top: 1rem;">✨ All uploads complete! Images saved to Cloudinary cloud storage.</p>`;
         }
 
         function deletePortfolio(id) {
@@ -2077,18 +2113,34 @@
             reader.onload = (e) => preview.src = e.target.result;
             reader.readAsDataURL(file);
 
-            // Upload to Supabase if configured
-            if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
-                const { data, error } = await uploadImage(file, 'portfolio-images');
+            // Upload to Cloudinary (primary)
+            if (typeof uploadToCloudinary === 'function') {
+                alert('📤 Uploading hero image to Cloudinary...');
+                const { data, error } = await uploadToCloudinary(file, 'hero');
                 if (error) {
-                    alert('❌ Upload failed: ' + error.message);
+                    alert('❌ Cloudinary upload failed: ' + error.message);
+                    return;
+                }
+
+                preview.src = data.url;
+
+                // Save URL to Supabase database
+                if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                    const { error: dbError } = await updateSiteContent({ ['hero_image' + index]: data.url });
+                    if (dbError) {
+                        alert('⚠️ Uploaded to Cloudinary but DB save failed: ' + dbError.message);
+                    } else {
+                        alert('✅ Hero image ' + index + ' uploaded to Cloudinary + saved to database!');
+                    }
                 } else {
-                    // Save URL to database
-                    await updateSiteContent({ ['hero_image' + index]: data.url });
-                    alert('✅ Hero image ' + index + ' updated!');
+                    // Save to localStorage as backup
+                    const heroImages = JSON.parse(localStorage.getItem('hero_images') || '{}');
+                    heroImages['hero_' + index] = data.url;
+                    localStorage.setItem('hero_images', JSON.stringify(heroImages));
+                    alert('✅ Hero image ' + index + ' uploaded to Cloudinary! (Saved locally)');
                 }
             } else {
-                alert('✅ Preview updated! Configure Supabase for cloud storage.');
+                alert('❌ Cloudinary not configured. Please check cloudinary-config.js');
             }
         }
 
@@ -2104,16 +2156,34 @@
             const preview = document.getElementById('video' + index + 'Preview');
             preview.src = URL.createObjectURL(file);
 
-            if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
-                alert('📤 Uploading video... This may take a moment.');
-                const { data, error } = await uploadImage(file, 'videos');
+            // Upload to Cloudinary
+            if (typeof uploadVideoToCloudinary === 'function') {
+                alert('📤 Uploading video to Cloudinary... This may take a moment for large files.');
+                const { data, error } = await uploadVideoToCloudinary(file, 'videos');
                 if (error) {
-                    alert('❌ Upload failed: ' + error.message);
+                    alert('❌ Cloudinary upload failed: ' + error.message);
+                    return;
+                }
+
+                preview.src = data.url;
+
+                // Save URL to Supabase database
+                if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                    const { error: dbError } = await updateSiteContent({ ['video_url' + index]: data.url });
+                    if (dbError) {
+                        alert('⚠️ Uploaded to Cloudinary but DB save failed: ' + dbError.message);
+                    } else {
+                        alert('✅ Video ' + index + ' uploaded to Cloudinary + saved to database!');
+                    }
                 } else {
-                    alert('✅ Video ' + index + ' uploaded successfully!');
+                    // Save to localStorage as backup
+                    const videos = JSON.parse(localStorage.getItem('cloudinary_videos') || '{}');
+                    videos['video_' + index] = data.url;
+                    localStorage.setItem('cloudinary_videos', JSON.stringify(videos));
+                    alert('✅ Video ' + index + ' uploaded to Cloudinary! (Saved locally)');
                 }
             } else {
-                alert('✅ Preview updated! Configure Supabase for cloud storage.');
+                alert('❌ Cloudinary video upload not available. Please check cloudinary-config.js');
             }
         }
 
@@ -2121,11 +2191,22 @@
             if (!confirm('Remove this video?')) return;
             const video = document.getElementById('video' + index + 'Preview');
             video.src = '';
+
+            // Remove from localStorage
+            const videos = JSON.parse(localStorage.getItem('cloudinary_videos') || '{}');
+            delete videos['video_' + index];
+            localStorage.setItem('cloudinary_videos', JSON.stringify(videos));
+
+            // Remove from database if configured
+            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                updateSiteContent({ ['video_url' + index]: null });
+            }
+
             alert('✅ Video removed');
         }
 
         function addNewVideo() {
-            alert('➕ Video upload modal coming soon!');
+            alert('➕ Use the upload slots above to add videos!');
         }
 
         // ========== SERVICE IMAGE UPLOAD ==========
@@ -2144,16 +2225,32 @@
             reader.onload = (e) => preview.src = e.target.result;
             reader.readAsDataURL(file);
 
-            // Upload to Supabase if available
-            if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
-                const { data, error } = await uploadImage(file, 'service-images');
+            // Upload to Cloudinary
+            if (typeof uploadToCloudinary === 'function') {
+                const { data, error } = await uploadToCloudinary(file, 'services');
                 if (error) {
-                    alert('❌ Upload failed: ' + error.message);
+                    alert('❌ Cloudinary upload failed: ' + error.message);
+                    return;
+                }
+
+                preview.src = data.url;
+
+                // Save to Supabase database
+                if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                    const { error: dbError } = await updateSiteContent({ ['service_image' + index]: data.url });
+                    if (dbError) {
+                        alert('⚠️ Uploaded to Cloudinary but DB save failed');
+                    } else {
+                        alert('✅ Service ' + index + ' image uploaded to Cloudinary + saved!');
+                    }
                 } else {
-                    alert('✅ Service ' + index + ' image updated!');
+                    const serviceImages = JSON.parse(localStorage.getItem('service_images') || '{}');
+                    serviceImages['service_' + index] = data.url;
+                    localStorage.setItem('service_images', JSON.stringify(serviceImages));
+                    alert('✅ Service ' + index + ' image uploaded to Cloudinary! (Saved locally)');
                 }
             } else {
-                alert('✅ Preview updated! Configure Supabase for cloud storage.');
+                alert('❌ Cloudinary not configured');
             }
         }
 
@@ -2171,16 +2268,30 @@
             reader.onload = (e) => preview.src = e.target.result;
             reader.readAsDataURL(file);
 
-            if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
-                const { data, error } = await uploadImage(file, 'profile-images');
+            // Upload to Cloudinary
+            if (typeof uploadToCloudinary === 'function') {
+                const { data, error } = await uploadToCloudinary(file, 'profile');
                 if (error) {
-                    alert('❌ Upload failed: ' + error.message);
+                    alert('❌ Cloudinary upload failed: ' + error.message);
+                    return;
+                }
+
+                preview.src = data.url;
+
+                // Save to Supabase database
+                if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                    const { error: dbError } = await updateSiteContent({ about_image: data.url });
+                    if (dbError) {
+                        alert('⚠️ Uploaded to Cloudinary but DB save failed');
+                    } else {
+                        alert('✅ Profile photo uploaded to Cloudinary + saved!');
+                    }
                 } else {
-                    await updateSiteContent({ about_image: data.url });
-                    alert('✅ Profile photo updated!');
+                    localStorage.setItem('about_image', data.url);
+                    alert('✅ Profile photo uploaded to Cloudinary! (Saved locally)');
                 }
             } else {
-                alert('✅ Preview updated! Configure Supabase for cloud storage.');
+                alert('❌ Cloudinary not configured');
             }
         }
 
@@ -2329,7 +2440,6 @@
             }
         });
     </script>
-    <script src="cloudinary-config.js"></script>
 </body>
 
 </html>

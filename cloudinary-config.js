@@ -114,5 +114,50 @@ function createYouTubeEmbed(videoIdOrUrl, options = {}) {
     </iframe>`;
 }
 
+// Upload VIDEO to Cloudinary (for 3D walkthroughs)
+async function uploadVideoToCloudinary(file, folder = 'videos') {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_CONFIG.uploadPreset);
+    formData.append('folder', folder);
+    formData.append('resource_type', 'video');
+
+    try {
+        const response = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/video/upload`,
+            { method: 'POST', body: formData }
+        );
+
+        const data = await response.json();
+
+        if (data.error) {
+            return { error: data.error };
+        }
+
+        return {
+            data: {
+                url: data.secure_url,
+                publicId: data.public_id,
+                duration: data.duration,
+                format: data.format
+            }
+        };
+    } catch (error) {
+        return { error: { message: error.message } };
+    }
+}
+
+// Get Cloudinary video URL with transformations
+function getCloudinaryVideoUrl(publicId, options = {}) {
+    const { width, quality = 'auto', format = 'auto' } = options;
+
+    let transformations = `f_${format},q_${quality}`;
+    if (width) transformations += `,w_${width}`;
+
+    return `https://res.cloudinary.com/${CLOUDINARY_CONFIG.cloudName}/video/upload/${transformations}/${publicId}`;
+}
+
 console.log('✅ Cloudinary & YouTube config loaded');
 console.log('   Cloud Name:', CLOUDINARY_CONFIG.cloudName);
+console.log('   Upload Preset:', CLOUDINARY_CONFIG.uploadPreset);
+console.log('   ⚠️ IMPORTANT: Create upload preset "renderline_unsigned" in Cloudinary Dashboard → Settings → Upload → Add upload preset → Set to "Unsigned"');
