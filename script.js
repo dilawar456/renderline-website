@@ -22,7 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Mobile Menu Toggle ---
     if (mobileToggle && navLinks) {
+        console.log('✅ Mobile toggle initialized');
+
         mobileToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+            mobileToggle.classList.toggle('active');
+            console.log('📱 Mobile menu toggled:', navLinks.classList.contains('active'));
+        });
+
+        // Touch support
+        mobileToggle.addEventListener('touchend', (e) => {
+            e.preventDefault();
             e.stopPropagation();
             navLinks.classList.toggle('active');
             mobileToggle.classList.toggle('active');
@@ -43,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobileToggle.classList.remove('active');
             }
         });
+    } else {
+        console.warn('⚠️ Mobile toggle elements not found:', { mobileToggle, navLinks });
     }
 
     // --- Dark/Light Theme Toggle ---

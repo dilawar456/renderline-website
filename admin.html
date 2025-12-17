@@ -1675,6 +1675,18 @@
         // ========== GLOBAL STATE ==========
         let currentUser = null;
 
+        // ========== DEBUG: Check dependencies at startup ==========
+        console.log('🔍 Admin Panel Dependencies Check:');
+        console.log('  📦 window.supabase:', typeof window.supabase !== 'undefined' ? '✅ Loaded' : '❌ Not loaded');
+        console.log('  📦 supabase client:', typeof supabase !== 'undefined' ? '✅ Initialized' : '❌ Not initialized');
+        console.log('  📦 isSupabaseConfigured:', typeof isSupabaseConfigured === 'function' ? '✅ Available' : '❌ Not available');
+        console.log('  📦 uploadToCloudinary:', typeof uploadToCloudinary === 'function' ? '✅ Available' : '❌ Not available');
+        console.log('  📦 addPortfolioItem:', typeof addPortfolioItem === 'function' ? '✅ Available' : '❌ Not available');
+
+        if (typeof isSupabaseConfigured === 'function') {
+            console.log('  🔌 Supabase configured:', isSupabaseConfigured() ? '✅ Yes' : '❌ No');
+        }
+
         // ========== LOGIN ==========
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
