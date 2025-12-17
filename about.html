@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Ali Hamza | VOG WAVE Design Studio</title>
+    <meta name="description"
+        content="Meet Ali Hamza, founder of VOG WAVE Design Studio - a premier architectural visualization expert serving architects across Saudi Arabia and the Middle East.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .about-hero-section {
+            padding-top: 120px;
+            background: linear-gradient(180deg, #0a0a0a, #0f0f0f);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .profile-image-wrapper {
+            position: relative;
+        }
+
+        .profile-image {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.3);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .profile-badge {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-gold);
+            color: #000;
+            padding: 0.75rem 2rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+        }
+
+        .about-content h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .about-content .title {
+            color: var(--text-gold);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 2rem;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .about-content p strong {
+            color: var(--text-gold);
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 3rem;
+            margin: 3rem 0;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border-dark);
+            border-bottom: 1px solid var(--border-dark);
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--text-gold);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .specializations {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .spec-tag {
+            padding: 0.6rem 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .spec-tag:hover {
+            border-color: var(--text-gold);
+            color: var(--text-gold);
+        }
+
+        @media (max-width: 900px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .profile-image-wrapper {
+                max-width: 350px;
+                margin: 0 auto 3rem;
+            }
+
+            .stats-row {
+                justify-content: center;
+            }
+
+            .specializations {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.jpg" alt="VOG WAVE Design Studio">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">☀</button>
+                <a href="contact.html" class="btn btn-primary">Let's Talk</a>
+            </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Hero Section -->
+    <section class="about-hero-section section-padding">
+        <div class="container">
+            <div class="about-grid">
+                <div class="profile-image-wrapper">
+                    <img src="assets/images/ali-hamza.jpg" alt="Ali Hamza - Founder of VOG WAVE Design Studio"
+                        class="profile-image">
+                    <div class="profile-badge">Lead Visualizer</div>
+                </div>
+
+                <div class="about-content">
+                    <h1 id="aboutName">Ali Hamza</h1>
+                    <p class="title" id="aboutTitle">Founder & Creative Director</p>
+
+                    <div id="aboutBio">
+                        <p>Welcome to <strong>VOG WAVE Design Studio</strong> – where architectural dreams transform
+                            into
+                            breathtaking visual realities. I founded this studio with a singular vision: to bridge the
+                            gap
+                            between an architect's imagination and their client's understanding through the power of
+                            photorealistic visualization.</p>
+                    </div>
+
+                    <p>With expertise spanning <strong>3D modeling, V-Ray & Corona rendering, Lumion animations, and
+                            Unreal Engine real-time visualization</strong>, I deliver renders that don't just show
+                        spaces – they evoke emotions. Every shadow, reflection, and texture is crafted to tell your
+                        project's story.</p>
+
+                    <p>My deep understanding of the <strong>Saudi Arabian market</strong> – from the majestic Najdi
+                        architecture of Riyadh to the coastal elegance of Jeddah – enables me to create culturally
+                        resonant visualizations that speak directly to your target audience. Whether it's a luxury villa
+                        in NEOM, a high-rise tower in Dammam, or a boutique hotel in AlUla, I bring the same level of
+                        passion and precision to every project.</p>
+
+                    <div class="stats-row">
+                        <div class="stat-item">
+                            <h3 id="statProjects">200+</h3>
+                            <p>Projects Delivered</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3 id="statClients">50+</h3>
+                            <p>Happy Clients</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>5+</h3>
+                            <p>Years Experience</p>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-bottom: 1rem;">Areas of Expertise</h3>
+                    <div class="specializations">
+                        <span class="spec-tag">Exterior Renders</span>
+                        <span class="spec-tag">Interior Design</span>
+                        <span class="spec-tag">3D Walkthroughs</span>
+                        <span class="spec-tag">Aerial Views</span>
+                        <span class="spec-tag">Night Scenes</span>
+                        <span class="spec-tag">Commercial Spaces</span>
+                        <span class="spec-tag">Luxury Villas</span>
+                        <span class="spec-tag">High-Rise Towers</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section-padding" style="background: var(--bg-card);">
+        <div class="container">
+            <h2 class="text-center">Tools & Technologies</h2>
+            <p class="text-center" style="max-width: 500px; margin: 0 auto 3rem;">Industry-leading software for
+                photorealistic results.</p>
+            <div class="skills-grid">
+                <div class="skill-item">3ds Max</div>
+                <div class="skill-item">V-Ray</div>
+                <div class="skill-item">Corona Renderer</div>
+                <div class="skill-item">Lumion</div>
+                <div class="skill-item">Unreal Engine 5</div>
+                <div class="skill-item">Adobe Photoshop</div>
+                <div class="skill-item">AutoCAD</div>
+                <div class="skill-item">SketchUp</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section class="section-padding">
+        <div class="container">
+            <h2 class="text-center">My Workflow</h2>
+            <p class="text-center" style="max-width: 500px; margin: 0 auto 4rem;">A transparent, architect-friendly
+                process designed for excellence.</p>
+
+            <div class="workflow-steps">
+                <div class="step">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h3>Project Briefing</h3>
+                        <p>We begin with a detailed consultation to understand your vision, review CAD/SketchUp files,
+                            and establish mood references that align with your design intent.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h3>3D Modeling</h3>
+                        <p>I create an accurate 3D model based on your drawings. You receive a clay render for approval,
+                            ensuring geometry is perfect before texturing begins.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h3>Materials & Lighting</h3>
+                        <p>Premium textures, realistic materials, and cinematic lighting are applied. Day, dusk, or
+                            night – the mood is crafted to maximize visual impact.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h3>Final Delivery</h3>
+                        <p>High-resolution renders undergo post-production in Photoshop. Multiple revisions included.
+                            Final files delivered in print-ready and web formats.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section-padding text-center" style="background: linear-gradient(180deg, #0a0a0a, #111);">
+        <div class="container">
+            <h2>Let's Bring Your Vision to Life</h2>
+            <p style="max-width: 500px; margin: 0 auto 2rem;">Ready to elevate your architectural presentations? Let's
+                discuss your project.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="contact.html" class="btn btn-primary">Start a Project</a>
+                <a href="https://wa.me/923140735267" class="btn btn-whatsapp" target="_blank">WhatsApp Me</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>VOG WAVE.</h3>
+                <p>Premium architectural visualization studio by Ali Hamza.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="services.html">Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>WhatsApp: 0314-0735267</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 VOG WAVE Design Studio. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/923140735267" class="whatsapp-float" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+            <path
+                d="M12.0041 2C6.48624 2 1.99609 6.49015 1.99609 12.008C1.99609 13.7917 2.4706 15.4853 3.32427 16.9737L2 22L7.2023 20.671C8.63666 21.5281 10.2825 22.016 12.0041 22.016C17.5219 22.016 22.0121 17.5259 22.0121 12.008C22.0121 6.49015 17.5219 2 12.0041 2ZM12.0041 20.216C10.5186 20.216 9.10373 19.8053 7.87324 19.0831L7.56846 18.9042L4.60677 19.6644L5.38541 16.7118L5.19532 16.398C4.39704 15.1118 3.97216 13.5932 3.97216 12.008C3.97216 7.57917 7.57527 3.97606 12.0041 3.97606C16.4329 3.97606 20.036 7.57917 20.036 12.008C20.036 16.4369 16.4329 20.216 12.0041 20.216ZM16.3943 14.5826C16.1493 14.4571 14.9497 13.8587 14.7292 13.7706C14.5087 13.6826 14.3496 13.6385 14.1905 13.8835C14.0314 14.1285 13.5781 14.6823 13.4433 14.8458C13.3086 15.0093 13.1738 15.0219 12.9288 14.8964C12.6838 14.7708 11.8943 14.5064 10.958 13.6554C10.2224 12.9868 9.72517 12.1611 9.5782 11.9032C9.43122 11.6453 9.56276 11.5061 9.6853 11.3813C9.79555 11.269 9.93033 11.0892 10.0528 10.9383C10.1754 10.7874 10.2121 10.6868 10.2979 10.5108C10.3836 10.3347 10.3347 10.1838 10.2734 10.0581C10.2121 9.9324 9.73444 8.73815 9.53856 8.24796C9.34268 7.78287 9.1468 7.84572 9.01211 7.84572C8.88957 7.84572 8.74261 7.83315 8.59564 7.83315C8.44868 7.83315 8.20377 7.89601 7.99547 8.12228C7.78718 8.34854 7.19934 8.91421 7.19934 10.0706C7.19934 11.227 8.03208 12.3584 8.15461 12.5218C8.27715 12.6853 9.8109 15.1118 12.2373 16.143C14.6637 17.1742 14.6637 16.8346 15.0924 16.7844C15.5211 16.7341 16.48 16.1932 16.676 15.6275C16.872 15.0618 16.872 14.5842 16.8107 14.4836C16.7495 14.383 16.5905 14.3195 16.3943 14.2882V14.5826Z">
+            </path>
+        </svg>
+    </a>
+
+    <script src="script.js"></script>
+
+    <!-- Supabase Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof getSiteContent === 'function' && typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
+                const { data: content, error } = await getSiteContent();
+
+                if (content) {
+                    if (content.about_name && document.getElementById('aboutName')) document.getElementById('aboutName').textContent = content.about_name;
+                    if (content.about_title && document.getElementById('aboutTitle')) document.getElementById('aboutTitle').textContent = content.about_title;
+                    if (content.about_bio && document.getElementById('aboutBio')) document.getElementById('aboutBio').innerHTML = content.about_bio.replace(/\n/g, '<br>');
+
+                    if (content.stat_projects && document.getElementById('statProjects')) document.getElementById('statProjects').textContent = content.stat_projects;
+                    if (content.stat_clients && document.getElementById('statClients')) document.getElementById('statClients').textContent = content.stat_clients;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

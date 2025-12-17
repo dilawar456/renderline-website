@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | VOG WAVE Design Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .service-detail-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 5rem;
+        }
+
+        .service-detail-row.reverse {
+            direction: rtl;
+        }
+
+        .service-detail-row.reverse>* {
+            direction: ltr;
+        }
+
+        .service-img {
+            height: 400px;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .service-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .service-info h2 {
+            margin-bottom: 1rem;
+        }
+
+        .service-info p {
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-features span {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        .timeline {
+            color: var(--text-gold);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 900px) {
+            .service-detail-row {
+                grid-template-columns: 1fr;
+            }
+
+            .service-detail-row.reverse {
+                direction: ltr;
+            }
+
+            .service-img {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.jpg" alt="VOG WAVE Design Studio">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">☀</button>
+                <a href="contact.html" class="btn btn-primary">Let's Talk</a>
+            </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="section-padding text-center" style="padding-top: 150px;">
+        <div class="container">
+            <h1 class="text-gold">Our Expertise</h1>
+            <p style="max-width: 600px; margin: 0 auto;">Comprehensive visualization solutions for every stage of
+                architectural design.</p>
+        </div>
+    </header>
+
+    <!-- Services Section -->
+    <section class="section-padding">
+        <div class="container" id="servicesContainer">
+
+            <!-- Service 1: Exterior -->
+            <div class="service-detail-row">
+                <div class="service-img">
+                    <img src="assets/images/render2.jpg" alt="Exterior Visualization">
+                </div>
+                <div class="service-info">
+                    <h2>Exterior Visualization</h2>
+                    <p>Transform your building designs into stunning, photorealistic exterior renders. Perfect for
+                        residential towers, commercial complexes, and landscape integration.</p>
+                    <div class="service-features">
+                        <span>Day/Night Scenes</span>
+                        <span>Aerial Views</span>
+                        <span>Landscape Design</span>
+                        <span>4K Resolution</span>
+                    </div>
+                    <p class="timeline">⏱ Typical timeline: 3-5 business days</p>
+                </div>
+            </div>
+
+            <!-- Service 2: Interior -->
+            <div class="service-detail-row reverse">
+                <div class="service-img">
+                    <img src="assets/images/render10.jpg" alt="Interior Visualization">
+                </div>
+                <div class="service-info">
+                    <h2>Interior Visualization</h2>
+                    <p>Showcase interiors with realistic lighting, materials, and furniture placement. Ideal for luxury
+                        residences, hotels, offices, and retail spaces.</p>
+                    <div class="service-features">
+                        <span>Photorealistic Materials</span>
+                        <span>Furniture Staging</span>
+                        <span>Multiple Angles</span>
+                        <span>Custom Styling</span>
+                    </div>
+                    <p class="timeline">⏱ Typical timeline: 2-4 business days</p>
+                </div>
+            </div>
+
+            <!-- Service 3: Animations -->
+            <div class="service-detail-row">
+                <div class="service-img">
+                    <img src="assets/images/render12.jpg" alt="3D Walkthroughs">
+                </div>
+                <div class="service-info">
+                    <h2>3D Animations / Walkthroughs</h2>
+                    <p>Bring your project to life with cinematic animations. Perfect for pre-sales, marketing
+                        presentations, and client pitches.</p>
+                    <div class="service-features">
+                        <span>Cinematic Quality</span>
+                        <span>Voiceover Ready</span>
+                        <span>Music Integration</span>
+                        <span>4K/HD Delivery</span>
+                    </div>
+                    <p class="timeline">⏱ Typical timeline: 7-14 business days</p>
+                </div>
+            </div>
+
+            <!-- Service 4: Floor Plans -->
+            <div class="service-detail-row reverse">
+                <div class="service-img">
+                    <img src="assets/images/render21.jpg" alt="Floor Plan Visualization">
+                </div>
+                <div class="service-info">
+                    <h2>Floor Plan Visualization</h2>
+                    <p>Turn 2D CAD drawings into clear, understandable 3D floor plans. Essential for helping clients
+                        visualize space and layout.</p>
+                    <div class="service-features">
+                        <span>3D Floor Plans</span>
+                        <span>Furniture Layout</span>
+                        <span>Color Coded</span>
+                        <span>Print Ready</span>
+                    </div>
+                    <p class="timeline">⏱ Typical timeline: 1-2 business days</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="section-padding text-center" style="background: var(--bg-card);">
+        <div class="container">
+            <h2>Ready to Start?</h2>
+            <p style="max-width: 500px; margin: 0 auto 2rem;">Let's discuss your project requirements and create visuals
+                that sell.</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="contact.html" class="btn btn-primary">Contact Us</a>
+                <a href="https://wa.me/923140735267" class="btn btn-whatsapp" target="_blank">WhatsApp: 0314-0735267</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>VOG WAVE.</h3>
+                <p>Premium architectural visualization studio by Ali Hamza.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="services.html">Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>WhatsApp: 0314-0735267</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 VOG WAVE Design Studio. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/923140735267" class="whatsapp-float" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+            <path
+                d="M12.0041 2C6.48624 2 1.99609 6.49015 1.99609 12.008C1.99609 13.7917 2.4706 15.4853 3.32427 16.9737L2 22L7.2023 20.671C8.63666 21.5281 10.2825 22.016 12.0041 22.016C17.5219 22.016 22.0121 17.5259 22.0121 12.008C22.0121 6.49015 17.5219 2 12.0041 2ZM12.0041 20.216C10.5186 20.216 9.10373 19.8053 7.87324 19.0831L7.56846 18.9042L4.60677 19.6644L5.38541 16.7118L5.19532 16.398C4.39704 15.1118 3.97216 13.5932 3.97216 12.008C3.97216 7.57917 7.57527 3.97606 12.0041 3.97606C16.4329 3.97606 20.036 7.57917 20.036 12.008C20.036 16.4369 16.4329 20.216 12.0041 20.216ZM16.3943 14.5826C16.1493 14.4571 14.9497 13.8587 14.7292 13.7706C14.5087 13.6826 14.3496 13.6385 14.1905 13.8835C14.0314 14.1285 13.5781 14.6823 13.4433 14.8458C13.3086 15.0093 13.1738 15.0219 12.9288 14.8964C12.6838 14.7708 11.8943 14.5064 10.958 13.6554C10.2224 12.9868 9.72517 12.1611 9.5782 11.9032C9.43122 11.6453 9.56276 11.5061 9.6853 11.3813C9.79555 11.269 9.93033 11.0892 10.0528 10.9383C10.1754 10.7874 10.2121 10.6868 10.2979 10.5108C10.3836 10.3347 10.3347 10.1838 10.2734 10.0581C10.2121 9.9324 9.73444 8.73815 9.53856 8.24796C9.34268 7.78287 9.1468 7.84572 9.01211 7.84572C8.88957 7.84572 8.74261 7.83315 8.59564 7.83315C8.44868 7.83315 8.20377 7.89601 7.99547 8.12228C7.78718 8.34854 7.19934 8.91421 7.19934 10.0706C7.19934 11.227 8.03208 12.3584 8.15461 12.5218C8.27715 12.6853 9.8109 15.1118 12.2373 16.143C14.6637 17.1742 14.6637 16.8346 15.0924 16.7844C15.5211 16.7341 16.48 16.1932 16.676 15.6275C16.872 15.0618 16.872 14.5842 16.8107 14.4836C16.7495 14.383 16.5905 14.3195 16.3943 14.2882V14.5826Z">
+            </path>
+        </svg>
+    </a>
+
+    <script src="script.js"></script>
+
+    <!-- Supabase Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Only run if Supabase is actually configured
+            if (typeof getServices === 'function' && typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
+                const container = document.getElementById('servicesContainer');
+                const { data: services, error } = await getServices();
+
+                if (services && services.length > 0) {
+                    container.innerHTML = '';
+
+                    services.forEach((service, index) => {
+                        const isReverse = index % 2 !== 0 ? 'reverse' : '';
+                        const featureSpans = (service.features || []).map(f => `<span>${f}</span>`).join('');
+
+                        const div = document.createElement('div');
+                        div.className = `service-detail-row ${isReverse}`;
+                        div.innerHTML = `
+                            <div class="service-img">
+                                <img src="${service.image_url || 'assets/images/placeholder.jpg'}" alt="${service.title}">
+                            </div>
+                            <div class="service-info">
+                                <h2>${service.title}</h2>
+                                <p>${service.description}</p>
+                                <div class="service-features">
+                                    ${featureSpans}
+                                </div>
+                                <p class="timeline">⏱ Typical timeline: ${service.timeline}</p>
+                            </div>
+                         `;
+                        container.appendChild(div);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

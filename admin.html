@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - VOG WAVE Design Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --bg-card: #0F0F0F;
+            --bg-input: #1a1a1a;
+            --text: #ffffff;
+            --text-muted: #888888;
+            --gold: #D4AF37;
+            --gold-hover: #b5952f;
+            --red: #ff4757;
+            --green: #2ecc71;
+            --blue: #3b82f6;
+            --border: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Layout */
+        .admin-wrapper {
+            display: flex;
+            height: 100vh;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .admin-wrapper.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 260px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-item {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: var(--text-muted);
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
+        }
+
+        .sidebar-item.active {
+            border-left-color: var(--gold);
+        }
+
+        .sidebar-section {
+            padding: 0.5rem 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .sidebar-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .badge {
+            background: var(--red);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 10px;
+            margin-left: auto;
+        }
+
+        /* Main Content */
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            background: var(--bg-dark);
+        }
+
+        /* Header */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-email {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Login Page */
+        .login-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-box h1 {
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-box p {
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        .stat-card h2 {
+            font-size: 2.5rem;
+            color: var(--gold);
+            line-height: 1.2;
+        }
+
+        .stat-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-input);
+            border: 1px solid #444;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 1rem;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-hover);
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: #fff;
+        }
+
+        .btn-red {
+            background: var(--red);
+            color: #fff;
+        }
+
+        .btn-blue {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #444;
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+        }
+
+        /* Tables */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .data-table th {
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-new {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--blue);
+        }
+
+        .status-read {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+        }
+
+        .status-replied {
+            background: rgba(37, 211, 102, 0.2);
+            color: var(--green);
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .image-item {
+            position: relative;
+            aspect-ratio: 1;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #333;
+            cursor: pointer;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .image-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-item .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .image-item:hover .overlay {
+            opacity: 1;
+        }
+
+        /* Upload Zone */
+        .upload-zone {
+            border: 2px dashed #444;
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .upload-zone input {
+            display: none;
+        }
+
+        .upload-zone .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .upload-zone p {
+            color: var(--text-muted);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            border-radius: 4px 4px 0 0;
+            transition: 0.3s;
+        }
+
+        .tab.active {
+            background: var(--gold);
+            color: #000;
+        }
+
+        .tab:hover:not(.active) {
+            color: var(--text);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid var(--blue);
+        }
+
+        .alert-success {
+            background: rgba(37, 211, 102, 0.15);
+            border: 1px solid var(--green);
+        }
+
+        .alert-warning {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold);
+        }
+
+        .alert-error {
+            background: rgba(255, 71, 87, 0.15);
+            border: 1px solid var(--red);
+        }
+
+        /* Hidden */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #333;
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .admin-sidebar {
+                width: 200px;
+            }
+
+            .admin-content {
+                margin-left: 200px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                display: none;
+            }
+
+            .admin-content {
+                margin-left: 0;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <h1>🎨 VOG WAVE Admin</h1>
+            <p>Sign in to manage your website</p>
+
+            <div id="loginError" class="alert alert-error hidden"></div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required placeholder="admin@vogwave.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-gold" style="width: 100%;">
+                    <span id="loginBtnText">Sign In</span>
+                    <span id="loginLoader" class="loading hidden"></span>
+                </button>
+            </form>
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #333;">
+                <p style="font-size: 0.85rem;">Need to create an admin account?</p>
+                <p style="font-size: 0.8rem; color: var(--text-muted);">Go to Supabase Dashboard → Authentication →
+                    Users → Add User</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-wrapper" id="adminPanel">
+
+        <!-- Header -->
+        <header class="admin-header">
+            <h1>🎨 VOG WAVE Admin</h1>
+            <div class="user-info">
+                <span class="user-email" id="userEmail">admin@vogwave.com</span>
+                <button class="btn btn-outline btn-sm" onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Overview</div>
+            </div>
+            <div class="sidebar-item active" data-section="dashboard">📊 Dashboard</div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Content</div>
+            </div>
+            <div class="sidebar-item" data-section="portfolio">🖼️ Portfolio</div>
+            <div class="sidebar-item" data-section="services">⚙️ Services</div>
+            <div class="sidebar-item" data-section="site-content">📝 Site Content</div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Communication</div>
+            </div>
+            <div class="sidebar-item" data-section="messages">📧 Messages <span class="badge"
+                    id="newMessagesBadge">0</span></div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Media</div>
+            </div>
+            <div class="sidebar-item" data-section="media">📁 Media Library</div>
+            <div class="sidebar-item" data-section="videos">🎬 Videos</div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">Settings</div>
+            </div>
+            <div class="sidebar-item" data-section="settings">⚙️ Settings</div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-content">
+
+            <!-- Dashboard Section -->
+            <section id="section-dashboard">
+                <div class="section-header">
+                    <h2 class="section-title">Dashboard</h2>
+                    <a href="index.html" target="_blank" class="btn btn-outline">View Website →</a>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon">🖼️</div>
+                        <h2 id="statPortfolio">0</h2>
+                        <p>Portfolio Items</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">📧</div>
+                        <h2 id="statMessages">0</h2>
+                        <p>New Messages</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">⚙️</div>
+                        <h2 id="statServices">4</h2>
+                        <p>Services</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon">🎬</div>
+                        <h2 id="statVideos">3</h2>
+                        <p>Videos</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📋 Quick Actions</h3>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+                        <button class="btn btn-gold" onclick="showSection('portfolio')">Add Portfolio Item</button>
+                        <button class="btn btn-blue" onclick="showSection('messages')">View Messages</button>
+                        <button class="btn btn-outline" onclick="showSection('site-content')">Edit Homepage</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Recent Messages</h3>
+                    <div id="recentMessages" style="margin-top: 1rem;">
+                        <p style="color: var(--text-muted);">Loading messages...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portfolio Section -->
+            <section id="section-portfolio" class="hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Portfolio Management</h2>
+                    <button class="btn btn-gold" onclick="fileInput.click()">+ Add New</button>
+                </div>
+
+                <div class="alert alert-info">
+                    <span>💡</span>
+                    <span>Upload images directly from this panel. They will be stored in Supabase Storage and
+                        automatically appear on your website.</span>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Upload New Images</h3>
+                    </div>
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="fileInput" multiple accept="image/*">
+                        <div class="icon">📤</div>
+                        <p>Drag & drop images here or click to browse</p>
+                        <p style="font-size: 0.85rem; margin-top: 0.5rem;">Supports JPG, PNG, WebP</p>
+                    </div>
+                    <div id="uploadProgress" class="hidden" style="margin-top: 1rem;"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Portfolio Items</h3>
+                        <div class="tabs">
+                            <button class="tab active" data-filter="all">All</button>
+                            <button class="tab" data-filter="exterior">Exterior</button>
+                            <button class="tab" data-filter="interior">Interior</button>
+                            <button class="tab" data-filter="commercial">Commercial</button>
+                        </div>
+                    </div>
+                    <div class="image-grid" id="portfolioGrid">
+                        <!-- Portfolio items will be loaded here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Messages Section -->
+            <section id="section-messages" class="hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Contact Messages</h2>
+                    <button class="btn btn-outline" onclick="exportMessages()">Export CSV</button>
+                </div>
+
+                <div class="tabs">
+                    <button class="tab active" data-status="all">All</button>
+                    <button class="tab" data-status="new">New</button>
+                    <button class="tab" data-status="read">Read</button>
+                    <button class="tab" data-status="replied">Replied</button>
+                </div>
+
+                <div class="card">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Project Type</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="messagesTable">
+                            <!-- Messages will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Site Content Section -->
+            <section id="section-site-content" class="hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Site Content</h2>
+                    <button class="btn btn-gold" onclick="saveSiteContent()">Save Changes</button>
+                </div>
+
+                <div class="card">
+                    <h3>🏠 Homepage Hero Section</h3>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label>Main Heading</label>
+                        <input type="text" id="heroHeading" placeholder="Architectural Vision Redefined.">
+                    </div>
+                    <div class="form-group">
+                        <label>Subheading</label>
+                        <textarea id="heroSubheading" placeholder="Your tagline here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>👤 About Section</h3>
+                    <div class="form-row" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" id="aboutName" placeholder="Ali Hamza">
+                        </div>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input type="text" id="aboutTitle" placeholder="Founder & Creative Director">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Bio</label>
+                        <textarea id="aboutBio" rows="4"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Projects Completed</label>
+                            <input type="text" id="statProjects" placeholder="200+">
+                        </div>
+                        <div class="form-group">
+                            <label>Happy Clients</label>
+                            <input type="text" id="statClients" placeholder="50+">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📧 Contact Information</h3>
+                    <div class="form-row" style="margin-top: 1rem;">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="contactEmail" placeholder="designstudio813@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label>WhatsApp (with country code)</label>
+                            <input type="text" id="contactWhatsapp" placeholder="923140735267">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="contactLocation" placeholder="Riyadh / Jeddah, Saudi Arabia">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="section-services" class="hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Services</h2>
+                    <button class="btn btn-gold" onclick="alert('Editing services coming next')">+ Add Service</button>
+                </div>
+
+                <div id="servicesList">
+                    <!-- Services will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Media Library Section -->
+            <section id="section-media" class="hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Media Library</h2>
+                </div>
+
+                <div class="alert alert-warning">
+                    <span>⚠️</span>
+                    <span>Use the Portfolio tab for image uploads for now.</span>
+                </div>
+            </section>
+
+            <!-- Videos Section -->
+            <section id="section-videos" class="hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Videos</h2>
+                </div>
+
+                <div class="card">
+                    <h3>Current Videos</h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div style="background: var(--bg-input); padding: 1rem; border-radius: 4px;">
+                            <p><strong>ad.mp4</strong></p>
+                            <p style="color: var(--text-muted);">Homepage Ad Video</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="section-settings" class="hidden">
+                <div class="section-header">
+                    <h2 class="section-title">Settings</h2>
+                </div>
+
+                <div class="card">
+                    <h3>🔗 Supabase Connection</h3>
+                    <div id="connectionStatus" style="margin-top: 1rem;">
+                        <p style="color: var(--green);">⬤ Connected</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Supabase Config -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+
+    <script>
+        // =============================================
+        // ADMIN PANEL JAVASCRIPT
+        // =============================================
+
+        // DOM Elements
+        const loginPage = document.getElementById('loginPage');
+        const adminPanel = document.getElementById('adminPanel');
+        const loginForm = document.getElementById('loginForm');
+
+        // Check auth state on load
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
+                const user = await getCurrentUser();
+                if (user) {
+                    showAdminPanel(user);
+                }
+            } else {
+                console.log('Supabase not configured.');
+            }
+        });
+
+        // Login Form Handler
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const btnText = document.getElementById('loginBtnText');
+            const loader = document.getElementById('loginLoader');
+            const errorDiv = document.getElementById('loginError');
+
+            btnText.textContent = 'Signing in...';
+            loader.classList.remove('hidden');
+            errorDiv.classList.add('hidden');
+
+            // Check if Supabase is configured
+            if (typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
+                const { data, error } = await adminLogin(email, password);
+
+                if (error) {
+                    errorDiv.textContent = error.message;
+                    errorDiv.classList.remove('hidden');
+                    btnText.textContent = 'Sign In';
+                    loader.classList.add('hidden');
+                } else {
+                    showAdminPanel(data.user);
+                }
+            } else {
+                // Demo mode - allow any login
+                setTimeout(() => {
+                    showAdminPanel({ email: email });
+                }, 1000);
+            }
+        });
+
+        // Show Admin Panel
+        function showAdminPanel(user) {
+            loginPage.style.display = 'none';
+            adminPanel.classList.add('active');
+            if (document.getElementById('userEmail')) document.getElementById('userEmail').textContent = user.email;
+
+            // Load initial data
+            loadDashboardData();
+        }
+
+        // Logout
+        async function logout() {
+            if (typeof adminLogout === 'function') {
+                await adminLogout();
+            }
+            window.location.reload();
+        }
+
+        // Sidebar Navigation
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const section = item.dataset.section;
+                if (section) showSection(section);
+            });
+        });
+
+        function showSection(sectionId) {
+            // Update sidebar
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.classList.toggle('active', item.dataset.section === sectionId);
+            });
+
+            // Show section
+            document.querySelectorAll('.admin-content > section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById('section-' + sectionId).classList.remove('hidden');
+        }
+
+        // Load Dashboard Data
+        async function loadDashboardData() {
+            // Show loading state
+            if (document.getElementById('recentMessages')) document.getElementById('recentMessages').innerHTML = '<span class="loading"></span> Loading...';
+
+            if (typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
+                // 1. Load Portfolio Stats
+                const { data: portfolio } = await getPortfolioItems();
+                if (portfolio) {
+                    document.getElementById('statPortfolio').textContent = portfolio.length;
+                    renderPortfolioGrid(portfolio);
+                }
+
+                // 2. Load Messages Stats
+                const { data: messages } = await getContactMessages('new');
+                if (messages) {
+                    document.getElementById('statMessages').textContent = messages.length;
+                    document.getElementById('newMessagesBadge').textContent = messages.length;
+                }
+
+                // 3. Load All Messages for Table
+                const { data: allMessages } = await getContactMessages();
+                if (allMessages) {
+                    renderMessagesTable(allMessages);
+                }
+
+                // 4. Load Services Stats
+                const { data: services } = await getServices();
+                if (services) {
+                    document.getElementById('statServices').textContent = services.length;
+                    renderServicesList(services);
+                }
+
+                // 5. Load Content for Editing
+                const { data: content } = await getSiteContent();
+                if (content) {
+                    // Populate Form Fields
+                    if (document.getElementById('heroHeading')) document.getElementById('heroHeading').value = content.hero_heading || '';
+                    if (document.getElementById('heroSubheading')) document.getElementById('heroSubheading').value = content.hero_subheading || '';
+                    if (document.getElementById('aboutName')) document.getElementById('aboutName').value = content.about_name || '';
+                    if (document.getElementById('aboutTitle')) document.getElementById('aboutTitle').value = content.about_title || '';
+                    if (document.getElementById('aboutBio')) document.getElementById('aboutBio').value = content.about_bio || '';
+                    if (document.getElementById('statProjects')) document.getElementById('statProjects').value = content.stat_projects || '';
+                    if (document.getElementById('statClients')) document.getElementById('statClients').value = content.stat_clients || '';
+                    if (document.getElementById('contactEmail')) document.getElementById('contactEmail').value = content.contact_email || '';
+                    if (document.getElementById('contactWhatsapp')) document.getElementById('contactWhatsapp').value = content.contact_whatsapp || '';
+                    if (document.getElementById('contactLocation')) document.getElementById('contactLocation').value = content.contact_location || '';
+                }
+
+            } else {
+                console.error("Supabase not configured");
+            }
+        }
+
+        // --- HELPER FUNCTIONS ---
+
+        function renderServicesList(services) {
+            const container = document.getElementById('servicesList');
+            if (!container) return;
+            container.innerHTML = '';
+
+            services.forEach(service => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.style.marginBottom = '1rem';
+                div.innerHTML = `
+                    <div class="card-header">
+                        <h3>${service.title}</h3>
+                        <div>
+                            <button class="btn btn-outline btn-sm" onclick="alert('Editing available via Supabase dashboard for now')">Edit</button>
+                        </div>
+                    </div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">${service.description}</p>
+                    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--gold);">
+                        Price: $${service.price_from || 'N/A'} | Timeline: ${service.timeline || 'N/A'}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function renderMessagesTable(messages) {
+            const tbody = document.getElementById('messagesTable');
+            const recentContainer = document.getElementById('recentMessages');
+
+            if (tbody) tbody.innerHTML = '';
+            if (recentContainer) recentContainer.innerHTML = '';
+
+            // Populate Dashboard Recent List (Top 5)
+            if (recentContainer) {
+                messages.slice(0, 5).forEach(msg => {
+                    const div = document.createElement('div');
+                    div.style.padding = '0.5rem 0';
+                    div.style.borderBottom = '1px solid #333';
+                    div.innerHTML = `
+                        <div style="display:flex; justify-content:space-between;">
+                            <strong>${msg.name}</strong>
+                            <span style="font-size:0.8rem; color:var(--text-muted);">${new Date(msg.created_at).toLocaleDateString()}</span>
+                        </div>
+                        <div style="font-size:0.9rem; color:var(--text-muted); text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">
+                            ${msg.message}
+                        </div>
+                    `;
+                    recentContainer.appendChild(div);
+                });
+
+                if (messages.length === 0) {
+                    recentContainer.innerHTML = '<p style="color:var(--text-muted)">No messages yet.</p>';
+                }
+            }
+
+            // Populate Full Table
+            if (tbody) {
+                messages.forEach(msg => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${msg.name}</td>
+                        <td><a href="mailto:${msg.email}" style="color:var(--gold);">${msg.email}</a></td>
+                        <td>${msg.project_type || '-'}</td>
+                        <td>${new Date(msg.created_at).toLocaleDateString()}</td>
+                        <td><span class="status-badge status-${msg.status}">${msg.status}</span></td>
+                        <td>
+                            <button class="btn btn-outline btn-sm">View</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                if (messages.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 2rem;">No messages found</td></tr>';
+                }
+            }
+        }
+
+        function renderPortfolioGrid(items) {
+            const grid = document.getElementById('portfolioGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'image-item';
+                div.innerHTML = `
+                    <img src="${item.image_url}" alt="${item.title}">
+                    <div class="overlay">
+                        <button class="btn btn-red btn-sm" onclick="deletePortfolio(${item.id})">Delete</button>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        // --- ACTION FUNCTIONS ---
+
+        // Delete Portfolio Item
+        async function deletePortfolio(id) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                const { error } = await deletePortfolioItem(id);
+                if (!error) {
+                    alert('Item deleted');
+                    // Refresh data
+                    const { data: portfolio } = await getPortfolioItems();
+                    renderPortfolioGrid(portfolio || []);
+                    if (document.getElementById('statPortfolio')) document.getElementById('statPortfolio').textContent = portfolio ? portfolio.length : 0;
+                } else {
+                    alert('Error: ' + error.message);
+                }
+            }
+        }
+
+        // File Upload
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+
+        if (uploadZone) {
+            uploadZone.addEventListener('click', () => fileInput.click());
+
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = 'var(--gold)';
+            });
+
+            uploadZone.addEventListener('dragleave', () => {
+                uploadZone.style.borderColor = '#444';
+            });
+
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.style.borderColor = '#444';
+                handleFiles(e.dataTransfer.files);
+            });
+        }
+
+        if (fileInput) {
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+        }
+
+        async function handleFiles(files) {
+            const progressDiv = document.getElementById('uploadProgress');
+            progressDiv.classList.remove('hidden');
+            progressDiv.innerHTML = `<p>Uploading ${files.length} file(s)...</p>`;
+
+            for (const file of files) {
+                if (typeof uploadImage === 'function' && isSupabaseConfigured()) {
+                    const { data, error } = await uploadImage(file);
+                    if (error) {
+                        progressDiv.innerHTML += `<p style="color: var(--red);">❌ ${file.name}: ${error.message}</p>`;
+                    } else {
+                        // Create DB entry
+                        const { error: dbError } = await addPortfolioItem({
+                            title: file.name,
+                            image_url: data.url,
+                            category: 'exterior', // Default to exterior
+                            description: 'Uploaded via Admin Panel'
+                        });
+
+                        if (dbError) {
+                            progressDiv.innerHTML += `<p style="color: var(--gold);">⚠️ ${file.name} uploaded but DB entry failed: ${dbError.message}</p>`;
+                        } else {
+                            progressDiv.innerHTML += `<p style="color: var(--green);">✓ ${file.name} uploaded & saved</p>`;
+                        }
+                    }
+                } else {
+                    progressDiv.innerHTML += `<p style="color: var(--gold);">⚠️ ${file.name}: Configure Supabase to enable uploads</p>`;
+                }
+            }
+
+            // Reload grid after short delay
+            setTimeout(async () => {
+                const { data: portfolio } = await getPortfolioItems();
+                renderPortfolioGrid(portfolio || []);
+                progressDiv.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Save Site Content
+        async function saveSiteContent() {
+            const btn = document.querySelector('button[onclick="saveSiteContent()"]');
+            const originalText = btn ? btn.innerText : 'Save';
+            if (btn) btn.innerText = 'Saving...';
+
+            const content = {
+                hero_heading: document.getElementById('heroHeading').value,
+                hero_subheading: document.getElementById('heroSubheading').value,
+                about_name: document.getElementById('aboutName').value,
+                about_title: document.getElementById('aboutTitle').value,
+                about_bio: document.getElementById('aboutBio').value,
+                stat_projects: document.getElementById('statProjects').value,
+                stat_clients: document.getElementById('statClients').value,
+                contact_email: document.getElementById('contactEmail').value,
+                contact_whatsapp: document.getElementById('contactWhatsapp').value,
+                contact_location: document.getElementById('contactLocation').value
+            };
+
+            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                const { error } = await updateSiteContent(content);
+                if (btn) btn.innerText = originalText;
+
+                if (error) {
+                    alert('Error saving: ' + error.message);
+                } else {
+                    alert('Content saved successfully! Refresh your main website to see changes.');
+                }
+            } else {
+                localStorage.setItem('vogwave_content', JSON.stringify(content));
+                alert('Saved to local storage (Supabase not configured).');
+                if (btn) btn.innerText = originalText;
+            }
+        }
+
+        // Export Messages
+        function exportMessages() {
+            alert('Export feature requires Supabase connection');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | VOG WAVE Design Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.jpg" alt="VOG WAVE Design Studio">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">☀</button>
+                <a href="contact.html" class="btn btn-primary">Let's Talk</a>
+            </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="section-padding" style="padding-top: 150px;">
+        <div class="container text-center">
+            <h1 class="text-gold">Start Your Project</h1>
+            <p style="max-width: 500px; margin: 0 auto;">Ready to bring your architectural vision to life? Get in touch
+                today.</p>
+        </div>
+    </header>
+
+    <!-- Contact Form Section -->
+    <section class="section-padding" style="padding-top: 2rem;">
+        <div class="container">
+            <div class="contact-grid">
+
+                <!-- Contact Info -->
+                <div class="contact-info">
+                    <div class="info-block">
+                        <h3>Contact Details</h3>
+                        <p><strong>Email:</strong><br>
+                            <a href="mailto:designstudio813@gmail.com"
+                                style="color: var(--text-gold);">designstudio813@gmail.com</a>
+                        </p>
+                        <p><strong>Location:</strong><br>Riyadh / Jeddah, Saudi Arabia</p>
+                    </div>
+
+                    <div class="info-block">
+                        <h3>Quick Chat</h3>
+                        <p>Prefer WhatsApp? Click below for a quick response.</p>
+                        <a href="https://wa.me/923140735267" class="btn btn-whatsapp" style="margin-top: 1rem;">Chat on
+                            WhatsApp</a>
+                    </div>
+
+                    <div class="info-block">
+                        <h3>Working Hours</h3>
+                        <p>Sunday - Thursday: 9AM - 6PM</p>
+                        <p>Response within 24 hours</p>
+                    </div>
+                </div>
+
+                <!-- Form - Using Formspree for real email delivery -->
+                <div class="contact-form-wrapper">
+                    <form id="contactForm" action="https://formspree.io/f/xzzevzjw" method="POST">
+                        <!-- Hidden field for reply-to -->
+                        <input type="hidden" name="_subject" value="New Project Inquiry - VOG WAVE Studio">
+
+                        <div class="form-group">
+                            <label for="name">Your Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone / WhatsApp</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+966 5XX XXX XXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="project_type">Project Type</label>
+                            <select id="project_type" name="project_type"
+                                style="width: 100%; padding: 1rem; background: #fff; border: 1px solid #ddd; font-family: var(--font-body);">
+                                <option value="">Select a service...</option>
+                                <option value="Exterior Visualization">Exterior Visualization</option>
+                                <option value="Interior Visualization">Interior Visualization</option>
+                                <option value="3D Animation / Walkthrough">3D Animation / Walkthrough</option>
+                                <option value="Floor Plan Visualization">Floor Plan Visualization</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Project Details *</label>
+                            <textarea id="message" name="message" rows="5" required
+                                placeholder="Tell us about your project: type, style, timeline, budget..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem; text-align: center;">
+                            By submitting, you agree to be contacted regarding your project.
+                        </p>
+                    </form>
+
+                    <!-- Success Message -->
+                    <div id="successMessage" class="success-message" style="display: none;">
+                        <h3>✓ Message Sent Successfully!</h3>
+                        <p>Thank you for reaching out! Ali Hamza will review your project details and get back to you
+                            within 24 hours.</p>
+                        <a href="index.html" class="btn" style="margin-top: 1rem;">Back to Home</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>VOG WAVE.</h3>
+                <p>Premium architectural visualization studio by Ali Hamza.</p>
+                <p style="margin-top: 1rem;"><strong>Email:</strong> designstudio813@gmail.com</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="services.html">Services</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>WhatsApp: 0314-0735267</p>
+                <p>Email: designstudio813@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 VOG WAVE Design Studio. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/923140735267" class="whatsapp-float" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+            <path
+                d="M12.0041 2C6.48624 2 1.99609 6.49015 1.99609 12.008C1.99609 13.7917 2.4706 15.4853 3.32427 16.9737L2 22L7.2023 20.671C8.63666 21.5281 10.2825 22.016 12.0041 22.016C17.5219 22.016 22.0121 17.5259 22.0121 12.008C22.0121 6.49015 17.5219 2 12.0041 2ZM12.0041 20.216C10.5186 20.216 9.10373 19.8053 7.87324 19.0831L7.56846 18.9042L4.60677 19.6644L5.38541 16.7118L5.19532 16.398C4.39704 15.1118 3.97216 13.5932 3.97216 12.008C3.97216 7.57917 7.57527 3.97606 12.0041 3.97606C16.4329 3.97606 20.036 7.57917 20.036 12.008C20.036 16.4369 16.4329 20.216 12.0041 20.216ZM16.3943 14.5826C16.1493 14.4571 14.9497 13.8587 14.7292 13.7706C14.5087 13.6826 14.3496 13.6385 14.1905 13.8835C14.0314 14.1285 13.5781 14.6823 13.4433 14.8458C13.3086 15.0093 13.1738 15.0219 12.9288 14.8964C12.6838 14.7708 11.8943 14.5064 10.958 13.6554C10.2224 12.9868 9.72517 12.1611 9.5782 11.9032C9.43122 11.6453 9.56276 11.5061 9.6853 11.3813C9.79555 11.269 9.93033 11.0892 10.0528 10.9383C10.1754 10.7874 10.2121 10.6868 10.2979 10.5108C10.3836 10.3347 10.3347 10.1838 10.2734 10.0581C10.2121 9.9324 9.73444 8.73815 9.53856 8.24796C9.34268 7.78287 9.1468 7.84572 9.01211 7.84572C8.88957 7.84572 8.74261 7.83315 8.59564 7.83315C8.44868 7.83315 8.20377 7.89601 7.99547 8.12228C7.78718 8.34854 7.19934 8.91421 7.19934 10.0706C7.19934 11.227 8.03208 12.3584 8.15461 12.5218C8.27715 12.6853 9.8109 15.1118 12.2373 16.143C14.6637 17.1742 14.6637 16.8346 15.0924 16.7844C15.5211 16.7341 16.48 16.1932 16.676 15.6275C16.872 15.0618 16.872 14.5842 16.8107 14.4836C16.7495 14.383 16.5905 14.3195 16.3943 14.2882V14.5826Z">
+            </path>
+        </svg>
+    </a>
+
+    <script src="script.js"></script>
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        // Form submission handler with Supabase integration
+        const form = document.getElementById('contactForm');
+        const successMessage = document.getElementById('successMessage');
+
+        if (form) {
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault(); // Prevent default form submission
+
+                const btn = this.querySelector('button[type="submit"]');
+                const originalText = btn.innerText;
+                btn.innerText = 'Sending...';
+                btn.disabled = true;
+
+                // Collect form data
+                const formData = {
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    project_type: document.getElementById('project_type').value,
+                    message: document.getElementById('message').value
+                };
+
+                // Try to save to Supabase first
+                let supabaseSaved = false;
+                if (typeof submitContactForm === 'function' && typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
+                    try {
+                        const { data, error } = await submitContactForm(formData);
+                        if (!error) {
+                            supabaseSaved = true;
+                            console.log('Message saved to Supabase');
+                        }
+                    } catch (err) {
+                        console.log('Supabase save failed, using fallback');
+                    }
+                }
+
+                // Also submit to Formspree as backup (or primary if Supabase not configured)
+                try {
+                    const response = await fetch('https://formspree.io/f/xzzevzjw', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok || supabaseSaved) {
+                        // Show success message
+                        form.style.display = 'none';
+                        successMessage.style.display = 'block';
+                    } else {
+                        throw new Error('Form submission failed');
+                    }
+                } catch (err) {
+                    if (supabaseSaved) {
+                        // Supabase saved, show success anyway
+                        form.style.display = 'none';
+                        successMessage.style.display = 'block';
+                    } else {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
+                        alert('Error sending message. Please try WhatsApp instead.');
+                    }
+                }
+            });
+        }
+
+        // Check if redirected back from Formspree (success)
+        if (window.location.search.includes('success')) {
+            document.getElementById('contactForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>

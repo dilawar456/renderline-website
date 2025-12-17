@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOG WAVE Design Studio | Premium Architectural Visualization</title>
+    <meta name="description"
+        content="Premium 3D architectural visualization studio specializing in exterior and interior renders for architects and developers in Saudi Arabia.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Homepage Styles */
+        .hero {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-dark);
+        }
+
+        .hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+            padding-top: calc(var(--header-height) + 4rem);
+        }
+
+        .hero-line {
+            width: 60px;
+            height: 3px;
+            background: var(--text-gold);
+            margin-bottom: 2rem;
+        }
+
+        .hero-content h1 span {
+            color: var(--text-gold);
+        }
+
+        .hero-content p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-image {
+            flex: 1.3;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #050505;
+        }
+
+        /* GLOW EDGE EFFECT - Soft edges not sharp */
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 0;
+            mask-image: radial-gradient(ellipse 90% 90% at center, black 60%, transparent 100%);
+            -webkit-mask-image: radial-gradient(ellipse 90% 90% at center, black 60%, transparent 100%);
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 150px 50px #050505;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            background: linear-gradient(180deg, var(--bg-dark), #0d0d0d);
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .intro-text h2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .intro-text .subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-left: 3px solid var(--text-gold);
+            transition: var(--transition);
+        }
+
+        .feature-item:hover {
+            border-color: var(--text-gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .feature-item span {
+            font-size: 1.5rem;
+        }
+
+        .feature-item h4 {
+            color: var(--text-white);
+        }
+
+        /* Services Section */
+        .services-section {
+            background: #080808;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--text-gold);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .service-card .info {
+            padding: 1.5rem;
+        }
+
+        .service-card h3 {
+            color: var(--text-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card .link {
+            color: var(--text-gold);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        /* Portfolio Preview */
+        .portfolio-preview {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 280px 280px;
+            gap: 1rem;
+        }
+
+        .preview-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .preview-item:first-child {
+            grid-row: span 2;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .preview-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .preview-item .label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+        }
+
+        .preview-item .label h4 {
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .preview-item .label span {
+            color: var(--text-gold);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        /* Why Section */
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .benefits-list li {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .benefits-list li span {
+            color: var(--text-gold);
+            font-size: 1.2rem;
+        }
+
+        .why-image img {
+            width: 100%;
+            border-radius: 4px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: linear-gradient(180deg, #0a0a0a, #111);
+        }
+
+        .cta-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+            }
+
+            .hero-content {
+                padding: 2rem;
+                padding-top: calc(var(--header-height) + 2rem);
+            }
+
+            .hero-image {
+                min-height: 50vh;
+            }
+
+            .intro-grid,
+            .services-grid,
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-preview {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: auto;
+            }
+
+            .preview-item:first-child {
+                grid-row: span 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .portfolio-preview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.jpg" alt="VOG WAVE Design Studio">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle">☀</button>
+                <a href="contact.html" class="btn btn-primary">Let's Talk</a>
+            </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Using render40 with GLOW edges -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-line"></div>
+            <h1>Architectural Vision<br><span>Redefined.</span></h1>
+            <p>VOG WAVE Design Studio creates emotive, high-end visualization for the Middle East's most ambitious
+                architectural projects.</p>
+            <div class="hero-buttons">
+                <a href="portfolio.html" class="btn btn-primary">View Portfolio</a>
+                <a href="contact.html" class="btn">Get a Quote</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="assets/images/render40.jpg" alt="Luxury Architectural Render">
+        </div>
+    </header>
+
+    <!-- Intro Section -->
+    <section class="intro-section section-padding">
+        <div class="container">
+            <div class="intro-grid">
+                <div class="intro-text">
+                    <h2 class="text-gold">Ali Hamza</h2>
+                    <p class="subtitle">Founder & Lead Visualizer</p>
+                    <p>At <strong>VOG WAVE Design Studio</strong>, I specialize in bringing architectural concepts to
+                        life through photorealistic visualization. With deep expertise in the Saudi market (Riyadh,
+                        Jeddah, NEOM), I deliver renders that captivate clients and close deals.</p>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <span>⚡</span>
+                        <h4>Fast Delivery</h4>
+                    </div>
+                    <div class="feature-item">
+                        <span>✨</span>
+                        <h4>Photorealistic Quality</h4>
+                    </div>
+                    <div class="feature-item">
+                        <span>📐</span>
+                        <h4>Architect-First Approach</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services-section section-padding">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 4rem;">
+                <h2>Our Expertise</h2>
+                <p style="max-width: 600px; margin: 0 auto;">Tailored visualization solutions for architects,
+                    developers, and real estate professionals.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img src="assets/images/render2.jpg" alt="Exterior Visualization">
+                    <div class="info">
+                        <h3>Exterior Visualization</h3>
+                        <p>High-rise towers, villas, facades, and landscape integration.</p>
+                        <a href="services.html" class="link">Learn More →</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="assets/images/render10.jpg" alt="Interior Visualization">
+                    <div class="info">
+                        <h3>Interior Visualization</h3>
+                        <p>Luxury residential and commercial interior styling.</p>
+                        <a href="services.html" class="link">Learn More →</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img src="assets/images/render12.jpg" alt="3D Walkthroughs">
+                    <div class="info">
+                        <h3>3D Walkthroughs</h3>
+                        <p>Cinematic animations for real estate marketing.</p>
+                        <a href="services.html" class="link">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Preview -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 3rem;">
+                <h2>Featured Projects</h2>
+                <p style="max-width: 500px; margin: 0 auto;">A selection of our latest architectural visualizations.</p>
+            </div>
+            <div class="portfolio-preview">
+                <div class="preview-item">
+                    <img src="assets/images/render13.jpg" alt="Project">
+                    <div class="label">
+                        <h4>Private Spa Concept</h4><span>Interior Design</span>
+                    </div>
+                </div>
+                <div class="preview-item">
+                    <img src="assets/images/render15.jpg" alt="Project">
+                    <div class="label">
+                        <h4>The Heights</h4><span>Exterior / Jeddah</span>
+                    </div>
+                </div>
+                <div class="preview-item">
+                    <img src="assets/images/render3.jpg" alt="Project">
+                    <div class="label">
+                        <h4>Urban Villa</h4><span>Exterior / Riyadh</span>
+                    </div>
+                </div>
+                <div class="preview-item">
+                    <img src="assets/images/render16.jpg" alt="Project">
+                    <div class="label">
+                        <h4>Executive Suite</h4><span>Interior</span>
+                    </div>
+                </div>
+                <div class="preview-item">
+                    <img src="assets/images/render4.jpg" alt="Project">
+                    <div class="label">
+                        <h4>Mall Concept</h4><span>Commercial</span>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" style="margin-top: 3rem;">
+                <a href="portfolio.html" class="btn">View Full Portfolio</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section-padding" style="background: #080808;">
+        <div class="container">
+            <div class="why-grid">
+                <div>
+                    <h2>Why VOG WAVE?</h2>
+                    <ul class="benefits-list">
+                        <li><span>✔</span> Architect-first collaborative workflow</li>
+                        <li><span>✔</span> Realistic lighting & material accuracy</li>
+                        <li><span>✔</span> Saudi market expertise (Najdi, Hijazi styles)</li>
+                        <li><span>✔</span> Fast revisions & project confidentiality</li>
+                        <li><span>✔</span> Affordable pricing, premium results</li>
+                    </ul>
+                    <a href="contact.html" class="btn btn-primary" style="margin-top: 1.5rem;">Start Your Project</a>
+                </div>
+                <div class="why-image">
+                    <video autoplay muted loop playsinline style="width: 100%; border-radius: 4px;">
+                        <source src="assets/videos/ad.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2>Ready to Visualize Your Vision?</h2>
+        <p>Let's discuss your project. Get a free consultation and custom quote today.</p>
+        <div class="cta-buttons">
+            <a href="contact.html" class="btn btn-primary">Contact Us</a>
+            <a href="https://wa.me/923140735267" class="btn btn-whatsapp" target="_blank">WhatsApp: 0314-0735267</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-col">
+                <h3>VOG WAVE.</h3>
+                <p>Premium architectural visualization studio by Ali Hamza. Serving architects and developers across
+                    Saudi Arabia and the Middle East.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="portfolio.html">Portfolio</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>Riyadh / Jeddah, Saudi Arabia</p>
+                <p>WhatsApp: 0314-0735267</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 VOG WAVE Design Studio. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/923140735267" class="whatsapp-float" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+            <path
+                d="M12.0041 2C6.48624 2 1.99609 6.49015 1.99609 12.008C1.99609 13.7917 2.4706 15.4853 3.32427 16.9737L2 22L7.2023 20.671C8.63666 21.5281 10.2825 22.016 12.0041 22.016C17.5219 22.016 22.0121 17.5259 22.0121 12.008C22.0121 6.49015 17.5219 2 12.0041 2ZM12.0041 20.216C10.5186 20.216 9.10373 19.8053 7.87324 19.0831L7.56846 18.9042L4.60677 19.6644L5.38541 16.7118L5.19532 16.398C4.39704 15.1118 3.97216 13.5932 3.97216 12.008C3.97216 7.57917 7.57527 3.97606 12.0041 3.97606C16.4329 3.97606 20.036 7.57917 20.036 12.008C20.036 16.4369 16.4329 20.216 12.0041 20.216ZM16.3943 14.5826C16.1493 14.4571 14.9497 13.8587 14.7292 13.7706C14.5087 13.6826 14.3496 13.6385 14.1905 13.8835C14.0314 14.1285 13.5781 14.6823 13.4433 14.8458C13.3086 15.0093 13.1738 15.0219 12.9288 14.8964C12.6838 14.7708 11.8943 14.5064 10.958 13.6554C10.2224 12.9868 9.72517 12.1611 9.5782 11.9032C9.43122 11.6453 9.56276 11.5061 9.6853 11.3813C9.79555 11.269 9.93033 11.0892 10.0528 10.9383C10.1754 10.7874 10.2121 10.6868 10.2979 10.5108C10.3836 10.3347 10.3347 10.1838 10.2734 10.0581C10.2121 9.9324 9.73444 8.73815 9.53856 8.24796C9.34268 7.78287 9.1468 7.84572 9.01211 7.84572C8.88957 7.84572 8.74261 7.83315 8.59564 7.83315C8.44868 7.83315 8.20377 7.89601 7.99547 8.12228C7.78718 8.34854 7.19934 8.91421 7.19934 10.0706C7.19934 11.227 8.03208 12.3584 8.15461 12.5218C8.27715 12.6853 9.8109 15.1118 12.2373 16.143C14.6637 17.1742 14.6637 16.8346 15.0924 16.7844C15.5211 16.7341 16.48 16.1932 16.676 15.6275C16.872 15.0618 16.872 14.5842 16.8107 14.4836C16.7495 14.383 16.5905 14.3195 16.3943 14.2882V14.5826Z">
+            </path>
+        </svg>
+    </a>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-config.js"></script>
+    <script>
+        // Fetch dynamic content from Supabase
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (typeof getSiteContent === 'function' && typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
+                const { data: content, error } = await getSiteContent();
+
+                if (content && !error) {
+                    // Update Hero Section
+                    if (content.hero_heading) document.querySelector('.hero-content h1').innerHTML = content.hero_heading.replace('\n', '<br>');
+                    if (content.hero_subheading) document.querySelector('.hero-content p').innerText = content.hero_subheading;
+
+                    // Update About Section
+                    if (content.about_name) document.querySelector('.intro-text h2').innerText = content.about_name;
+                    if (content.about_title) document.querySelector('.intro-text .subtitle').innerText = content.about_title;
+                    if (content.about_bio) document.querySelector('.intro-text p:not(.subtitle)').innerHTML = content.about_bio;
+
+                    // Update Contact Info
+                    if (content.contact_whatsapp) {
+                        const waLinks = document.querySelectorAll('a[href*="wa.me"]');
+                        waLinks.forEach(link => {
+                            link.href = `https://wa.me/${content.contact_whatsapp.replace(/[^0-9]/g, '')}`;
+                            if (link.innerText.includes('WhatsApp')) link.innerText = `WhatsApp: ${content.contact_whatsapp}`;
+                        });
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
