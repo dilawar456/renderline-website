@@ -15,211 +15,272 @@
     <link rel="stylesheet" href="style.css">
 
     <style>
+        /* Services Hero */
         .services-hero {
-            padding: calc(var(--header-height) + 4rem) 0 3rem;
+            padding: calc(var(--header-height) + 5rem) 0 4rem;
             text-align: center;
-            background: var(--bg-card);
-        }
-
-        .service-detail-section {
-            background: var(--bg-dark);
-        }
-
-        .service-detail-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            margin-bottom: 4rem;
-            padding: 2.5rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-dark);
-            border-radius: 12px;
-        }
-
-        .service-detail-row:hover {
-            border-color: var(--border-gold);
-        }
-
-        .service-detail-row.reverse {
-            direction: rtl;
-        }
-
-        .service-detail-row.reverse>* {
-            direction: ltr;
-        }
-
-        .service-img {
+            background: linear-gradient(180deg, var(--bg-dark), var(--bg-card));
+            position: relative;
             overflow: hidden;
-            border-radius: 8px;
         }
 
-        .service-img img {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-            transition: var(--transition);
+        .services-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+            pointer-events: none;
         }
 
-        .service-detail-row:hover .service-img img {
-            transform: scale(1.03);
-        }
-
-        .service-info h2 {
+        .services-hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
             margin-bottom: 1rem;
+        }
+
+        .services-hero h1 span {
             color: var(--primary);
         }
 
-        .service-info>p {
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
+        .services-hero p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
         }
 
-        .service-features {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .service-features span {
-            padding: 0.5rem 1rem;
+        /* Service Cards Grid */
+        .services-grid-section {
+            padding: 5rem 0;
             background: var(--bg-dark);
-            border: 1px solid var(--border-dark);
-            border-radius: 4px;
-            font-size: 0.8rem;
-            color: var(--text-light);
         }
 
-        .service-features span:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-
-        .timeline {
-            display: inline-block;
-            padding: 0.75rem 1.25rem;
-            background: rgba(212, 175, 55, 0.1);
-            border-left: 3px solid var(--primary);
-            color: var(--primary);
-            font-weight: 500;
-            font-size: 0.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .service-highlights {
+        .services-cards {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .highlight-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-
-        .highlight-item span {
-            color: var(--primary);
-        }
-
-        /* Pricing Section */
-        .pricing-section {
-            background: var(--bg-card);
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
         }
 
-        .pricing-card {
-            background: var(--bg-dark);
+        .service-card {
+            background: var(--bg-card);
             border: 1px solid var(--border-dark);
-            border-radius: 12px;
-            padding: 2.5rem;
-            text-align: center;
-            transition: var(--transition);
-        }
-
-        .pricing-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .pricing-card.featured {
-            border-color: var(--primary);
+            border-radius: 16px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.4s;
             position: relative;
         }
 
-        .pricing-card.featured::before {
-            content: 'Most Popular';
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--gradient-primary);
-            color: #000;
-            padding: 0.4rem 1rem;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            border-radius: 20px;
+        .service-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(212, 175, 55, 0.15);
         }
 
-        .pricing-card h3 {
+        .service-card .card-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .service-card .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .service-card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .service-card .card-image::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(to top, var(--bg-card), transparent);
+        }
+
+        .service-card .card-content {
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        .service-card .service-icon {
+            font-size: 2.5rem;
             margin-bottom: 1rem;
         }
 
-        .pricing-card .price {
-            font-size: 2.5rem;
-            font-weight: 600;
+        .service-card h3 {
             color: var(--primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.3rem;
         }
 
-        .pricing-card .price span {
-            font-size: 1rem;
+        .service-card p {
+            font-size: 0.95rem;
             color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.7;
         }
 
-        .pricing-card ul {
-            margin: 1.5rem 0;
-            text-align: left;
+        .service-card .timeline-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 3px solid var(--primary);
+            color: var(--primary);
+            font-size: 0.8rem;
+            font-weight: 500;
         }
 
-        .pricing-card li {
-            padding: 0.5rem 0;
-            color: var(--text-muted);
+        .service-card .click-hint {
+            margin-top: 1rem;
+            color: var(--primary);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Service Modal */
+        .service-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .service-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-dark);
+            border-radius: 16px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 2rem;
+            color: #fff;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .modal-close:hover {
+            color: var(--primary);
+        }
+
+        .modal-header {
+            position: relative;
+            height: 250px;
+        }
+
+        .modal-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to top, var(--bg-card), transparent);
+        }
+
+        .modal-body {
+            padding: 2rem 3rem 3rem;
+        }
+
+        .modal-body h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .modal-body>p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .modal-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-features span {
+            padding: 0.75rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-dark);
+            border-radius: 8px;
             font-size: 0.9rem;
-            border-bottom: 1px solid var(--border-dark);
+            color: var(--text-light);
+            text-align: center;
         }
 
-        .pricing-card li:last-child {
-            border-bottom: none;
+        .modal-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2rem;
         }
 
-        @media (max-width: 900px) {
+        .modal-highlights div {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
 
-            .service-detail-row,
-            .service-detail-row.reverse {
+        .modal-highlights div span {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .modal-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .services-cards {
                 grid-template-columns: 1fr;
-                direction: ltr;
             }
 
-            .service-img img {
-                height: 280px;
+            .modal-body {
+                padding: 1.5rem;
             }
 
-            .pricing-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .service-highlights {
+            .modal-highlights {
                 grid-template-columns: 1fr;
             }
         }
@@ -242,7 +303,6 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="theme-toggle" id="themeToggle">☀</button>
                 <a href="contact.html" class="btn btn-primary">Let's Talk</a>
             </div>
             <div class="mobile-toggle" id="mobileToggle">
@@ -254,186 +314,118 @@
     <!-- Hero -->
     <header class="services-hero">
         <div class="container">
-            <h1>Our Services</h1>
-            <p style="max-width: 600px; margin: 0 auto;">Comprehensive architectural visualization solutions tailored to
-                bring your vision to life with stunning photorealistic quality.</p>
+            <h1>Our <span>Services</span></h1>
+            <p>Premium architectural visualization solutions tailored to bring your vision to life with stunning
+                photorealistic quality.</p>
         </div>
     </header>
 
-    <!-- Services Detail -->
-    <section class="service-detail-section section-padding">
+    <!-- Services Grid -->
+    <section class="services-grid-section">
         <div class="container">
+            <div class="services-cards">
 
-            <!-- Exterior Visualization -->
-            <div class="service-detail-row" id="services-container">
-                <div class="service-img">
-                    <img src="assets/images/render2.jpg" alt="Exterior Visualization">
-                </div>
-                <div class="service-info">
-                    <h2>Exterior Visualization</h2>
-                    <p>Transform your architectural designs into breathtaking photorealistic exterior renders. Perfect
-                        for residential villas, commercial complexes, high-rise towers, and mixed-use developments. Our
-                        exterior renders capture the true essence of your design with accurate lighting, materials, and
-                        environmental context.</p>
-                    <div class="timeline">⏱ Delivery: 3-5 Days</div>
-                    <div class="service-features">
-                        <span>Residential Villas</span>
-                        <span>High-Rise Towers</span>
-                        <span>Commercial Buildings</span>
-                        <span>Landscape Integration</span>
-                        <span>Day & Night Views</span>
-                        <span>Aerial Perspectives</span>
+                <!-- Exterior -->
+                <div class="service-card" data-service="exterior">
+                    <div class="card-image">
+                        <img src="assets/images/render2.jpg" alt="Exterior Visualization">
                     </div>
-                    <div class="service-highlights">
-                        <div class="highlight-item"><span>✓</span> 4K Resolution Output</div>
-                        <div class="highlight-item"><span>✓</span> Realistic Sky & Weather</div>
-                        <div class="highlight-item"><span>✓</span> Entourage & Vegetation</div>
-                        <div class="highlight-item"><span>✓</span> Multiple Camera Angles</div>
+                    <div class="card-content">
+                        <div class="service-icon">🏠</div>
+                        <h3>Exterior Visualization</h3>
+                        <p>Transform your architectural designs into breathtaking photorealistic exterior renders
+                            perfect for marketing.</p>
+                        <div class="timeline-badge">⏱ Delivery: 3-5 Days</div>
+                        <div class="click-hint">Click for details →</div>
                     </div>
                 </div>
+
+                <!-- Interior -->
+                <div class="service-card" data-service="interior">
+                    <div class="card-image">
+                        <img src="assets/images/render10.jpg" alt="Interior Visualization">
+                    </div>
+                    <div class="card-content">
+                        <div class="service-icon">🛋️</div>
+                        <h3>Interior Visualization</h3>
+                        <p>Create stunning interior renders that showcase your design's full potential with realistic
+                            materials and lighting.</p>
+                        <div class="timeline-badge">⏱ Delivery: 2-4 Days</div>
+                        <div class="click-hint">Click for details →</div>
+                    </div>
+                </div>
+
+                <!-- Animation -->
+                <div class="service-card" data-service="animation">
+                    <div class="card-image">
+                        <img src="assets/images/render12.jpg" alt="3D Animation">
+                    </div>
+                    <div class="card-content">
+                        <div class="service-icon">🎬</div>
+                        <h3>3D Animation & Walkthroughs</h3>
+                        <p>Bring your projects to life with cinematic 3D animations and virtual walkthroughs for
+                            marketing.</p>
+                        <div class="timeline-badge">⏱ Delivery: 7-14 Days</div>
+                        <div class="click-hint">Click for details →</div>
+                    </div>
+                </div>
+
+                <!-- Floor Plans -->
+                <div class="service-card" data-service="floorplan">
+                    <div class="card-image">
+                        <img src="assets/images/render16.jpg" alt="Floor Plan Visualization">
+                    </div>
+                    <div class="card-content">
+                        <div class="service-icon">📐</div>
+                        <h3>Floor Plan Visualization</h3>
+                        <p>Convert your 2D floor plans into stunning 3D visualizations with realistic furniture and
+                            finishes.</p>
+                        <div class="timeline-badge">⏱ Delivery: 1-2 Days</div>
+                        <div class="click-hint">Click for details →</div>
+                    </div>
+                </div>
+
+                <!-- AutoCAD -->
+                <div class="service-card" data-service="autocad">
+                    <div class="card-image">
+                        <img src="assets/images/render3.jpg" alt="AutoCAD Drawings">
+                    </div>
+                    <div class="card-content">
+                        <div class="service-icon">✏️</div>
+                        <h3>AutoCAD Architecture Drawings</h3>
+                        <p>Professional architectural drawings and technical documentation for construction and
+                            approvals.</p>
+                        <div class="timeline-badge">⏱ Delivery: 2-5 Days</div>
+                        <div class="click-hint">Click for details →</div>
+                    </div>
+                </div>
+
+                <!-- Consultation -->
+                <div class="service-card" data-service="consultation">
+                    <div class="card-image">
+                        <img src="assets/images/render15.jpg" alt="Design Consultation">
+                    </div>
+                    <div class="card-content">
+                        <div class="service-icon">💡</div>
+                        <h3>Design & Construction Consultation</h3>
+                        <p>Get expert advice on your architectural visualization needs and construction documentation.
+                        </p>
+                        <div class="timeline-badge">⏱ Free Initial Call</div>
+                        <div class="click-hint">Click for details →</div>
+                    </div>
+                </div>
+
             </div>
-
-            <!-- Interior Visualization -->
-            <div class="service-detail-row reverse">
-                <div class="service-img">
-                    <img src="assets/images/render10.jpg" alt="Interior Visualization">
-                </div>
-                <div class="service-info">
-                    <h2>Interior Visualization</h2>
-                    <p>Create stunning interior renders that showcase your design's full potential. From luxury
-                        residential spaces to modern office environments, we capture every detail - from furniture
-                        arrangement to material textures for an immersive visual experience.</p>
-                    <div class="timeline">⏱ Delivery: 2-4 Days</div>
-                    <div class="service-features">
-                        <span>Living Rooms</span>
-                        <span>Bedrooms</span>
-                        <span>Kitchens</span>
-                        <span>Offices</span>
-                        <span>Retail Spaces</span>
-                        <span>Restaurants</span>
-                    </div>
-                    <div class="service-highlights">
-                        <div class="highlight-item"><span>✓</span> Natural & Artificial Lighting</div>
-                        <div class="highlight-item"><span>✓</span> Furniture Staging</div>
-                        <div class="highlight-item"><span>✓</span> Material Customization</div>
-                        <div class="highlight-item"><span>✓</span> 360° Panoramas Available</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3D Animation -->
-            <div class="service-detail-row">
-                <div class="service-img">
-                    <img src="assets/images/render12.jpg" alt="3D Animation">
-                </div>
-                <div class="service-info">
-                    <h2>3D Animation & Walkthroughs</h2>
-                    <p>Bring your projects to life with cinematic 3D animations and virtual walkthroughs. Perfect for
-                        marketing presentations, sales pitches, and investor meetings. Our animations tell a story and
-                        create an emotional connection with your audience.</p>
-                    <div class="timeline">⏱ Delivery: 7-14 Days</div>
-                    <div class="service-features">
-                        <span>Fly-Through Tours</span>
-                        <span>Interior Walkthroughs</span>
-                        <span>Cinematic Sequences</span>
-                        <span>Real Estate Marketing</span>
-                        <span>Construction Progress</span>
-                        <span>Product Showcases</span>
-                    </div>
-                    <div class="service-highlights">
-                        <div class="highlight-item"><span>✓</span> Full HD / 4K Quality</div>
-                        <div class="highlight-item"><span>✓</span> Background Music</div>
-                        <div class="highlight-item"><span>✓</span> Voiceover Integration</div>
-                        <div class="highlight-item"><span>✓</span> Social Media Ready</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Floor Plans -->
-            <div class="service-detail-row reverse">
-                <div class="service-img">
-                    <img src="assets/images/render16.jpg" alt="Floor Plan Visualization">
-                </div>
-                <div class="service-info">
-                    <h2>Floor Plan Visualization</h2>
-                    <p>Convert your 2D floor plans into stunning 3D visualizations. Help your clients understand spatial
-                        relationships and room layouts with realistic furniture placement and material finishes.</p>
-                    <div class="timeline">⏱ Delivery: 1-2 Days</div>
-                    <div class="service-features">
-                        <span>2D to 3D Conversion</span>
-                        <span>Furnished Layouts</span>
-                        <span>Color Schemes</span>
-                        <span>Dimension Labels</span>
-                        <span>Section Views</span>
-                        <span>Isometric Views</span>
-                    </div>
-                    <div class="service-highlights">
-                        <div class="highlight-item"><span>✓</span> Print-Ready Output</div>
-                        <div class="highlight-item"><span>✓</span> Multiple Variations</div>
-                        <div class="highlight-item"><span>✓</span> Branding Integration</div>
-                        <div class="highlight-item"><span>✓</span> Marketing Ready</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- AutoCAD Drawings -->
-            <div class="service-detail-row">
-                <div class="service-img">
-                    <img src="assets/images/render3.jpg" alt="AutoCAD Architecture Drawings">
-                </div>
-                <div class="service-info">
-                    <h2>AutoCAD Architecture Drawings</h2>
-                    <p>Professional architectural drawings and technical documentation for construction and approvals.
-                        We create precise 2D floor plans, elevations, sections, and detailed construction drawings that
-                        meet industry standards.</p>
-                    <div class="timeline">⏱ Delivery: 2-5 Days</div>
-                    <div class="service-features">
-                        <span>Floor Plans</span>
-                        <span>Elevations</span>
-                        <span>Sections</span>
-                        <span>Site Plans</span>
-                        <span>Detail Drawings</span>
-                        <span>Construction Docs</span>
-                    </div>
-                    <div class="service-highlights">
-                        <div class="highlight-item"><span>✓</span> Industry Standard Formats</div>
-                        <div class="highlight-item"><span>✓</span> Approval Ready</div>
-                        <div class="highlight-item"><span>✓</span> Revisions Included</div>
-                        <div class="highlight-item"><span>✓</span> DWG & PDF Delivery</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Consultation -->
-            <div class="service-detail-row reverse">
-                <div class="service-img">
-                    <img src="assets/images/render15.jpg" alt="Consultation">
-                </div>
-                <div class="service-info">
-                    <h2>Design Consultation</h2>
-                    <p>Get expert advice on your architectural visualization needs. Whether you're an architect,
-                        developer, or real estate professional, we offer personalized consultation to help you choose
-                        the right visualization approach for your projects.</p>
-                    <div class="timeline">⏱ Free Initial Call</div>
-                    <div class="service-features">
-                        <span>Project Assessment</span>
-                        <span>Budget Planning</span>
-                        <span>Style Guidance</span>
-                        <span>Software Advice</span>
-                        <span>Timeline Planning</span>
-                        <span>Marketing Strategy</span>
-                    </div>
-                    <div class="service-highlights">
-                        <div class="highlight-item"><span>✓</span> 30-Min Free Consultation</div>
-                        <div class="highlight-item"><span>✓</span> WhatsApp Support</div>
-                        <div class="highlight-item"><span>✓</span> Project Roadmap</div>
-                        <div class="highlight-item"><span>✓</span> Honest Pricing</div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </section>
+
+    <!-- Service Modals -->
+    <div class="service-modal" id="serviceModal">
+        <div class="modal-content" id="modalContent">
+            <span class="modal-close" id="modalClose">&times;</span>
+            <!-- Dynamic content loaded via JS -->
+        </div>
+    </div>
 
     <!-- CTA -->
     <section class="cta-section">
@@ -481,6 +473,106 @@
     </a>
 
     <script src="script.js"></script>
+    <script>
+        // Service Modal Data
+        const serviceData = {
+            exterior: {
+                title: 'Exterior Visualization',
+                image: 'assets/images/render2.jpg',
+                description: 'Transform your architectural designs into breathtaking photorealistic exterior renders. Perfect for residential villas, commercial complexes, high-rise towers, and mixed-use developments. Our exterior renders capture the true essence of your design with accurate lighting, materials, and environmental context.',
+                features: ['Residential Villas', 'High-Rise Towers', 'Commercial Buildings', 'Landscape Integration', 'Day & Night Views', 'Aerial Perspectives'],
+                highlights: ['4K Resolution Output', 'Realistic Sky & Weather', 'Entourage & Vegetation', 'Multiple Camera Angles']
+            },
+            interior: {
+                title: 'Interior Visualization',
+                image: 'assets/images/render10.jpg',
+                description: 'Create stunning interior renders that showcase your design\'s full potential. From luxury residential spaces to modern office environments, we capture every detail - from furniture arrangement to material textures for an immersive visual experience.',
+                features: ['Living Rooms', 'Bedrooms', 'Kitchens', 'Offices', 'Retail Spaces', 'Restaurants'],
+                highlights: ['Natural & Artificial Lighting', 'Furniture Staging', 'Material Customization', '360° Panoramas Available']
+            },
+            animation: {
+                title: '3D Animation & Walkthroughs',
+                image: 'assets/images/render12.jpg',
+                description: 'Bring your projects to life with cinematic 3D animations and virtual walkthroughs. Perfect for marketing presentations, sales pitches, and investor meetings. Our animations tell a story and create an emotional connection with your audience.',
+                features: ['Fly-Through Tours', 'Interior Walkthroughs', 'Cinematic Sequences', 'Real Estate Marketing', 'Construction Progress', 'Product Showcases'],
+                highlights: ['Full HD / 4K Quality', 'Background Music', 'Voiceover Integration', 'Social Media Ready']
+            },
+            floorplan: {
+                title: 'Floor Plan Visualization',
+                image: 'assets/images/render16.jpg',
+                description: 'Convert your 2D floor plans into stunning 3D visualizations. Help your clients understand spatial relationships and room layouts with realistic furniture placement and material finishes.',
+                features: ['2D to 3D Conversion', 'Furnished Layouts', 'Color Schemes', 'Dimension Labels', 'Section Views', 'Isometric Views'],
+                highlights: ['Print-Ready Output', 'Multiple Variations', 'Branding Integration', 'Marketing Ready']
+            },
+            autocad: {
+                title: 'AutoCAD Architecture Drawings',
+                image: 'assets/images/render3.jpg',
+                description: 'Professional architectural drawings and technical documentation for construction and approvals. We create precise 2D floor plans, elevations, sections, and detailed construction drawings that meet industry standards.',
+                features: ['Floor Plans', 'Elevations', 'Sections', 'Site Plans', 'Detail Drawings', 'Construction Docs'],
+                highlights: ['Industry Standard Formats', 'Approval Ready', 'Revisions Included', 'DWG & PDF Delivery']
+            },
+            consultation: {
+                title: 'Design & Construction Consultation',
+                image: 'assets/images/render15.jpg',
+                description: 'Get expert advice on your architectural visualization needs. Whether you\'re an architect, developer, or real estate professional, we offer personalized consultation to help you choose the right visualization approach and construction documentation for your projects.',
+                features: ['Project Assessment', 'Budget Planning', 'Style Guidance', 'Software Advice', 'Timeline Planning', 'Marketing Strategy'],
+                highlights: ['30-Min Free Consultation', 'WhatsApp Support', 'Project Roadmap', 'Honest Pricing']
+            }
+        };
+
+        const modal = document.getElementById('serviceModal');
+        const modalContent = document.getElementById('modalContent');
+        const modalClose = document.getElementById('modalClose');
+
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const serviceKey = card.dataset.service;
+                const data = serviceData[serviceKey];
+
+                modalContent.innerHTML = `
+                    <span class="modal-close" id="modalCloseBtn">&times;</span>
+                    <div class="modal-header">
+                        <img src="${data.image}" alt="${data.title}">
+                    </div>
+                    <div class="modal-body">
+                        <h2>${data.title}</h2>
+                        <p>${data.description}</p>
+                        <h4 style="margin-bottom: 1rem; color: var(--primary);">What We Offer</h4>
+                        <div class="modal-features">
+                            ${data.features.map(f => `<span>${f}</span>`).join('')}
+                        </div>
+                        <h4 style="margin-bottom: 1rem; color: var(--primary);">Key Highlights</h4>
+                        <div class="modal-highlights">
+                            ${data.highlights.map(h => `<div><span>✓</span>${h}</div>`).join('')}
+                        </div>
+                        <div class="modal-cta">
+                            <a href="contact.html" class="btn btn-primary">Get a Quote</a>
+                            <a href="https://wa.me/923114544040" class="btn btn-whatsapp" target="_blank">WhatsApp Now</a>
+                        </div>
+                    </div>
+                `;
+
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
 </body>
 
 </html>
