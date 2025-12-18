@@ -151,18 +151,8 @@ async function loadSiteContent() {
     setText('statClients', content.stat_clients);
     setText('statExperience', content.stat_experience);
 
-    // --- YOUTUBE VIDEOS (from Supabase) ---
-    for (let i = 1; i <= 4; i++) {
-        const videoUrl = content['youtube_video' + i];
-        const videoContainer = document.getElementById('youtubeEmbed' + i);
-        if (videoContainer && videoUrl) {
-            const videoId = getYouTubeId(videoUrl);
-            if (videoId) {
-                videoContainer.innerHTML = `<iframe width="100%" height="300" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="border-radius: 12px;"></iframe>`;
-                console.log('CMS: Loaded YouTube video ' + i + ' from Supabase');
-            }
-        }
-    }
+    // --- YOUTUBE VIDEOS (Dynamic Unlimited) ---
+    loadDynamicVideos();
 
     // --- CLOUDINARY HERO IMAGES (from Supabase) ---
     for (let i = 1; i <= 5; i++) {
@@ -311,6 +301,57 @@ function initFilters() {
             }
         });
     });
+}
+
+// --- DYNAMIC VIDEO GALLERY ---
+async function loadDynamicVideos() {
+    const gallery = document.getElementById('dynamicVideoGallery');
+    // If we are on Home page, we might want to show Featured Videos?
+    // Current setup targets 'dynamicVideoGallery' which is in portfolio.html.
+    // If not found, check if there's a home page container? (not yet).
+    if (!gallery) return;
+
+    try {
+        const { data, error } = await supabaseDb
+            .from('site_videos')
+            .select('*')
+            .order('sort_order', { ascending: true })
+            .order('created_at', { ascending: false });
+
+        if (data && data.length > 0) {
+            // Show the video section container if hidden (handled by filter usually, but ensure content is ready)
+            gallery.innerHTML = '';
+
+            data.forEach(video => {
+                const videoId = getYouTubeId(video.video_url);
+                if (videoId) {
+                    const div = document.createElement('div');
+                    div.className = 'video-embed-container';
+                    // Video Card Style
+                    div.innerHTML = `
+                        <div class="video-card">
+                             <iframe width="100%" height="220" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="border-radius: 12px 12px 0 0;"></iframe>
+                             <div class="video-info" style="padding:1rem;">
+                                <h4>${video.title || 'Untitled Animation'}</h4>
+                             </div>
+                        </div>
+                    `;
+                    gallery.appendChild(div);
+                }
+            });
+        } else {
+            gallery.innerHTML = '<p class="text-center">No animations added yet.</p>';
+        }
+    } catch (e) {
+        console.error('Error loading dynamic videos:', e);
+    }
+}
+
+function getYouTubeId(url) {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
 }
 
 async function loadServices() {

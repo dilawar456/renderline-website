@@ -1176,60 +1176,26 @@
                 </div>
 
                 <div class="card">
-                    <h3>🎬 YouTube Videos</h3>
-                    <p style="color: var(--text-dim); margin-bottom: 1rem;">Paste YouTube URLs. Videos will auto-embed
-                        on your website.</p>
+                    <h3>🎬 Video Gallery (Unlimited)</h3>
+                    <p style="color: var(--text-dim); margin-bottom: 1rem;">Manage your YouTube/Vimeo videos. These will
+                        appear in the Videos/Animations section.</p>
 
-                    <div class="form-group">
-                        <label>Video 1 - YouTube URL</label>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="youtubeUrl1" placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
-                                style="flex: 1;">
-                            <button class="btn" onclick="previewYouTube(1)" style="padding: 0.5rem 1rem;">👁️
-                                Preview</button>
-                        </div>
-                        <div id="youtubePreview1" style="margin-top: 0.5rem; border-radius: 8px; overflow: hidden;">
+                    <div class="form-group"
+                        style="padding: 1.5rem; background: var(--bg-dark); border-radius: 8px; border: 1px solid var(--border-light);">
+                        <label>Add New Video</label>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <input type="text" id="newVideoUrl" placeholder="Paste YouTube URL here..."
+                                style="flex: 2; min-width: 200px;">
+                            <input type="text" id="newVideoTitle" placeholder="Video Title (Optional)"
+                                style="flex: 1; min-width: 150px;">
+                            <button class="btn btn-primary" onclick="addVideoItem()">➕ Add</button>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label>Video 2 - YouTube URL</label>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="youtubeUrl2" placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
-                                style="flex: 1;">
-                            <button class="btn" onclick="previewYouTube(2)" style="padding: 0.5rem 1rem;">👁️
-                                Preview</button>
-                        </div>
-                        <div id="youtubePreview2" style="margin-top: 0.5rem; border-radius: 8px; overflow: hidden;">
-                        </div>
+                    <div id="videoGalleryList" style="margin-top: 1.5rem; display: grid; gap: 1rem;">
+                        <!-- Dynamic List -->
+                        <p style="text-align: center; color: var(--text-dim);">Loading videos...</p>
                     </div>
-
-                    <div class="form-group">
-                        <label>Video 3 - YouTube URL</label>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="youtubeUrl3" placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
-                                style="flex: 1;">
-                            <button class="btn" onclick="previewYouTube(3)" style="padding: 0.5rem 1rem;">👁️
-                                Preview</button>
-                        </div>
-                        <div id="youtubePreview3" style="margin-top: 0.5rem; border-radius: 8px; overflow: hidden;">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Video 4 - YouTube URL</label>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <input type="text" id="youtubeUrl4" placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
-                                style="flex: 1;">
-                            <button class="btn" onclick="previewYouTube(4)" style="padding: 0.5rem 1rem;">👁️
-                                Preview</button>
-                        </div>
-                        <div id="youtubePreview4" style="margin-top: 0.5rem; border-radius: 8px; overflow: hidden;">
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="saveYouTubeVideos()">💾 Save
-                        Videos</button>
                 </div>
 
                 <div class="card">
@@ -2307,50 +2273,111 @@
             }
         }
 
-        // ========== YOUTUBE FUNCTIONS ==========
+        // ========== VIDEO GALLERY FUNCTIONS (Dynamic) ==========
         function getYouTubeId(url) {
             if (!url) return null;
-            const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\s?]+)/);
-            return match ? match[1] : null;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
         }
 
-        function previewYouTube(index) {
-            const url = document.getElementById('youtubeUrl' + index).value;
-            const videoId = getYouTubeId(url);
-            const previewDiv = document.getElementById('youtubePreview' + index);
+        async function loadVideoGallery() {
+            const container = document.getElementById('videoGalleryList');
+            if (!container) return;
 
-            if (videoId) {
-                previewDiv.innerHTML = `
-                    <iframe width="100%" height="200" 
-                        src="https://www.youtube.com/embed/${videoId}" 
-                        frameborder="0" allowfullscreen 
-                        style="border-radius: 8px;">
-                    </iframe>`;
-            } else {
-                previewDiv.innerHTML = '<p style="color: var(--danger);">❌ Invalid YouTube URL</p>';
+            container.innerHTML = '<p style="text-align:center">Loading...</p>';
+
+            try {
+                const { data, error } = await supabaseDb
+                    .from('site_videos')
+                    .select('*')
+                    .order('sort_order', { ascending: true })
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; color: var(--text-dim)">No videos added yet.</p>';
+                    return;
+                }
+
+                container.innerHTML = '';
+                data.forEach(video => {
+                    const videoId = getYouTubeId(video.video_url);
+                    const thumbUrl = videoId
+                        ? `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`
+                        : 'assets/images/placeholder.jpg';
+
+                    const item = document.createElement('div');
+                    item.className = 'portfolio-item';
+                    item.style.display = 'flex';
+                    item.style.alignItems = 'center';
+                    item.style.gap = '1rem';
+                    item.style.padding = '1rem';
+                    item.style.background = 'var(--bg-card)';
+
+                    item.innerHTML = `
+                        <div style="width: 120px; height: 80px; flex-shrink: 0; position: relative; border-radius: 6px; overflow: hidden;">
+                            <img src="${thumbUrl}" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">▶️</div>
+                        </div>
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0; color: #fff; font-size: 1rem;">${video.title || 'Untitled'}</h4>
+                            <a href="${video.video_url}" target="_blank" style="color: var(--primary); font-size: 0.85rem;">${video.video_url}</a>
+                        </div>
+                        <button class="btn-delete" onclick="deleteVideoItem('${video.id}')">🗑️</button>
+                    `;
+                    container.appendChild(item);
+                });
+
+            } catch (err) {
+                console.error('Error loading videos:', err);
+                container.innerHTML = '<p style="color:red">Failed to load videos.</p>';
             }
         }
 
-        async function saveYouTubeVideos() {
-            const videos = {
-                youtube_video1: document.getElementById('youtubeUrl1').value,
-                youtube_video2: document.getElementById('youtubeUrl2').value,
-                youtube_video3: document.getElementById('youtubeUrl3').value,
-                youtube_video4: document.getElementById('youtubeUrl4').value
-            };
+        async function addVideoItem() {
+            const urlInput = document.getElementById('newVideoUrl');
+            const titleInput = document.getElementById('newVideoTitle');
+            const url = urlInput.value.trim();
+            const title = titleInput.value.trim();
 
-            // Always save local backup immediately
-            localStorage.setItem('youtube_videos', JSON.stringify(videos));
+            if (!url) {
+                alert('Please enter a Video URL');
+                return;
+            }
 
-            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
-                const { error } = await updateSiteContent(videos);
-                if (error) {
-                    alert('⚠️ Saved locally, but cloud sync failed: ' + error.message);
-                } else {
-                    alert('✅ YouTube videos saved (Cloud + Local)!');
-                }
-            } else {
-                alert('✅ Videos saved locally (Cloud not configured)!');
+            try {
+                const { error } = await supabaseDb
+                    .from('site_videos')
+                    .insert([{ video_url: url, title: title }]);
+
+                if (error) throw error;
+
+                urlInput.value = '';
+                titleInput.value = '';
+                loadVideoGallery();
+                alert('Video added successfully!');
+            } catch (err) {
+                console.error('Error adding video:', err);
+                alert('Failed to add video: ' + err.message);
+            }
+        }
+
+        async function deleteVideoItem(id) {
+            if (!confirm('Are you sure you want to delete this video?')) return;
+
+            try {
+                const { error } = await supabaseDb
+                    .from('site_videos')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+                loadVideoGallery();
+            } catch (err) {
+                console.error('Error deleting video:', err);
+                alert('Failed to delete video.');
             }
         }
 
@@ -2440,17 +2467,24 @@
                     showAdmin(user);
                 }
 
-                // Load saved YouTube URLs from Supabase
+                // Load dynamic video gallery
+                loadVideoGallery();
+
+                // Load other content if needed (Checking if other fields exist in this block)
                 const { data: content } = await getSiteContent();
                 if (content) {
-                    if (content.youtube_video1) document.getElementById('youtubeUrl1').value = content.youtube_video1;
-                    if (content.youtube_video2) document.getElementById('youtubeUrl2').value = content.youtube_video2;
-                    if (content.youtube_video3) document.getElementById('youtubeUrl3').value = content.youtube_video3;
-                    if (content.youtube_video4) document.getElementById('youtubeUrl4').value = content.youtube_video4;
-                    console.log('YouTube URLs loaded from Supabase');
+                    // Legacy static video loading removed
+                    // Check if about info needs loading here?
+                    if (content.about_name && document.getElementById('aboutName')) {
+                        document.getElementById('aboutName').value = content.about_name;
+                        // Assume other fields might be here or loaded elsewhere
+                        // I will trigger a general load if it exists
+                    }
+                    if (typeof loadAllAdminFields === 'function') loadAllAdminFields(content);
                 }
             }
         });
+
     </script>
 </body>
 
