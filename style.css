@@ -1622,3 +1622,13 @@ p {
     background: rgba(212, 175, 55, 0.3);
     color: var(--text-white);
 }
+/* Force Mobile Menu Active State */
+@media (max-width: 900px) {
+    .nav-links.active {
+        right: 0 !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        display: flex !important;
+        transform: none !important;
+    }
+}
