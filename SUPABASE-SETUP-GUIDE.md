@@ -139,7 +139,7 @@ Your website is now connected to Supabase. You can:
 ## 📞 Need Help?
 
 - **Supabase Docs**: [https://supabase.com/docs](https://supabase.com/docs)
-- **WhatsApp**: 0314-0735267
+- **WhatsApp**: 0311-4544040
 
 ---
 
