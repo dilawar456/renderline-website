@@ -24,20 +24,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileToggle && navLinks) {
         console.log('✅ Mobile toggle initialized');
 
+        // Toggle menu on click (works for touch too)
         mobileToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            navLinks.classList.toggle('active');
-            mobileToggle.classList.toggle('active');
-            console.log('📱 Mobile menu toggled:', navLinks.classList.contains('active'));
-        });
+            // Only prevent default if it's an anchor tag to prevent navigation
+            if (e.target.tagName === 'A') e.preventDefault();
 
-        // Touch support
-        mobileToggle.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
             navLinks.classList.toggle('active');
             mobileToggle.classList.toggle('active');
+
+            // Force display update for debugging
+            if (navLinks.classList.contains('active')) {
+                navLinks.style.right = '0';
+            } else {
+                navLinks.style.right = '-100%';
+            }
         });
 
         // Close menu when clicking a link

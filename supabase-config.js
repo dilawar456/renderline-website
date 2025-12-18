@@ -265,7 +265,7 @@ async function getServices() {
     const { data, error } = await supabaseDb
         .from('services')
         .select('*')
-        .order('order', { ascending: true });
+        .order('sort_order', { ascending: true });
 
     return { data, error };
 }
