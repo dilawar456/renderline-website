@@ -355,9 +355,43 @@ function getYouTubeId(url) {
 }
 
 async function loadServices() {
-    const { data: services, error } = await getServices();
-    if (error || !services) return;
+    // Fetch content from site_content (where Admin saves)
+    const { data: content, error } = await getSiteContent();
+    if (error || !content) {
+        console.error('CMS: Failed to load service content', error);
+        return;
+    }
 
-    // Logic to update services grid... 
-    // This requires structured HTML generation similar to portfolio.
+    // Loop through 6 services
+    for (let i = 1; i <= 6; i++) {
+        // IDs: service{i}Title, service{i}Desc, service{i}Image
+
+        // Text Fields
+        const title = content['service' + i + '_title'];
+        const desc = content['service' + i + '_desc'];
+
+        if (title) {
+            const titleEl = document.getElementById('service' + i + 'Title');
+            if (titleEl) titleEl.innerText = title;
+        }
+
+        if (desc) {
+            const descEl = document.getElementById('service' + i + 'Desc');
+            if (descEl) descEl.innerText = desc;
+        }
+
+        // Image Field
+        // Try Cloudinary column first, then legacy service_image column
+        const imgUrl = content['cloudinary_service' + i] || content['service_image' + i];
+
+        if (imgUrl) {
+            const imgEl = document.getElementById('service' + i + 'Image');
+            if (imgEl) {
+                imgEl.src = imgUrl;
+                // Ensure nice fit
+                imgEl.style.objectFit = 'cover';
+            }
+        }
+    }
+    console.log('CMS: Services loaded from Site Content');
 }

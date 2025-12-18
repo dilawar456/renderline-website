@@ -2233,7 +2233,7 @@
 
                 // Save to Supabase database
                 if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
-                    const { error: dbError } = await updateSiteContent({ ['service_image' + index]: data.url });
+                    const { error: dbError } = await updateSiteContent({ ['cloudinary_service' + index]: data.url });
                     if (dbError) {
                         alert('⚠️ Uploaded to Cloudinary but DB save failed');
                     } else {
