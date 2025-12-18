@@ -1185,10 +1185,13 @@
                         <label>Add New Video</label>
                         <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                             <input type="text" id="newVideoUrl" placeholder="Paste YouTube URL here..."
-                                style="flex: 2; min-width: 200px;">
+                                style="flex: 2; min-width: 200px;" oninput="updateVideoPreview(this.value)">
                             <input type="text" id="newVideoTitle" placeholder="Video Title (Optional)"
                                 style="flex: 1; min-width: 150px;">
                             <button class="btn btn-primary" onclick="addVideoItem()">➕ Add</button>
+                        </div>
+                        <div id="newVideoPreview"
+                            style="margin-top: 1rem; display: none; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
                         </div>
                     </div>
 
@@ -1627,6 +1630,21 @@
                 </div>
 
                 <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+
+                <div class="card" style="margin-top: 2rem; border-color: var(--gold);">
+                    <h3>🛠️ Data Migration Tools</h3>
+                    <p style="color: var(--text-dim); margin-bottom: 1rem;">Use these if you lost videos during the
+                        update.</p>
+                    <button class="btn" onclick="restoreLegacyVideos()"
+                        style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold);">↻
+                        Restore Legacy YouTube Videos</button>
+                    <button class="btn" id="migrateBtn" onclick="migrateLocalAssets()"
+                        style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold); margin-top: 1rem;">☁️
+                        Migrate Local Assets to Cloud</button>
+                    <div id="migrationLog"
+                        style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); max-height: 150px; overflow-y: auto;">
+                    </div>
+                </div>
             </section>
 
         </main>
@@ -2104,7 +2122,7 @@
 
                 // Save URL to Supabase database
                 if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
-                    const { error: dbError } = await updateSiteContent({ ['hero_image' + index]: data.url });
+                    const { error: dbError } = await updateSiteContent({ ['cloudinary_hero' + index]: data.url });
                     if (dbError) {
                         alert('⚠️ Uploaded to Cloudinary but DB save failed: ' + dbError.message);
                     } else {
@@ -2279,6 +2297,23 @@
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = url.match(regExp);
             return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function updateVideoPreview(url) {
+            const preview = document.getElementById('newVideoPreview');
+            if (!preview) return;
+            const videoId = getYouTubeId(url);
+
+            if (videoId) {
+                preview.style.display = 'block';
+                preview.innerHTML = `
+                    <p style="margin-bottom:0.5rem; color:var(--text-dim); font-size: 0.8rem;">Preview:</p>
+                    <iframe width="100%" height="250" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="border-radius: 8px;"></iframe>
+                `;
+            } else {
+                preview.style.display = 'none';
+                preview.innerHTML = '';
+            }
         }
 
         async function loadVideoGallery() {
@@ -2457,6 +2492,112 @@
                 statusDiv.innerHTML = `❌ Upload failed: ${error.message}`;
                 alert('❌ Upload failed: ' + error.message);
             }
+        }
+
+        // ========== MIGRATION TOOLS ==========
+        async function restoreLegacyVideos() {
+            if (!confirm('This will read old video slots (1-4) and add them to the new unlimited gallery. Continue?')) return;
+
+            try {
+                const { data: content, error } = await supabaseDb
+                    .from('site_content')
+                    .select('youtube_video1, youtube_video2, youtube_video3, youtube_video4')
+                    .single();
+
+                if (error) throw error;
+                if (!content) {
+                    alert('No legacy content found.');
+                    return;
+                }
+
+                let count = 0;
+                for (let i = 1; i <= 4; i++) {
+                    const url = content['youtube_video' + i];
+                    if (url && url.length > 10) {
+                        await supabaseDb
+                            .from('site_videos')
+                            .insert([{
+                                video_url: url,
+                                title: `Restored Video ${i}`,
+                                description: 'Restored from previous version'
+                            }]);
+                        count++;
+                    }
+                }
+
+                alert(`Migration Complete! Restored ${count} videos. Check the Video Gallery.`);
+                loadVideoGallery();
+
+            } catch (err) {
+                console.error('Migration failed:', err);
+                alert('Migration failed: ' + err.message);
+            }
+        }
+
+        const LOCAL_ASSETS = [
+            'Comercial (1).jpg', 'Comercial (1).png', 'Comercial (2).jpg', 'Comercial (2).png', 'Comercial (3).jpg', 'Comercial (3).png', 'Comercial (4).png', 'Comercial (5).png', 'Comercial (6).png',
+            'Exterior (1).jpg', 'Exterior (1).png', 'Exterior (2).jpg', 'Exterior (2).png', 'Exterior (3).jpg', 'Exterior (3).png', 'Exterior (4).jpg', 'Exterior (5).jpg', 'Exterior (6).jpg',
+            'interior (1).jpg', 'interior (1).png', 'interior (2).jpg', 'interior (2).png', 'interior (3).jpg', 'interior (3).png', 'interior (4).jpg', 'interior (5).jpg', 'interior (6).jpg', 'interior (7).jpg', 'interior (8).jpg'
+        ];
+
+        async function migrateLocalAssets() {
+            if (!confirm('This will upload all ' + LOCAL_ASSETS.length + ' local assets to Cloudinary and add them to your Portfolio. Continue?')) return;
+
+            const btn = document.getElementById('migrateBtn');
+            const log = document.getElementById('migrationLog');
+            btn.disabled = true;
+            log.innerHTML = 'Starting migration...<br>';
+            let success = 0;
+
+            for (const file of LOCAL_ASSETS) {
+                try {
+                    log.innerHTML += `Uploading ${file}... `;
+
+                    // 1. Fetch File
+                    const response = await fetch(`assets/images/${file}`);
+                    if (!response.ok) {
+                        log.innerHTML += `<span style="color:orange">Not Found (Skipped)</span><br>`;
+                        continue;
+                    }
+                    const blob = await response.blob();
+                    const fileObj = new File([blob], file, { type: blob.type });
+
+                    // 2. Upload to Cloudinary
+                    const { data, error } = await uploadToCloudinary(fileObj, 'portfolio');
+                    if (error) throw error;
+
+                    // 3. Determine Category
+                    let category = 'exterior';
+                    const lower = file.toLowerCase();
+                    if (lower.includes('interior')) category = 'interior';
+                    else if (lower.includes('comercial')) category = 'commercial';
+
+                    // 4. Save to Supabase
+                    const { error: dbError } = await addPortfolioItem({
+                        title: file.split('.')[0],
+                        image_url: data.secure_url,
+                        public_id: data.public_id,
+                        category: category
+                    });
+
+                    if (dbError) throw dbError;
+
+                    log.innerHTML += `<span style="color:lime">Done</span><br>`;
+                    success++;
+
+                    // Scroll log
+                    log.scrollTop = log.scrollHeight;
+
+                } catch (e) {
+                    console.error(e);
+                    log.innerHTML += `<span style="color:red">Failed: ${e.message}</span><br>`;
+                }
+            }
+
+            btn.disabled = false;
+            log.innerHTML += `<br><strong>Migration Finished. ${success} assets migrated.</strong>`;
+            alert('Migration finished!');
+            renderPortfolioGrid(await getPortfolioItems());
         }
 
         // ========== AUTO LOGIN CHECK ==========
