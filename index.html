@@ -268,19 +268,19 @@
     <!-- Hero Section with Carousel -->
     <header class="hero">
         <div class="hero-carousel">
-            <div class="hero-slide active">
+            <div class="hero-slide active" id="heroSlide1">
                 <img src="assets/images/render40.jpg" alt="Architectural Render">
             </div>
-            <div class="hero-slide">
+            <div class="hero-slide" id="heroSlide2">
                 <img src="assets/images/render2.jpg" alt="Exterior Design">
             </div>
-            <div class="hero-slide">
+            <div class="hero-slide" id="heroSlide3">
                 <img src="assets/images/render10.jpg" alt="Interior Design">
             </div>
-            <div class="hero-slide">
+            <div class="hero-slide" id="heroSlide4">
                 <img src="assets/images/render13.jpg" alt="Luxury Interior">
             </div>
-            <div class="hero-slide">
+            <div class="hero-slide" id="heroSlide5">
                 <img src="assets/images/render15.jpg" alt="Modern Architecture">
             </div>
         </div>
@@ -289,17 +289,18 @@
 
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">✦ Premium 3D Visualization</div>
+                <div class="hero-badge" id="heroBadge">✦ Premium 3D Visualization</div>
                 <h1>
-                    <span class="hero-line-1">High-Quality Architectural</span>
-                    <span class="hero-line-2">Visualization that</span>
-                    <span class="hero-line-3">Helps Architects Win Clients</span>
+                    <span class="hero-line-1" id="heroLine1">High-Quality Architectural</span>
+                    <span class="hero-line-2" id="heroLine2">Visualization that</span>
+                    <span class="hero-line-3" id="heroLine3">Helps Architects Win Clients</span>
                 </h1>
-                <p>We transform your architectural concepts into stunning photorealistic renders that captivate your
+                <p id="heroDesc">We transform your architectural concepts into stunning photorealistic renders that
+                    captivate your
                     clients and close deals faster.</p>
                 <div class="hero-buttons">
-                    <a href="portfolio.html" class="btn btn-primary">View Portfolio</a>
-                    <a href="contact.html" class="btn">Get Free Quote</a>
+                    <a href="portfolio.html" class="btn btn-primary" id="heroBtn1">View Portfolio</a>
+                    <a href="contact.html" class="btn" id="heroBtn2">Get Free Quote</a>
                 </div>
             </div>
         </div>
@@ -318,25 +319,28 @@
         <div class="container">
             <div class="about-grid">
                 <div class="about-image">
-                    <img src="assets/images/render40.jpg" alt="RenderLine Studio">
+                    <img src="assets/images/render40.jpg" alt="RenderLine Studio" id="aboutProfileImg">
                 </div>
                 <div class="about-text">
-                    <p class="subtitle">About RenderLine</p>
-                    <h2>Dilawar Ali</h2>
-                    <p>At <strong>RenderLine</strong>, I specialize in bringing architectural concepts to life through
-                        photorealistic visualization. With years of industry experience, I deliver renders that
-                        captivate clients and help architects close deals faster.</p>
+                    <p class="subtitle" id="aboutTitle">About RenderLine</p>
+                    <h2 id="aboutName">Dilawar Ali</h2>
+                    <div id="aboutBio">
+                        <p>At <strong>RenderLine</strong>, I specialize in bringing architectural concepts to life
+                            through
+                            photorealistic visualization. With years of industry experience, I deliver renders that
+                            captivate clients and help architects close deals faster.</p>
+                    </div>
                     <div class="about-stats">
                         <div class="stat-item">
-                            <h3>50+</h3>
+                            <h3 id="statClients">50+</h3>
                             <p>Happy Clients</p>
                         </div>
                         <div class="stat-item">
-                            <h3>200+</h3>
+                            <h3 id="statProjects">200+</h3>
                             <p>Projects Done</p>
                         </div>
                         <div class="stat-item">
-                            <h3>5+</h3>
+                            <h3 id="statExperience">5+</h3>
                             <p>Years Experience</p>
                         </div>
                     </div>
@@ -350,8 +354,9 @@
     <section class="services-section section-padding">
         <div class="container">
             <div class="text-center" style="margin-bottom: 3rem;">
-                <h2>Our Expertise</h2>
-                <p style="max-width: 600px; margin: 1rem auto 0;">Tailored visualization solutions for architects,
+                <h2 id="servicesHeading">Our Expertise</h2>
+                <p style="max-width: 600px; margin: 1rem auto 0;" id="servicesSubheading">Tailored visualization
+                    solutions for architects,
                     developers, and real estate professionals.</p>
             </div>
             <div class="services-grid">
@@ -387,8 +392,9 @@
     <section class="section-padding" style="background: var(--bg-card);">
         <div class="container">
             <div class="text-center" style="margin-bottom: 2.5rem;">
-                <h2>Featured Projects</h2>
-                <p style="max-width: 500px; margin: 1rem auto 0;">A selection of our latest architectural
+                <h2 id="portfolioHeading">Featured Projects</h2>
+                <p style="max-width: 500px; margin: 1rem auto 0;" id="portfolioSubheading">A selection of our latest
+                    architectural
                     visualizations.</p>
             </div>
             <div class="portfolio-preview">
@@ -421,13 +427,14 @@
                 <div>
                     <h2 id="whyHeading">Why RenderLine?</h2>
                     <ul class="benefits-list" id="whyList">
-                        <li><span>✔</span> Architect-first collaborative workflow</li>
-                        <li><span>✔</span> Realistic lighting & material accuracy</li>
-                        <li><span>✔</span> Industry-leading software & techniques</li>
-                        <li><span>✔</span> Fast revisions & project confidentiality</li>
-                        <li><span>✔</span> Affordable pricing, premium results</li>
+                        <li id="whyPoint1"><span>✔</span> Architect-first collaborative workflow</li>
+                        <li id="whyPoint2"><span>✔</span> Realistic lighting & material accuracy</li>
+                        <li id="whyPoint3"><span>✔</span> Industry-leading software & techniques</li>
+                        <li id="whyPoint4"><span>✔</span> Fast revisions & project confidentiality</li>
+                        <li id="whyPoint5"><span>✔</span> Affordable pricing, premium results</li>
                     </ul>
-                    <a href="contact.html" class="btn btn-primary" style="margin-top: 1.5rem;">Start Your Project</a>
+                    <a href="contact.html" class="btn btn-primary" style="margin-top: 1.5rem;" id="whyBtn">Start Your
+                        Project</a>
                 </div>
                 <div class="why-logo-container">
                     <img src="assets/logo.png" alt="RenderLine" class="why-logo-glow">
@@ -442,9 +449,9 @@
             <h2 id="ctaHeading">Ready to Visualize Your Vision?</h2>
             <p id="ctaText">Let's discuss your project. Get a free consultation and custom quote today.</p>
             <div class="cta-buttons">
-                <a href="contact.html" class="btn btn-primary">Contact Us</a>
-                <a href="https://wa.me/923114544040" class="btn btn-whatsapp" target="_blank"
-                    id="ctaWhatsappBtn">WhatsApp: 0311-4544040</a>
+                <a href="contact.html" class="btn btn-primary" id="ctaBtn1">Contact Us</a>
+                <a href="https://wa.me/923114544040" class="btn btn-whatsapp" target="_blank" id="ctaBtn2">WhatsApp:
+                    0311-4544040</a>
             </div>
         </div>
     </section>
@@ -453,8 +460,8 @@
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-brand">
-                <h3>RenderLine.</h3>
-                <p>Premium Architectural Visualization by Dilawar Ali</p>
+                <h3 id="footerBrand">RenderLine.</h3>
+                <p id="footerTagline">Premium Architectural Visualization by Dilawar Ali</p>
             </div>
             <div class="footer-links">
                 <a href="index.html">Home</a>
@@ -464,12 +471,12 @@
                 <a href="contact.html">Contact</a>
             </div>
             <div class="footer-contact">
-                <p>Lahore, Pakistan</p>
-                <p><a href="https://wa.me/923114544040">WhatsApp: 0311-4544040</a></p>
+                <p id="footerAddress">Lahore, Pakistan</p>
+                <p><a href="https://wa.me/923114544040" id="footerWhatsapp">WhatsApp: 0311-4544040</a></p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 RenderLine. All Rights Reserved.</p>
+            <p id="footerCopyright">&copy; 2024 RenderLine. All Rights Reserved.</p>
         </div>
     </footer>
 

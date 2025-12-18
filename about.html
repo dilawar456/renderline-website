@@ -417,8 +417,8 @@
     <footer class="footer">
         <div class="container footer-content">
             <div class="footer-brand">
-                <h3>RenderLine.</h3>
-                <p>Premium Architectural Visualization</p>
+                <h3 id="footerBrand">RenderLine.</h3>
+                <p id="footerTagline">Premium Architectural Visualization</p>
             </div>
             <div class="footer-links">
                 <a href="index.html">Home</a>
@@ -428,12 +428,12 @@
                 <a href="contact.html">Contact</a>
             </div>
             <div class="footer-contact">
-                <p>Lahore, Pakistan</p>
-                <p><a href="https://wa.me/923114544040">0311-4544040</a></p>
+                <p id="footerAddress">Lahore, Pakistan</p>
+                <p><a href="https://wa.me/923114544040" id="footerWhatsapp">0311-4544040</a></p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 RenderLine. All Rights Reserved.</p>
+            <p id="footerCopyright">&copy; 2024 RenderLine. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -451,22 +451,7 @@
     <!-- Supabase Integration -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase-client.js?v=3.0"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            if (typeof getSiteContent === 'function' && typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
-                const { data: content, error } = await getSiteContent();
-
-                if (content) {
-                    if (content.about_name && document.getElementById('aboutName')) document.getElementById('aboutName').textContent = content.about_name;
-                    if (content.about_title && document.getElementById('aboutTitle')) document.getElementById('aboutTitle').textContent = content.about_title;
-                    if (content.about_bio && document.getElementById('aboutBio')) document.getElementById('aboutBio').innerHTML = content.about_bio.replace(/\n/g, '<br>');
-
-                    if (content.stat_projects && document.getElementById('statProjects')) document.getElementById('statProjects').textContent = content.stat_projects;
-                    if (content.stat_clients && document.getElementById('statClients')) document.getElementById('statClients').textContent = content.stat_clients;
-                }
-            }
-        });
-    </script>
+    <script src="cms.js?v=2.1"></script>
 </body>
 
 </html>

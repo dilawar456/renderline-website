@@ -93,15 +93,49 @@ async function loadSiteContent() {
     };
 
     // --- HOME PAGE & GENERAL ---
-    setText('heroHeading', content.hero_heading);
+    setText('heroHeading', content.hero_heading); // Keeps support if header used
     setText('heroSubheading', content.hero_subheading);
+
+    // Hero Section (New Fields)
+    setText('heroBadge', content.hero_badge);
+    setText('heroLine1', content.hero_line1);
+    setText('heroLine2', content.hero_line2);
+    setText('heroLine3', content.hero_line3);
+    setText('heroDesc', content.hero_description);
+    setText('heroBtn1', content.hero_btn1_text);
+    setText('heroBtn2', content.hero_btn2_text);
+
+    // Services Section
+    setText('servicesHeading', content.services_heading);
+    setText('servicesSubheading', content.services_subheading);
+
+    // Portfolio Section
+    setText('portfolioHeading', content.portfolio_heading);
+    setText('portfolioSubheading', content.portfolio_subheading);
 
     // Why Section
     setText('whyHeading', content.why_heading);
+    setText('whyBtn', content.why_btn_text);
+
+    // Why Points (Preserve checkmark)
+    const setWhyPoint = (id, text) => {
+        const el = document.getElementById(id);
+        if (el && text) el.innerHTML = `<span>✔</span> ${text}`;
+    };
+    setWhyPoint('whyPoint1', content.why_point1);
+    setWhyPoint('whyPoint2', content.why_point2);
+    setWhyPoint('whyPoint3', content.why_point3);
+    setWhyPoint('whyPoint4', content.why_point4);
+    setWhyPoint('whyPoint5', content.why_point5);
 
     // CTA Section
     setText('ctaHeading', content.cta_heading);
     setText('ctaText', content.cta_text);
+    setText('ctaBtn1', content.cta_btn1_text);
+    if (content.cta_btn1_link) setLink('ctaBtn1', content.cta_btn1_link);
+
+    setText('ctaBtn2', content.cta_btn2_text);
+    if (content.cta_btn2_link) setLink('ctaBtn2', content.cta_btn2_link);
 
     // --- ABOUT PAGE ---
     setText('aboutName', content.about_name);
@@ -140,27 +174,40 @@ async function loadSiteContent() {
     }
 
     // --- CONTACT INFO (Footer & Contact Page) ---
-    document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
-        if (el.innerText.includes('@')) el.innerText = content.contact_email;
-        el.href = `mailto:${content.contact_email}`;
-    });
-
-    // Update WhatsApp
-    document.querySelectorAll('.whatsapp-float').forEach(el => el.href = `https://wa.me/${content.contact_whatsapp}`);
-
-    const waBtn = document.getElementById('ctaWhatsappBtn');
-    if (waBtn) {
-        waBtn.href = `https://wa.me/${content.contact_whatsapp}`;
-        waBtn.innerText = `WhatsApp: ${formatPhoneNumber(content.contact_whatsapp)}`;
+    const contactEmail = content.contact_email;
+    if (contactEmail) {
+        document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
+            if (el.innerText.includes('@')) el.innerText = contactEmail;
+            el.href = `mailto:${contactEmail}`;
+        });
     }
 
-    // Footer
-    // setText('footerAddress', content.contact_location);
+    // Update WhatsApp
+    if (content.contact_whatsapp) {
+        const waLink = `https://wa.me/${content.contact_whatsapp}`;
+        document.querySelectorAll('.whatsapp-float').forEach(el => el.href = waLink);
+
+        const ctaWaValues = document.querySelectorAll('#ctaWhatsappBtn, #footerWhatsapp');
+        ctaWaValues.forEach(btn => {
+            if (btn) {
+                btn.href = waLink;
+                btn.innerText = `WhatsApp: ${formatPhoneNumber(content.contact_whatsapp)}`;
+            }
+        });
+    }
+
+    // Footer Specific
+    setText('footerBrand', content.footer_brand);
+    setText('footerTagline', content.footer_tagline);
+    setText('footerCopyright', content.footer_copyright);
+    setText('footerAddress', content.contact_location);
 }
 
 function formatPhoneNumber(phone) {
     if (!phone) return '';
-    return phone.replace(/(\d{4})(\d{7})/, '$1-$2'); // Simple formatting
+    // Format 923114544040 -> 0311-4544040 if matches pattern
+    // Or just simple hyphenation
+    return phone.replace(/^(?:92|0)?(\d{3})(\d{7})$/, '0$1-$2');
 }
 
 async function loadPortfolio() {
