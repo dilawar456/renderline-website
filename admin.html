@@ -719,6 +719,7 @@
 
     <!-- ADMIN DASHBOARD -->
     <div class="admin-wrapper" id="adminPanel">
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
@@ -784,6 +785,9 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <button class="mobile-menu-btn" onclick="toggleSidebar()">
+                <span style="font-size: 1.2rem;">☰</span> Menu
+            </button>
 
             <!-- Dashboard Section -->
             <section id="section-dashboard" class="section active">
@@ -2632,6 +2636,13 @@
             log.innerHTML += `<br><strong>Migration Finished. ${success} assets migrated.</strong>`;
             alert('Migration finished!');
             renderPortfolioGrid(await getPortfolioItems());
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            if (sidebar) sidebar.classList.toggle('active');
+            if (overlay) overlay.classList.toggle('active');
         }
 
         // ========== AUTO LOGIN CHECK ==========
