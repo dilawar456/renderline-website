@@ -1925,8 +1925,41 @@
         }
 
         async function saveServices() {
-            // Save all 6 services - will need services table update function
-            alert('✅ Services saved! (Note: Full DB integration coming soon)');
+            const content = {
+                services_heading: document.getElementById('servicesPageHeading').value,
+                services_subheading: document.getElementById('servicesPageSubheading').value
+            };
+
+            for (let i = 1; i <= 6; i++) {
+                // Collect each service field
+                // Ensure elements exist before accessing .value (though they should exist)
+                const titleEl = document.getElementById('service' + i + 'Title');
+                if (titleEl) content['service' + i + '_title'] = titleEl.value;
+
+                const descEl = document.getElementById('service' + i + 'Short');
+                if (descEl) content['service' + i + '_desc'] = descEl.value;
+
+                const iconEl = document.getElementById('service' + i + 'Icon');
+                if (iconEl) content['service' + i + '_icon'] = iconEl.value;
+
+                const timeEl = document.getElementById('service' + i + 'Timeline');
+                if (timeEl) content['service' + i + '_timeline'] = timeEl.value;
+
+                const priceEl = document.getElementById('service' + i + 'Price');
+                if (priceEl) content['service' + i + '_price'] = priceEl.value;
+            }
+
+            if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
+                const { error } = await updateSiteContent(content);
+                if (error) {
+                    console.error('DB Error:', error);
+                    alert('❌ DB Save Failed: ' + error.message + '\n\nPlease run "fix-schema-services-text.sql" in Supabase!');
+                } else {
+                    alert('✅ Services saved successfully!');
+                }
+            } else {
+                alert('⚠️ Supabase not configured');
+            }
         }
 
         async function saveContactContent() {
