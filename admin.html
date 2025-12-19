@@ -669,20 +669,87 @@
             }
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
+        /* Mobile Responsive Admin - NEW */
+        @media (max-width: 900px) {
             .sidebar {
-                width: 200px;
+                left: -260px;
+                width: 260px !important;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1050;
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1040;
+                backdrop-filter: blur(4px);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
             }
 
             .main-content {
-                margin-left: 200px;
-                width: calc(100% - 200px);
+                margin-left: 0 !important;
+                width: 100% !important;
+                padding: 1.5rem 1rem;
+            }
+
+            .mobile-menu-btn {
+                display: flex !important;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--gold);
+                padding: 0.8rem 1rem;
+                border-radius: 6px;
+                cursor: pointer;
+                align-items: center;
+                gap: 0.8rem;
+                margin-bottom: 1.5rem;
+                font-weight: 600;
+                width: 100%;
+                justify-content: center;
+                font-family: 'Cinzel', serif;
+                letter-spacing: 1px;
             }
 
             .form-row {
                 grid-template-columns: 1fr;
             }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-actions {
+                display: none;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        .sidebar-overlay {
+            display: none;
         }
     </style>
 </head>
