@@ -2235,7 +2235,8 @@
                 if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                     const { error: dbError } = await updateSiteContent({ ['cloudinary_service' + index]: data.url });
                     if (dbError) {
-                        alert('⚠️ Uploaded to Cloudinary but DB save failed');
+                        console.error('DB Error:', dbError);
+                        alert('⚠️ DB Save Failed: ' + dbError.message + '\n\nPlease go to Supabase SQL Editor and run the "fix-schema-upload-error.sql" script!');
                     } else {
                         alert('✅ Service ' + index + ' image uploaded to Cloudinary + saved!');
                     }
