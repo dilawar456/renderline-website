@@ -392,6 +392,19 @@ async function loadServices() {
             }
         }
 
+        // Update Home Page Elements
+        const titleHomeEl = document.getElementById('service' + i + 'TitleHome');
+        if (titleHomeEl && title) titleHomeEl.innerText = title;
+
+        const descHomeEl = document.getElementById('service' + i + 'DescHome');
+        if (descHomeEl && desc) descHomeEl.innerText = desc;
+
+        const imgHomeEl = document.getElementById('service' + i + 'ImageHome');
+        if (imgHomeEl && imgUrl) {
+            imgHomeEl.src = imgUrl;
+            imgHomeEl.style.objectFit = 'cover';
+        }
+
         // Update Global Service Data (for Modals)
         if (typeof window.serviceData !== 'undefined') {
             const keys = ['exterior', 'interior', 'animation', 'floorplan', 'autocad', 'consultation'];
