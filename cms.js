@@ -140,10 +140,9 @@ async function loadSiteContent() {
     // --- ABOUT PAGE ---
     setText('aboutName', content.about_name);
     setText('aboutTitle', content.about_title);
-    if (content.about_bio) {
-        const bioEl = document.getElementById('aboutBio');
-        if (bioEl) bioEl.innerHTML = `<p>${content.about_bio}</p>`;
-    }
+    if (content.about_bio1) setText('aboutBio1', content.about_bio1);
+    if (content.about_bio2) setText('aboutBio2', content.about_bio2);
+    if (content.about_bio3) setText('aboutBio3', content.about_bio3);
     setImg('aboutProfileImg', content.about_image);
 
     // Stats
