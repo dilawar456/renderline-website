@@ -388,8 +388,18 @@ async function loadServices() {
             const imgEl = document.getElementById('service' + i + 'Image');
             if (imgEl) {
                 imgEl.src = imgUrl;
-                // Ensure nice fit
                 imgEl.style.objectFit = 'cover';
+            }
+        }
+
+        // Update Global Service Data (for Modals)
+        if (typeof window.serviceData !== 'undefined') {
+            const keys = ['exterior', 'interior', 'animation', 'floorplan', 'autocad', 'consultation'];
+            const key = keys[i - 1];
+            if (key && window.serviceData[key]) {
+                if (title) window.serviceData[key].title = title;
+                if (desc) window.serviceData[key].description = desc;
+                if (imgUrl) window.serviceData[key].image = imgUrl;
             }
         }
     }

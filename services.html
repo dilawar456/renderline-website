@@ -473,10 +473,13 @@
         </svg>
     </a>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js?v=3.0"></script>
     <script src="script.js?v=2.0"></script>
+    <script src="cms.js?v=2.0"></script>
     <script>
-        // Service Modal Data
-        const serviceData = {
+        // Service Modal Data - Exposed to Global for CMS
+        window.serviceData = {
             exterior: {
                 title: 'Exterior Visualization',
                 image: 'assets/images/render2.jpg',
