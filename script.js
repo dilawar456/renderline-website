@@ -1,5 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- Analytics: Track Interactions ---
+    // Track clicks on WhatsApp buttons and 'Let's Talk' (Contact) links
+    const contactLinks = document.querySelectorAll('.whatsapp-float, .btn-whatsapp, a[href="contact.html"], a[href="contact.html"].btn');
+
+    contactLinks.forEach(contactLink => {
+        contactLink.addEventListener('click', () => {
+            if (typeof fbq === 'function') fbq('track', 'Contact');
+        });
+    });
+
     // Elements
     const navbar = document.querySelector('.navbar');
     const navLinks = document.querySelector('.nav-links');
@@ -87,6 +97,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // --- PORTFOLIO FILTERING ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    if (filterBtns.length > 0) {
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active to clicked
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+                const items = document.querySelectorAll('.portfolio-item');
+                const portfolioSec = document.getElementById('portfolioSection');
+                const videoSec = document.getElementById('videoSection');
+
+                if (filterValue === 'animation') {
+                    // Show Videos, Hide Grid
+                    if (portfolioSec) portfolioSec.style.display = 'none';
+                    if (videoSec) {
+                        videoSec.style.display = 'block';
+                        videoSec.style.opacity = '0';
+                        setTimeout(() => videoSec.style.opacity = '1', 50);
+                    }
+                } else {
+                    // Show Grid, Hide Videos
+                    if (videoSec) videoSec.style.display = 'none';
+                    if (portfolioSec) {
+                        portfolioSec.style.display = 'block';
+                        portfolioSec.style.opacity = '0';
+                        setTimeout(() => portfolioSec.style.opacity = '1', 50);
+                    }
+
+                    // Filter Grid Items
+                    items.forEach(item => {
+                        if (filterValue === 'all' || item.classList.contains(filterValue)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+    }
+
     // --- LIGHTBOX LOGIC ---
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
@@ -127,9 +182,30 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentImages[currentIndex]) {
                 const src = typeof currentImages[currentIndex] === 'string' ? currentImages[currentIndex] : currentImages[currentIndex].image_url;
                 lightboxImg.src = src;
+
+                // Reset Zoom
+                lightboxImg.style.transform = "scale(1)";
+                lightboxImg.style.cursor = "zoom-in";
+                isZoomed = false;
+
                 if (currentIndexEl) currentIndexEl.textContent = currentIndex + 1;
             }
         }
+
+        // ZOOM LOGIC
+        let isZoomed = false;
+        lightboxImg.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent closing
+            if (!isZoomed) {
+                lightboxImg.style.transform = "scale(2)";
+                lightboxImg.style.cursor = "zoom-out";
+                isZoomed = true;
+            } else {
+                lightboxImg.style.transform = "scale(1)";
+                lightboxImg.style.cursor = "zoom-in";
+                isZoomed = false;
+            }
+        });
 
         if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
         lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
@@ -147,38 +223,47 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- VIDEO LIGHTBOX LOGIC ---
     const videoLightbox = document.getElementById('videoLightbox');
     if (videoLightbox) {
-        const videoPlayer = document.getElementById('videoPlayer');
+        const videoContainer = document.getElementById('videoContainer');
         const videoLightboxClose = document.getElementById('videoLightboxClose');
 
         // Expose openVideoLightbox
         window.openVideoLightbox = function (videoSrc) {
-            videoPlayer.src = videoSrc;
             videoLightbox.classList.add('active');
             document.body.style.overflow = 'hidden';
-            videoPlayer.play();
+
+            // Check if YouTube
+            if (videoSrc.includes('youtube.com') || videoSrc.includes('youtu.be')) {
+                // Ensure embed format
+                let embedUrl = videoSrc;
+                if (!videoSrc.includes('/embed/')) {
+                    const id = videoSrc.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&]+)/);
+                    if (id) embedUrl = `https://www.youtube.com/embed/${id[1]}?autoplay=1`;
+                }
+
+                videoContainer.innerHTML = `<iframe width="100%" height="100%" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 8px;"></iframe>`;
+            } else {
+                // Assume MP4/Local
+                videoContainer.innerHTML = `<video width="100%" height="100%" controls autoplay src="${videoSrc}" style="border-radius: 8px;"></video>`;
+            }
         }
 
         // Attach listeners to existing static cards (if any)
         document.querySelectorAll('.video-card').forEach(card => {
             card.addEventListener('click', () => {
-                window.openVideoLightbox(card.dataset.video);
+                if (card.dataset.video) window.openVideoLightbox(card.dataset.video);
             });
         });
 
-        if (videoLightboxClose) videoLightboxClose.addEventListener('click', () => {
+        const closeVideo = () => {
             videoLightbox.classList.remove('active');
             document.body.style.overflow = '';
-            videoPlayer.pause();
-            videoPlayer.src = '';
-        });
+            videoContainer.innerHTML = ''; // Stop playback
+        };
+
+        if (videoLightboxClose) videoLightboxClose.addEventListener('click', closeVideo);
 
         videoLightbox.addEventListener('click', (e) => {
-            if (e.target === videoLightbox) {
-                videoLightbox.classList.remove('active');
-                document.body.style.overflow = '';
-                videoPlayer.pause();
-                videoPlayer.src = '';
-            }
+            if (e.target === videoLightbox) closeVideo();
         });
     }
 });

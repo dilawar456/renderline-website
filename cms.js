@@ -102,324 +102,317 @@ async function loadSiteContent() {
     setText('heroLine2', content.hero_line2);
     setText('heroLine3', content.hero_line3);
     setText('heroDesc', content.hero_description);
-    setText('heroBtn1', content.hero_btn1_text);
-    setText('heroBtn2', content.hero_btn2_text);
 
-    // Services Section
-    setText('servicesHeading', content.services_heading);
-    setText('servicesSubheading', content.services_subheading);
+    const btn1 = document.getElementById('heroBtn1');
+    if (btn1 && content.hero_btn1_text) btn1.innerText = content.hero_btn1_text;
 
-    // Portfolio Section
-    setText('portfolioHeading', content.portfolio_heading);
-    setText('portfolioSubheading', content.portfolio_subheading);
+    // Cloudinary Hero images
+    for (let i = 1; i <= 5; i++) {
+        if (content['cloudinary_hero' + i]) setImg('heroSlide' + i, content['cloudinary_hero' + i]);
+    }
 
-    // Why Section
+    // Why Choose Us
     setText('whyHeading', content.why_heading);
-    setText('whyBtn', content.why_btn_text);
+    for (let i = 1; i <= 5; i++) {
+        setText('whyPoint' + i, content['why_point' + i]);
+    }
 
-    // Why Points (Preserve checkmark)
-    const setWhyPoint = (id, text) => {
-        const el = document.getElementById(id);
-        if (el && text) el.innerHTML = `<span>✔</span> ${text}`;
-    };
-    setWhyPoint('whyPoint1', content.why_point1);
-    setWhyPoint('whyPoint2', content.why_point2);
-    setWhyPoint('whyPoint3', content.why_point3);
-    setWhyPoint('whyPoint4', content.why_point4);
-    setWhyPoint('whyPoint5', content.why_point5);
-
-    // CTA Section
+    // CTA
     setText('ctaHeading', content.cta_heading);
     setText('ctaText', content.cta_text);
-    setText('ctaBtn1', content.cta_btn1_text);
-    if (content.cta_btn1_link) setLink('ctaBtn1', content.cta_btn1_link);
 
-    setText('ctaBtn2', content.cta_btn2_text);
-    if (content.cta_btn2_link) setLink('ctaBtn2', content.cta_btn2_link);
+    // Cloudinary Optimization Helper
+    const optimizeUrl = (url, width = 800) => {
+        if (!url || !url.includes('cloudinary.com')) return url;
+        // Insert transformation params after /upload/
+        return url.replace('/upload/', `/upload/q_auto,f_auto,w_${width}/`);
+    };
 
     // --- ABOUT PAGE ---
     setText('aboutName', content.about_name);
     setText('aboutTitle', content.about_title);
-    if (content.about_bio1) setText('aboutBio1', content.about_bio1);
-    if (content.about_bio2) setText('aboutBio2', content.about_bio2);
-    if (content.about_bio3) setText('aboutBio3', content.about_bio3);
-    setImg('aboutProfileImg', content.about_image);
 
-    // Stats
+    // Fix: Match ID for About Profile Image (Home & About Page)
+    if (content.about_image) {
+        const optimizedSrc = optimizeUrl(content.about_image, 600);
+        // About Page
+        setImg('aboutProfileImg', optimizedSrc);
+        // Index Page Preview
+        setImg('aboutProfileImg', optimizedSrc); // ID is same on both pages
+    }
+
+    setText('step1Title', content.step1_title);
+    setText('step2Title', content.step2_title);
+    setText('step3Title', content.step3_title);
+    setText('step4Title', content.step4_title);
+
     setText('statProjects', content.stat_projects);
     setText('statClients', content.stat_clients);
     setText('statExperience', content.stat_experience);
 
-    // --- YOUTUBE VIDEOS (Dynamic Unlimited) ---
-    loadDynamicVideos();
-
-    // --- CLOUDINARY HERO IMAGES (from Supabase) ---
-    for (let i = 1; i <= 5; i++) {
-        const heroUrl = content['cloudinary_hero' + i];
-        if (heroUrl) {
-            setImg('heroSlide' + i, heroUrl);
-            console.log('CMS: Loaded Cloudinary hero ' + i + ' from Supabase');
-        }
-    }
-
-    // --- CONTACT INFO (Footer & Contact Page) ---
-    const contactEmail = content.contact_email;
-    if (contactEmail) {
-        document.querySelectorAll('a[href^="mailto:"]').forEach(el => {
-            if (el.innerText.includes('@')) el.innerText = contactEmail;
-            el.href = `mailto:${contactEmail}`;
-        });
-    }
-
-    // Update WhatsApp
-    // Update WhatsApp (Force correct number)
-    const waNumber = '923114544040';
-    const waDisplay = '0311-4544040';
-
-    const waLink = `https://wa.me/${waNumber}`;
-    document.querySelectorAll('.whatsapp-float').forEach(el => el.href = waLink);
-
-    const ctaWaValues = document.querySelectorAll('#ctaWhatsappBtn, #footerWhatsapp, #contactWhatsappDisplay');
-    ctaWaValues.forEach(btn => {
-        btn.innerHTML = `WhatsApp: ${waDisplay}`;
-        btn.href = waLink;
-    });
-
-
-    // Footer Specific
+    // --- FOOTER / CONTACT ---
     setText('footerBrand', content.footer_brand);
     setText('footerTagline', content.footer_tagline);
     setText('footerCopyright', content.footer_copyright);
-    setText('footerAddress', content.contact_location);
+
+    // Update contact info in various places
+    document.querySelectorAll('.contact-email').forEach(el => el.innerText = content.contact_email);
+    document.querySelectorAll('.contact-phone').forEach(el => el.innerText = content.contact_phone_display);
+    document.querySelectorAll('.contact-location').forEach(el => el.innerText = content.contact_location);
+
+    const waParams = `?text=Hello%20${content.footer_brand || 'RenderLine'}%2C%20I%20would%20like%20to%20discuss%20a%20project.`;
+    document.querySelectorAll('.whatsapp-link').forEach(el => {
+        if (content.contact_whatsapp) el.href = `https://wa.me/${content.contact_whatsapp}${waParams}`;
+    });
+
+    console.log('✅ CMS: Site content loaded');
 }
 
-function formatPhoneNumber(phone) {
-    if (!phone) return '';
-    // Format 923114544040 -> 0311-4544040 if matches pattern
-    // Or just simple hyphenation
-    return phone.replace(/^(?:92|0)?(\d{3})(\d{7})$/, '0$1-$2');
+async function loadServices() {
+    const { data: content } = await getSiteContent();
+    if (!content) return;
+
+    const keys = ['exterior', 'interior', 'animation', 'floorplan', 'autocad', 'consultation'];
+
+    for (let i = 1; i <= 6; i++) {
+        // IDs on Service Page
+        const titleEl = document.getElementById(`service${i}Title`);
+        const descEl = document.getElementById(`service${i}Desc`);
+        const priceEl = document.getElementById(`service${i}Price`);
+        const imgEl = document.getElementById(`service${i}Image`);
+        const iconEl = document.getElementById(`service${i}Icon`);
+
+        // IDs on Home Page
+        const homeTitle = document.getElementById(`service${i}TitleHome`);
+        const homeDesc = document.getElementById(`service${i}DescHome`);
+        const homeImg = document.getElementById(`service${i}ImageHome`);
+
+        if (titleEl && content[`service${i}_title`]) titleEl.innerText = content[`service${i}_title`];
+        if (descEl && content[`service${i}_desc`]) descEl.innerText = content[`service${i}_desc`];
+        if (priceEl && content[`service${i}_price`]) priceEl.innerText = content[`service${i}_price`];
+        if (iconEl && content[`service${i}_icon`]) iconEl.innerText = content[`service${i}_icon`];
+        if (imgEl && content[`cloudinary_service${i}`]) imgEl.src = content[`cloudinary_service${i}`];
+
+        // Home Page Updates
+        if (homeTitle && content[`service${i}_title`]) homeTitle.innerText = content[`service${i}_title`];
+        if (homeDesc && content[`service${i}_desc`]) homeDesc.innerText = content[`service${i}_desc`];
+        if (homeImg && content[`cloudinary_service${i}`]) homeImg.src = content[`cloudinary_service${i}`];
+
+        // UPDATE MODAL DATA (window.serviceData)
+        if (window.serviceData && keys[i - 1]) {
+            const key = keys[i - 1];
+            if (content[`service${i}_title`]) window.serviceData[key].title = content[`service${i}_title`];
+            if (content[`service${i}_modal_desc`]) window.serviceData[key].description = content[`service${i}_modal_desc`];
+            if (content[`service${i}_price`]) window.serviceData[key].price = content[`service${i}_price`];
+            // Update Image in modal if changed
+            if (content[`cloudinary_service${i}`]) window.serviceData[key].image = content[`cloudinary_service${i}`];
+
+            // Arrays
+            if (content[`service${i}_features`]) {
+                window.serviceData[key].features = content[`service${i}_features`].split(',').map(s => s.trim());
+            }
+            if (content[`service${i}_highlights`]) {
+                window.serviceData[key].highlights = content[`service${i}_highlights`].split(',').map(s => s.trim());
+            }
+        }
+    }
+    console.log('✅ CMS: Services loaded & Modal Data Updated');
 }
 
+async function loadAboutSections(content) {
+    if (!content) return;
+
+    // Workflow Steps (My Workflow)
+    for (let i = 1; i <= 4; i++) {
+        if (content[`step${i}_title`]) {
+            const el = document.getElementById(`step${i}Title`);
+            if (el) el.innerText = content[`step${i}_title`];
+        }
+        if (content[`step${i}_desc`]) {
+            const el = document.getElementById(`step${i}Desc`);
+            if (el) el.innerText = content[`step${i}_desc`];
+        }
+    }
+
+    // Expertise (About Page)
+    if (content.expertise_subtitle) {
+        const sub = document.getElementById('expertiseSubtitle');
+        if (sub) sub.innerText = content.expertise_subtitle;
+    }
+
+    for (let i = 1; i <= 8; i++) {
+        if (content[`expertise${i}_title`]) {
+            const el = document.getElementById(`expertise${i}Title`);
+            if (el) el.innerText = content[`expertise${i}_title`];
+        }
+        if (content[`expertise${i}_desc`]) {
+            const el = document.getElementById(`expertise${i}Desc`);
+            if (el) el.innerText = content[`expertise${i}_desc`];
+        }
+    }
+
+    // Tools List
+    if (content.tools_subtitle) {
+        const sub = document.getElementById('toolsSubtitle');
+        if (sub) sub.innerText = content.tools_subtitle;
+    }
+
+    if (content.tools_list) {
+        const toolsGrid = document.getElementById('toolsGrid');
+        if (toolsGrid) {
+            const tools = content.tools_list.split(',').map(s => s.trim()).filter(s => s);
+            toolsGrid.innerHTML = tools.map(tool => `
+                <div style="padding: 1rem 1.5rem; background: var(--bg-dark); border: 1px solid var(--border-dark); border-radius: 8px; font-size: 0.9rem; color: var(--text-light); transition: 0.3s; display: flex; align-items: center; gap: 0.5rem;">
+                    <span style="color: var(--primary);">●</span> ${tool}
+                </div>
+            `).join('');
+        }
+    }
+}
+
+// PORTFOLIO LOADING WITH SORTING
 async function loadPortfolio() {
     let items = [];
+    let pOrder = [];
 
-    // Try Supabase FIRST (cloud database with Cloudinary URLs)
-    if (typeof getPortfolioItems === 'function' && typeof isSupabaseConfigured === 'function' && isSupabaseConfigured()) {
-        const { data, error } = await getPortfolioItems();
-        if (data && data.length > 0) {
-            console.log('CMS: Loading portfolio from Supabase (Cloudinary URLs)');
-            items = data;
+    // 1. Fetch Items
+    if (typeof getPortfolioItems === 'function' && isSupabaseConfigured()) {
+        const { data } = await getPortfolioItems();
+        if (data) items = data;
+
+        // 2. Fetch Order from Site Content
+        const { data: content } = await getSiteContent();
+        if (content && content.portfolio_order) {
+            try { pOrder = JSON.parse(content.portfolio_order); } catch (e) { }
         }
+
+        // Load extra about sections if content is fetched
+        if (content) loadAboutSections(content);
+    } else {
+        items = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
     }
 
-    // If Supabase has no items, check localStorage (backup)
-    if (items.length === 0) {
-        const localItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
-        if (localItems.length > 0) {
-            console.log('CMS: Loading portfolio from localStorage');
-            items = localItems;
-        }
+    // 3. SORT Items if order exists
+    if (pOrder && pOrder.length > 0) {
+        items.sort((a, b) => {
+            const idxA = pOrder.indexOf(a.id);
+            const idxB = pOrder.indexOf(b.id);
+            if (idxA === -1 && idxB === -1) return 0;
+            if (idxA === -1) return 1;
+            if (idxB === -1) return -1;
+            return idxA - idxB;
+        });
     }
 
-    // If still no items, use fallback static images
-    if (items.length === 0) {
-        console.log('CMS: Loading fallback portfolio');
-        const fallbackImages = [
-            ...Array.from({ length: 40 }, (_, i) => `assets/images/render${i + 1}.jpg`),
-            'assets/images/Scene 10.png', 'assets/images/Scene 14.png', 'assets/images/Scene 16.png'
-        ];
-        items = fallbackImages.map((src, i) => ({
-            id: -i,
-            title: `Project ${i + 1}`,
-            category: ['exterior', 'interior', 'commercial'][i % 3],
-            image_url: src
-        }));
-    }
-
-    // Update Portfolio Page Grid
+    // 4. Render to Main Portfolio Grid
     const grid = document.getElementById('portfolioGrid');
     if (grid) {
         grid.innerHTML = '';
         items.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = `portfolio-item ${item.category}`;
-            // Important: add data-category for filtering
-            div.dataset.category = item.category;
-            div.innerHTML = `
-                <img src="${item.image_url}" alt="${item.title}" loading="lazy" onerror="this.parentElement.style.display='none'">
+            const card = document.createElement('div');
+            card.className = `portfolio-item mix ${item.category || ''}`;
+            // Clean Image Only - No Text/Overlay
+            card.innerHTML = `
+                <img src="${item.image_url}" alt="${item.title}" loading="lazy">
             `;
-            // Lightbox click
-            div.querySelector('img').addEventListener('click', () => {
-                if (window.openLightbox) window.openLightbox(index, items.map(x => x.image_url));
-            });
-            grid.appendChild(div);
+            // Click to Open Lightbox
+            card.onclick = () => {
+                if (window.openLightbox) {
+                    window.openLightbox(index, items);
+                }
+            };
+            grid.appendChild(card);
         });
-
-        // Initialize Filter Logic if buttons exist
-        initFilters();
     }
 
-    // Update Home Page Preview
+    // 5. Render to Home Page Preview (Top 5)
     const preview = document.querySelector('.portfolio-preview');
-    if (preview) {
+    if (preview && items.length > 0) {
         preview.innerHTML = '';
-        items.slice(0, 5).forEach(item => {
+        const previewItems = items.slice(0, 5); // Take top 5
+        previewItems.forEach(item => {
             const div = document.createElement('div');
             div.className = 'preview-item';
-            div.innerHTML = `<img src="${item.image_url}" alt="${item.title}">`;
+            div.innerHTML = `<img src="${item.image_url}" alt="${item.title}" loading="lazy">`;
             preview.appendChild(div);
         });
     }
+
+    console.log(`✅ CMS: Loaded ${items.length} portfolio items (Sorted)`);
 }
 
-function initFilters() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const items = document.querySelectorAll('.portfolio-item');
-    const portfolioSection = document.getElementById('portfolioSection');
-    const videoSection = document.getElementById('videoSection');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const filter = btn.dataset.filter;
-
-            if (filter === 'animation') {
-                if (portfolioSection) portfolioSection.style.display = 'none';
-                if (videoSection) videoSection.style.display = 'block';
-            } else {
-                if (portfolioSection) portfolioSection.style.display = 'block';
-                if (videoSection) videoSection.style.display = 'none';
-
-                items.forEach(item => {
-                    if (filter === 'all' || item.dataset.category === filter) {
-                        item.style.display = 'block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            }
-        });
-    });
-}
-
-// --- DYNAMIC VIDEO GALLERY ---
-async function loadDynamicVideos() {
+// VIDEO GALLERY LOADING
+async function loadVideoGallery() {
     const gallery = document.getElementById('dynamicVideoGallery');
-    // If we are on Home page, we might want to show Featured Videos?
-    // Current setup targets 'dynamicVideoGallery' which is in portfolio.html.
-    // If not found, check if there's a home page container? (not yet).
     if (!gallery) return;
 
-    try {
-        const { data, error } = await supabaseDb
-            .from('site_videos')
-            .select('*')
-            .order('sort_order', { ascending: true })
-            .order('created_at', { ascending: false });
+    let videos = [];
 
-        if (data && data.length > 0) {
-            // Show the video section container if hidden (handled by filter usually, but ensure content is ready)
-            gallery.innerHTML = '';
-
-            data.forEach(video => {
-                const videoId = getYouTubeId(video.video_url);
-                if (videoId) {
-                    const div = document.createElement('div');
-                    div.className = 'video-embed-container';
-                    // Video Card Style
-                    div.innerHTML = `
-                        <div class="video-card">
-                             <iframe width="100%" height="220" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="border-radius: 12px 12px 0 0;"></iframe>
-                             <div class="video-info" style="padding:1rem;">
-                                <h4>${video.title || 'Untitled Animation'}</h4>
-                             </div>
-                        </div>
-                    `;
-                    gallery.appendChild(div);
-                }
-            });
-        } else {
-            gallery.innerHTML = '<p class="text-center">No animations added yet.</p>';
-        }
-    } catch (e) {
-        console.error('Error loading dynamic videos:', e);
-    }
-}
-
-function getYouTubeId(url) {
-    if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-}
-
-async function loadServices() {
-    // Fetch content from site_content (where Admin saves)
-    const { data: content, error } = await getSiteContent();
-    if (error || !content) {
-        console.error('CMS: Failed to load service content', error);
-        return;
+    // 1. Fetch from Supabase
+    if (typeof supabaseDb !== 'undefined') {
+        const { data, error } = await supabaseDb.from('site_videos').select('*').order('created_at', { ascending: false });
+        if (data) videos = data;
     }
 
-    // Loop through 6 services
-    for (let i = 1; i <= 6; i++) {
-        // IDs: service{i}Title, service{i}Desc, service{i}Image
+    // 2. Fallback to LocalStorage
+    if (videos.length === 0) {
+        videos = JSON.parse(localStorage.getItem('my_portfolio_videos') || '[]');
+    }
 
-        // Text Fields
-        const title = content['service' + i + '_title'];
-        const desc = content['service' + i + '_desc'];
+    // 3. Render
+    gallery.innerHTML = '';
+    const staticGrid = document.getElementById('staticVideoGrid'); // Fallback grid
 
-        if (title) {
-            const titleEl = document.getElementById('service' + i + 'Title');
-            if (titleEl) titleEl.innerText = title;
-        }
+    if (videos.length === 0) {
+        // Show static fallback if no dynamic videos
+        if (staticGrid) staticGrid.style.display = 'grid';
+    } else {
+        // Hide static fallback if dynamic videos exist
+        if (staticGrid) staticGrid.style.display = 'none';
 
-        if (desc) {
-            const descEl = document.getElementById('service' + i + 'Desc');
-            if (descEl) descEl.innerText = desc;
-        }
+        videos.forEach(vid => {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            // Extract ID
+            let videoId = '';
+            let thumbUrl = 'assets/images/render40.jpg'; // Default safe thumb
 
-        // Image Field
-        // Try Cloudinary column first, then legacy service_image column
-        const imgUrl = content['cloudinary_service' + i] || content['service_image' + i];
-
-        if (imgUrl) {
-            const imgEl = document.getElementById('service' + i + 'Image');
-            if (imgEl) {
-                imgEl.src = imgUrl;
-                imgEl.style.objectFit = 'cover';
-            }
-        }
-
-        // Update Home Page Elements
-        const titleHomeEl = document.getElementById('service' + i + 'TitleHome');
-        if (titleHomeEl && title) titleHomeEl.innerText = title;
-
-        const descHomeEl = document.getElementById('service' + i + 'DescHome');
-        if (descHomeEl && desc) descHomeEl.innerText = desc;
-
-        const imgHomeEl = document.getElementById('service' + i + 'ImageHome');
-        if (imgHomeEl && imgUrl) {
-            imgHomeEl.src = imgUrl;
-            imgHomeEl.style.objectFit = 'cover';
-        }
-
-        // Update Global Service Data (for Modals)
-        if (typeof window.serviceData !== 'undefined') {
-            const keys = ['exterior', 'interior', 'animation', 'floorplan', 'autocad', 'consultation'];
-            const key = keys[i - 1];
-            if (key && window.serviceData[key]) {
-                if (title) window.serviceData[key].title = title;
-                if (desc) window.serviceData[key].description = desc;
-                if (imgUrl) window.serviceData[key].image = imgUrl;
-
-                if (content['service' + i + '_price']) window.serviceData[key].price = content['service' + i + '_price'];
-                if (content['service' + i + '_features']) {
-                    window.serviceData[key].features = content['service' + i + '_features'].split(/,\s*|\n/).map(s => s.trim()).filter(s => s);
+            if (vid.video_url && (vid.video_url.includes('youtube') || vid.video_url.includes('youtu.be'))) {
+                const match = vid.video_url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=|youtube\.com\/embed\/)([^&\s?]+)/);
+                if (match) {
+                    videoId = match[1];
+                    thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
                 }
             }
-        }
+
+            // Add click handler for lightbox
+            card.onclick = () => {
+                if (window.openVideoLightbox) {
+                    // Use embed URL for lightbox if YouTube, else direct link
+                    const playUrl = videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : vid.video_url;
+                    window.openVideoLightbox(playUrl);
+                }
+            };
+
+            // Render Card
+            card.innerHTML = `
+                <div class="video-thumb">
+                    <img src="${thumbUrl}" alt="${vid.title}" style="object-fit:cover;">
+                    <div class="play-icon"></div>
+                </div>
+                <div class="video-info">
+                    <h4>${vid.title}</h4>
+                    <p>Animation</p>
+                </div>
+            `;
+            gallery.appendChild(card);
+        });
     }
-    console.log('CMS: Services loaded from Site Content');
+    console.log(`✅ CMS: Loaded ${videos.length} videos`);
 }
+
+// Ensure loadVideoGallery is called
+document.addEventListener('DOMContentLoaded', () => {
+    // ... existing calls ...
+    loadVideoGallery();
+});

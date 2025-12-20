@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        .section {
+            display: none !important;
+            background: red;
+            padding: 20px;
+            margin: 10px;
+        }
+
+        .section.active {
+            display: block !important;
+            background: green;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Section Test</h1>
+    <section class="section active" id="sec1">Section 1 - Should be GREEN and VISIBLE</section>
+    <section class="section" id="sec2">Section 2 - Should be HIDDEN</section>
+    <section class="section" id="sec3">Section 3 - Should be HIDDEN</section>
+
+    <button onclick="switchTo('sec1')">Show Section 1</button>
+    <button onclick="switchTo('sec2')">Show Section 2</button>
+    <button onclick="switchTo('sec3')">Show Section 3</button>
+
+    <script>
+        function switchTo(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

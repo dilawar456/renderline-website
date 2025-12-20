@@ -1,0 +1,655 @@
+/* 
+   RENDERLINE ADMIN PANEL v4.1 - ENHANCED
+   Theme: Luxury Dark Gold (Glassmorphism)
+   Updates: Better Image Handling, Sortable Lists
+*/
+
+:root {
+    --bg-dark: #000000;
+    --bg-sidebar: #050505;
+    --bg-card: rgba(20, 20, 20, 0.4);
+    --bg-card-hover: rgba(30, 30, 30, 0.6);
+
+    --primary: #d4af37;
+    /* Classic Gold */
+    --primary-light: #f3cf55;
+    /* Light Gold */
+    --primary-dark: #8a7018;
+    /* Dark Gold */
+    --primary-dim: rgba(212, 175, 55, 0.08);
+    /* Gold Tint Low */
+    --primary-glow: rgba(212, 175, 55, 0.25);
+    /* Gold Glow */
+
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --text-dim: #666666;
+
+    --border-light: rgba(255, 255, 255, 0.08);
+    --border-gold: rgba(212, 175, 55, 0.3);
+
+    --success: #059669;
+    --danger: #dc2626;
+
+    --sidebar-width: 260px;
+    --header-height: 70px;
+
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Outfit', sans-serif;
+
+    --glass: blur(12px) saturate(180%);
+}
+
+/* === RESET & BASE === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-dark) var(--bg-dark);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 25%);
+    background-attachment: fixed;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--primary-dark);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+}
+
+/* === UI COMPONENTS === */
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    letter-spacing: 0.3px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+    filter: brightness(1.1);
+}
+
+.btn-danger {
+    background: rgba(220, 38, 38, 0.1);
+    color: #fca5a5;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.btn-danger:hover {
+    background: var(--danger);
+    color: white;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+    width: 100%;
+    background: rgba(10, 10, 10, 0.6);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    color: var(--text-main);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: rgba(15, 15, 15, 0.9);
+    box-shadow: 0 0 0 3px var(--primary-dim);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Cards */
+.card {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-dark), transparent);
+    opacity: 0.5;
+}
+
+.card h3 {
+    font-family: var(--font-heading);
+    color: var(--primary);
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: var(--primary);
+    font-family: var(--font-heading);
+    padding: 1rem;
+    font-weight: 500;
+    border-bottom: 1px solid var(--border-gold);
+}
+
+td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-muted);
+}
+
+tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-main);
+}
+
+/* === LAYOUT === */
+
+/* Sidebar */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: var(--bg-sidebar);
+    border-right: 1px solid var(--border-light);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar-header {
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.sidebar-header h2 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    background: linear-gradient(45deg, var(--primary), #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 1rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 0.9rem 1.25rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 500;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-main);
+}
+
+.nav-item.active {
+    background: linear-gradient(90deg, var(--primary-dim) 0%, transparent 100%);
+    color: var(--primary);
+    border-left: 3px solid var(--primary);
+}
+
+.nav-icon {
+    width: 24px;
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid var(--border-light);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Main Content */
+.main-content {
+    margin-left: var(--sidebar-width);
+    padding: 2.5rem;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
+}
+
+/* Page Header */
+.page-header {
+    margin-bottom: 2.5rem;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.page-header h1 {
+    font-family: var(--font-heading);
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+/* Mobile Toggle */
+.mobile-toggle {
+    display: none;
+    /* Hidden on desktop */
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2000;
+    padding: 0.6rem;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-gold);
+}
+
+/* === SECTIONS === */
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: linear-gradient(145deg, rgba(20, 20, 20, 0.8), rgba(0, 0, 0, 0.9));
+    border: 1px solid var(--border-light);
+    padding: 1.5rem;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    border-color: var(--primary-dark);
+}
+
+.stat-value {
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+    line-height: 1;
+}
+
+/* Upload Zone */
+.upload-zone {
+    border: 2px dashed var(--border-light);
+    border-radius: 12px;
+    padding: 4rem 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.01);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-zone:hover {
+    border-color: var(--primary);
+    background: var(--primary-dim);
+    transform: scale(0.99);
+}
+
+/* Image Grid (Services/Hero) */
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.5rem;
+}
+
+.image-slot {
+    aspect-ratio: 16/9;
+    background: #111;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    group: slot;
+}
+
+.image-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+    /* Removes bottom space */
+}
+
+.image-slot:hover img {
+    transform: scale(1.1);
+}
+
+.portfolio-actions {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: var(--primary);
+    font-weight: 600;
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.image-slot:hover .portfolio-actions {
+    opacity: 1;
+}
+
+/* SPECIAL SERVICE THUMBNAILS (For Profile & Services) */
+/* Increased size for better visibility */
+.service-thumb {
+    width: 180px !important;
+    height: 180px !important;
+    aspect-ratio: 1 !important;
+    background-color: #000;
+    flex-shrink: 0;
+}
+
+/* Ensure images inside are not distorted */
+.service-thumb img {
+    object-position: center top;
+    /* Good for portraits */
+}
+
+/* Portfolio Grid */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.portfolio-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-light);
+    cursor: grab;
+    /* Show grab cursor for sorting */
+}
+
+.portfolio-item:active {
+    cursor: grabbing;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+}
+
+.portfolio-item:hover img {
+    transform: scale(1.05);
+    /* Subtle zoom */
+}
+
+.portfolio-item:hover .portfolio-actions {
+    opacity: 1;
+}
+
+/* SORTABLE JS CLASSES */
+.sortable-ghost {
+    opacity: 0.4;
+    border: 2px dashed var(--primary);
+    background: var(--bg-card);
+}
+
+.sortable-drag {
+    cursor: grabbing;
+    opacity: 1;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: scale(1.05);
+    z-index: 999;
+}
+
+
+/* Login Page */
+.login-page {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image:
+        radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 3rem;
+    background: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-gold);
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* === RESPONSIVE DESIGN (The Upgrade) === */
+
+@media (max-width: 1024px) {
+    :root {
+        --sidebar-width: 240px;
+    }
+
+    .form-row {
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-content {
+        margin-left: 0;
+        padding: 1.5rem;
+        padding-top: 5rem;
+        /* Space for toggle */
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .mobile-toggle {
+        display: block;
+    }
+
+    /* Stats auto-stack triggers naturally via grid, but let's tweak padding */
+    .card {
+        padding: 1.5rem;
+    }
+
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.75rem;
+    }
+
+    /* Login responsive */
+    .login-card {
+        margin: 1rem;
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        /* Stack inputs fully */
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .image-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .nav-item {
+        padding: 0.75rem 1rem;
+    }
+
+    .service-thumb {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 16/9 !important;
+        /* Widescreen on mobile */
+    }
+
+    /* Adjust service image layouts in loop */
+    .card>div[style*="display:flex"] {
+        flex-direction: column;
+    }
+
+    .image-slot[style*="width:120px"] {
+        width: 100% !important;
+        aspect-ratio: 16/9;
+    }
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

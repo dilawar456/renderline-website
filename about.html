@@ -5,8 +5,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Dilawar Ali | RenderLine</title>
+    <link rel="canonical" href="https://renderline.com/about.html">
+    <link rel="icon" href="assets/logo.png" type="image/png">
     <meta name="description"
-        content="Meet Dilawar Ali, founder of RenderLine - a premier architectural visualization expert serving architects across Pakistan and UAE.">
+        content="Meet Dilawar Ali, Founder & Creative Director of RenderLine. Expert in 3D architectural visualization serving architects across Pakistan and UAE.">
+    <meta name="keywords"
+        content="Dilawar Ali, RenderLine Founder, Architectural Visualization Expert, 3D Artist Lahore, Architectural Rendering Services">
+    <meta name="author" content="RenderLine">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="About Dilawar Ali | RenderLine">
+    <meta property="og:description"
+        content="Meet Dilawar Ali, Founder & Creative Director of RenderLine. Expert in 3D architectural visualization serving architects across Pakistan and UAE.">
+    <meta property="og:image" content="assets/images/render12.jpg">
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '2141726459960922');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=2141726459960922&ev=PageView&noscript=1" /></noscript>
+    <!-- End Facebook Pixel Code -->
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Dilawar Ali",
+      "jobTitle": "Founder & Creative Director",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "RenderLine"
+      },
+      "url": "https://renderline.com/about.html",
+      "image": "assets/images/render12.jpg",
+      "sameAs": [
+        "https://www.facebook.com/renderline"
+      ]
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -273,7 +325,7 @@
     <section class="section-padding" style="background: var(--bg-dark);">
         <div class="container">
             <div class="text-center" style="margin-bottom: 3rem;">
-                <span
+                <span id="expertiseSubtitle"
                     style="color: var(--primary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em;">What
                     I Do</span>
                 <h2 style="margin-top: 0.5rem;">Areas of Expertise</h2>
@@ -282,50 +334,50 @@
                 <div
                     style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; text-align: center; transition: 0.3s;">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏠</div>
-                    <h4 style="color: #fff; margin-bottom: 0.5rem;">Exterior Visualization</h4>
-                    <p style="font-size: 0.85rem; margin: 0;">Villas, towers, facades</p>
+                    <h4 id="expertise1Title" style="color: #fff; margin-bottom: 0.5rem;">Exterior Visualization</h4>
+                    <p id="expertise1Desc" style="font-size: 0.85rem; margin: 0;">Villas, towers, facades</p>
                 </div>
                 <div
                     style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; text-align: center; transition: 0.3s;">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🛋️</div>
-                    <h4 style="color: #fff; margin-bottom: 0.5rem;">Interior Design</h4>
-                    <p style="font-size: 0.85rem; margin: 0;">Luxury residential & commercial</p>
+                    <h4 id="expertise2Title" style="color: #fff; margin-bottom: 0.5rem;">Interior Design</h4>
+                    <p id="expertise2Desc" style="font-size: 0.85rem; margin: 0;">Luxury residential & commercial</p>
                 </div>
                 <div
                     style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; text-align: center; transition: 0.3s;">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎬</div>
-                    <h4 style="color: #fff; margin-bottom: 0.5rem;">3D Walkthroughs</h4>
-                    <p style="font-size: 0.85rem; margin: 0;">Cinematic animations</p>
+                    <h4 id="expertise3Title" style="color: #fff; margin-bottom: 0.5rem;">3D Walkthroughs</h4>
+                    <p id="expertise3Desc" style="font-size: 0.85rem; margin: 0;">Cinematic animations</p>
                 </div>
                 <div
                     style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; text-align: center; transition: 0.3s;">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🚁</div>
-                    <h4 style="color: #fff; margin-bottom: 0.5rem;">Aerial & Drone Views</h4>
-                    <p style="font-size: 0.85rem; margin: 0;">Bird's eye perspectives</p>
+                    <h4 id="expertise4Title" style="color: #fff; margin-bottom: 0.5rem;">Aerial & Drone Views</h4>
+                    <p id="expertise4Desc" style="font-size: 0.85rem; margin: 0;">Bird's eye perspectives</p>
                 </div>
                 <div
                     style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; text-align: center; transition: 0.3s;">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🌙</div>
-                    <h4 style="color: #fff; margin-bottom: 0.5rem;">Night & Dusk Scenes</h4>
-                    <p style="font-size: 0.85rem; margin: 0;">Dramatic lighting</p>
+                    <h4 id="expertise5Title" style="color: #fff; margin-bottom: 0.5rem;">Night & Dusk Scenes</h4>
+                    <p id="expertise5Desc" style="font-size: 0.85rem; margin: 0;">Dramatic lighting</p>
                 </div>
                 <div
                     style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; text-align: center; transition: 0.3s;">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🏢</div>
-                    <h4 style="color: #fff; margin-bottom: 0.5rem;">Commercial Spaces</h4>
-                    <p style="font-size: 0.85rem; margin: 0;">Offices, retail, hotels</p>
+                    <h4 id="expertise6Title" style="color: #fff; margin-bottom: 0.5rem;">Commercial Spaces</h4>
+                    <p id="expertise6Desc" style="font-size: 0.85rem; margin: 0;">Offices, retail, hotels</p>
                 </div>
                 <div
                     style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; text-align: center; transition: 0.3s;">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">📐</div>
-                    <h4 style="color: #fff; margin-bottom: 0.5rem;">Floor Plans</h4>
-                    <p style="font-size: 0.85rem; margin: 0;">2D & 3D layouts</p>
+                    <h4 id="expertise7Title" style="color: #fff; margin-bottom: 0.5rem;">Floor Plans</h4>
+                    <p id="expertise7Desc" style="font-size: 0.85rem; margin: 0;">2D & 3D layouts</p>
                 </div>
                 <div
                     style="padding: 2rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; text-align: center; transition: 0.3s;">
                     <div style="font-size: 2.5rem; margin-bottom: 1rem;">🎯</div>
-                    <h4 style="color: #fff; margin-bottom: 0.5rem;">Real Estate Marketing</h4>
-                    <p style="font-size: 0.85rem; margin: 0;">Sales-ready visuals</p>
+                    <h4 id="expertise8Title" style="color: #fff; margin-bottom: 0.5rem;">Real Estate Marketing</h4>
+                    <p id="expertise8Desc" style="font-size: 0.85rem; margin: 0;">Sales-ready visuals</p>
                 </div>
             </div>
         </div>
@@ -335,12 +387,12 @@
     <section class="section-padding" style="background: linear-gradient(180deg, var(--bg-card), var(--bg-dark));">
         <div class="container">
             <div class="text-center" style="margin-bottom: 3rem;">
-                <span
+                <span id="toolsSubtitle"
                     style="color: var(--primary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em;">My
                     Arsenal</span>
                 <h2 style="margin-top: 0.5rem;">Tools & Technologies</h2>
             </div>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+            <div id="toolsGrid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
                 <div
                     style="padding: 1rem 1.5rem; background: var(--bg-dark); border: 1px solid var(--border-dark); border-radius: 8px; font-size: 0.9rem; color: var(--text-light); transition: 0.3s; display: flex; align-items: center; gap: 0.5rem;">
                     <span style="color: var(--primary);">●</span> 3ds Max
@@ -416,32 +468,36 @@
                 <div class="step">
                     <div class="step-number">01</div>
                     <div class="step-content">
-                        <h3>Project Briefing</h3>
-                        <p>We begin with a detailed consultation to understand your vision, review CAD/SketchUp files,
+                        <h3 id="step1Title">Project Briefing</h3>
+                        <p id="step1Desc">We begin with a detailed consultation to understand your vision, review
+                            CAD/SketchUp files,
                             and establish mood references that align with your design intent.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">02</div>
                     <div class="step-content">
-                        <h3>3D Modeling</h3>
-                        <p>I create an accurate 3D model based on your drawings. You receive a clay render for approval,
+                        <h3 id="step2Title">3D Modeling</h3>
+                        <p id="step2Desc">I create an accurate 3D model based on your drawings. You receive a clay
+                            render for approval,
                             ensuring geometry is perfect before texturing begins.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">03</div>
                     <div class="step-content">
-                        <h3>Materials & Lighting</h3>
-                        <p>Premium textures, realistic materials, and cinematic lighting are applied. Day, dusk, or
+                        <h3 id="step3Title">Materials & Lighting</h3>
+                        <p id="step3Desc">Premium textures, realistic materials, and cinematic lighting are applied.
+                            Day, dusk, or
                             night – the mood is crafted to maximize visual impact.</p>
                     </div>
                 </div>
                 <div class="step">
                     <div class="step-number">04</div>
                     <div class="step-content">
-                        <h3>Final Delivery</h3>
-                        <p>High-resolution renders undergo post-production in Photoshop. Multiple revisions included.
+                        <h3 id="step4Title">Final Delivery</h3>
+                        <p id="step4Desc">High-resolution renders undergo post-production in Photoshop. Multiple
+                            revisions included.
                             Final files delivered in print-ready and web formats.</p>
                     </div>
                 </div>
