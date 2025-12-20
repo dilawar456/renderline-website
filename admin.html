@@ -752,6 +752,68 @@
             display: none;
         }
     </style>
+    <style>
+        /* --- PREMIUM DESIGN UPDATES --- */
+        .sidebar {
+            background: linear-gradient(180deg, #111, #050505) !important;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.4);
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #1A1A1A, #121212) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border-color: var(--gold);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1), transparent);
+            border-right: 3px solid var(--gold);
+        }
+
+        input,
+        textarea,
+        select {
+            background: #0f0f0f !important;
+            border: 1px solid #333 !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            background: #151515 !important;
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1) !important;
+            outline: none;
+        }
+
+        .btn {
+            border-radius: 8px !important;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Mobile Menu Polish */
+        .mobile-menu-btn {
+            background: linear-gradient(145deg, #1A1A1A, #121212) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 
 <body>
@@ -1227,6 +1289,18 @@
 
                 <div class="card">
                     <h3>📤 Upload Portfolio Images to Cloudinary</h3>
+                    <div class="form-group" style="margin-bottom: 1rem;">
+                        <label
+                            style="color: var(--gold); font-weight: 500; margin-bottom: 0.5rem; display: block;">Select
+                            Upload Category</label>
+                        <select id="portfolioCategoryUpload"
+                            style="width: 100%; padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border-gold); background: var(--bg-surface); color: var(--text-white); font-family: var(--font-body); font-size: 1rem; outline: none;">
+                            <option value="exterior">Exterior Visualization</option>
+                            <option value="interior">Interior Visualization</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="floorplan">3D Floorplan</option>
+                        </select>
+                    </div>
                     <div class="upload-zone" id="uploadZone">
                         <div class="upload-icon">☁️</div>
                         <h4>Drag & Drop Images Here</h4>
@@ -1368,357 +1442,378 @@
                                     <label>Timeline</label>
                                     <input type="text" id="service1Timeline" value="3-5 business days">
                                 </div>
-                                <div class="form-group">
-                                    <label>Price From</label>
+                                <div class="form-group"><label>Price From</label>
                                     <input type="text" id="service1Price" value="$150">
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Service 2 -->
-                <div class="card">
-                    <h3>🛋️ Service 2: Interior Visualization</h3>
-                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-                        <div class="service-image-slot" onclick="uploadServiceImage(2)">
-                            <img src="assets/images/render10.jpg" alt="Service 2" id="service2ImagePreview">
-                            <div class="image-overlay">📷</div>
-                            <input type="file" id="service2ImageInput" accept="image/*" hidden
-                                onchange="handleServiceImageChange(2, this)">
-                        </div>
-                        <div style="flex: 1; min-width: 300px;">
-                            <div class="form-row">
-                                <div class="form-group"><label>Title</label><input type="text" id="service2Title"
-                                        value="Interior Visualization"></div>
-                                <div class="form-group"><label>Icon</label><input type="text" id="service2Icon"
-                                        value="🛋️" style="width: 60px;"></div>
-                            </div>
-                            <div class="form-group"><label>Description</label><textarea id="service2Short"
-                                    rows="2">Showcase interiors with realistic lighting, materials, and furniture placement.</textarea>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Timeline</label><input type="text" id="service2Timeline"
-                                        value="2-4 business days"></div>
-                                <div class="form-group"><label>Price</label><input type="text" id="service2Price"
-                                        value="$120"></div>
+                            <div class="form-group">
+                                <label>Features (Comma Separated)</label>
+                                <textarea id="service1Features" rows="3"
+                                    placeholder="High Resolution, 3 Revisions..."></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
+    </div>
 
-                <!-- Service 3 -->
-                <div class="card">
-                    <h3>🎬 Service 3: 3D Animations</h3>
-                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-                        <div class="service-image-slot" onclick="uploadServiceImage(3)">
-                            <img src="assets/images/render12.jpg" alt="Service 3" id="service3ImagePreview">
-                            <div class="image-overlay">📷</div>
-                            <input type="file" id="service3ImageInput" accept="image/*" hidden
-                                onchange="handleServiceImageChange(3, this)">
-                        </div>
-                        <div style="flex: 1; min-width: 300px;">
-                            <div class="form-row">
-                                <div class="form-group"><label>Title</label><input type="text" id="service3Title"
-                                        value="3D Animations & Walkthroughs"></div>
-                                <div class="form-group"><label>Icon</label><input type="text" id="service3Icon"
-                                        value="🎬" style="width: 60px;"></div>
-                            </div>
-                            <div class="form-group"><label>Description</label><textarea id="service3Short"
-                                    rows="2">Cinematic walkthrough animations for real estate marketing.</textarea>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Timeline</label><input type="text" id="service3Timeline"
-                                        value="7-14 business days"></div>
-                                <div class="form-group"><label>Price</label><input type="text" id="service3Price"
-                                        value="$500"></div>
-                            </div>
-                        </div>
+    <!-- Service 2 -->
+    <div class="card">
+        <h3>🛋️ Service 2: Interior Visualization</h3>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <div class="service-image-slot" onclick="uploadServiceImage(2)">
+                <img src="assets/images/render10.jpg" alt="Service 2" id="service2ImagePreview">
+                <div class="image-overlay">📷</div>
+                <input type="file" id="service2ImageInput" accept="image/*" hidden
+                    onchange="handleServiceImageChange(2, this)">
+            </div>
+            <div style="flex: 1; min-width: 300px;">
+                <div class="form-row">
+                    <div class="form-group"><label>Title</label><input type="text" id="service2Title"
+                            value="Interior Visualization"></div>
+                    <div class="form-group"><label>Icon</label><input type="text" id="service2Icon" value="🛋️"
+                            style="width: 60px;"></div>
+                </div>
+                <div class="form-group"><label>Description</label><textarea id="service2Short"
+                        rows="2">Showcase interiors with realistic lighting, materials, and furniture placement.</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Timeline</label><input type="text" id="service2Timeline"
+                            value="2-4 business days"></div>
+                    <div class="form-group"><label>Price</label><input type="text" id="service2Price" value="$120">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label>Features (Comma Separated)</label>
+                    <textarea id="service2Features" rows="3" placeholder="High Resolution, 3 Revisions..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Service 4 -->
-                <div class="card">
-                    <h3>📐 Service 4: Floor Plan Visualization</h3>
-                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-                        <div class="service-image-slot" onclick="uploadServiceImage(4)">
-                            <img src="assets/images/render21.jpg" alt="Service 4" id="service4ImagePreview">
-                            <div class="image-overlay">📷</div>
-                            <input type="file" id="service4ImageInput" accept="image/*" hidden
-                                onchange="handleServiceImageChange(4, this)">
-                        </div>
-                        <div style="flex: 1; min-width: 300px;">
-                            <div class="form-row">
-                                <div class="form-group"><label>Title</label><input type="text" id="service4Title"
-                                        value="Floor Plan Visualization"></div>
-                                <div class="form-group"><label>Icon</label><input type="text" id="service4Icon"
-                                        value="📐" style="width: 60px;"></div>
-                            </div>
-                            <div class="form-group"><label>Description</label><textarea id="service4Short"
-                                    rows="2">2D CAD to 3D floor plan conversion with furniture layout.</textarea></div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Timeline</label><input type="text" id="service4Timeline"
-                                        value="1-2 business days"></div>
-                                <div class="form-group"><label>Price</label><input type="text" id="service4Price"
-                                        value="$50"></div>
-                            </div>
-                        </div>
+    <!-- Service 3 -->
+    <div class="card">
+        <h3>🎬 Service 3: 3D Animations</h3>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <div class="service-image-slot" onclick="uploadServiceImage(3)">
+                <img src="assets/images/render12.jpg" alt="Service 3" id="service3ImagePreview">
+                <div class="image-overlay">📷</div>
+                <input type="file" id="service3ImageInput" accept="image/*" hidden
+                    onchange="handleServiceImageChange(3, this)">
+            </div>
+            <div style="flex: 1; min-width: 300px;">
+                <div class="form-row">
+                    <div class="form-group"><label>Title</label><input type="text" id="service3Title"
+                            value="3D Animations & Walkthroughs"></div>
+                    <div class="form-group"><label>Icon</label><input type="text" id="service3Icon" value="🎬"
+                            style="width: 60px;"></div>
+                </div>
+                <div class="form-group"><label>Description</label><textarea id="service3Short"
+                        rows="2">Cinematic walkthrough animations for real estate marketing.</textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Timeline</label><input type="text" id="service3Timeline"
+                            value="7-14 business days"></div>
+                    <div class="form-group"><label>Price</label><input type="text" id="service3Price" value="$500">
                     </div>
                 </div>
+                <div class="form-group">
+                    <label>Features (Comma Separated)</label>
+                    <textarea id="service3Features" rows="3" placeholder="High Resolution, 3 Revisions..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                <!-- Service 5 -->
-                <div class="card">
-                    <h3>📏 Service 5: AutoCAD Drawings</h3>
-                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-                        <div class="service-image-slot" onclick="uploadServiceImage(5)">
-                            <img src="assets/images/render3.jpg" alt="Service 5" id="service5ImagePreview">
-                            <div class="image-overlay">📷</div>
-                            <input type="file" id="service5ImageInput" accept="image/*" hidden
-                                onchange="handleServiceImageChange(5, this)">
-                        </div>
-                        <div style="flex: 1; min-width: 300px;">
-                            <div class="form-row">
-                                <div class="form-group"><label>Title</label><input type="text" id="service5Title"
-                                        value="AutoCAD Drawings"></div>
-                                <div class="form-group"><label>Icon</label><input type="text" id="service5Icon"
-                                        value="📏" style="width: 60px;"></div>
-                            </div>
-                            <div class="form-group"><label>Description</label><textarea id="service5Short"
-                                    rows="2">Professional 2D drafting and technical drawings.</textarea></div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Timeline</label><input type="text" id="service5Timeline"
-                                        value="2-5 business days"></div>
-                                <div class="form-group"><label>Price</label><input type="text" id="service5Price"
-                                        value="$80"></div>
-                            </div>
-                        </div>
+    <!-- Service 4 -->
+    <div class="card">
+        <h3>📐 Service 4: Floor Plan Visualization</h3>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <div class="service-image-slot" onclick="uploadServiceImage(4)">
+                <img src="assets/images/render21.jpg" alt="Service 4" id="service4ImagePreview">
+                <div class="image-overlay">📷</div>
+                <input type="file" id="service4ImageInput" accept="image/*" hidden
+                    onchange="handleServiceImageChange(4, this)">
+            </div>
+            <div style="flex: 1; min-width: 300px;">
+                <div class="form-row">
+                    <div class="form-group"><label>Title</label><input type="text" id="service4Title"
+                            value="Floor Plan Visualization"></div>
+                    <div class="form-group"><label>Icon</label><input type="text" id="service4Icon" value="📐"
+                            style="width: 60px;"></div>
+                </div>
+                <div class="form-group"><label>Description</label><textarea id="service4Short"
+                        rows="2">2D CAD to 3D floor plan conversion with furniture layout.</textarea></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Timeline</label><input type="text" id="service4Timeline"
+                            value="1-2 business days"></div>
+                    <div class="form-group"><label>Price</label><input type="text" id="service4Price" value="$50"></div>
+                </div>
+                <div class="form-group">
+                    <label>Features (Comma Separated)</label>
+                    <textarea id="service4Features" rows="3" placeholder="High Resolution, 3 Revisions..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service 5 -->
+    <div class="card">
+        <h3>📏 Service 5: AutoCAD Drawings</h3>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <div class="service-image-slot" onclick="uploadServiceImage(5)">
+                <img src="assets/images/render3.jpg" alt="Service 5" id="service5ImagePreview">
+                <div class="image-overlay">📷</div>
+                <input type="file" id="service5ImageInput" accept="image/*" hidden
+                    onchange="handleServiceImageChange(5, this)">
+            </div>
+            <div style="flex: 1; min-width: 300px;">
+                <div class="form-row">
+                    <div class="form-group"><label>Title</label><input type="text" id="service5Title"
+                            value="AutoCAD Drawings"></div>
+                    <div class="form-group"><label>Icon</label><input type="text" id="service5Icon" value="📏"
+                            style="width: 60px;"></div>
+                </div>
+                <div class="form-group"><label>Description</label><textarea id="service5Short"
+                        rows="2">Professional 2D drafting and technical drawings.</textarea></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Timeline</label><input type="text" id="service5Timeline"
+                            value="2-5 business days"></div>
+                    <div class="form-group"><label>Price</label><input type="text" id="service5Price" value="$80"></div>
+                </div>
+                <div class="form-group">
+                    <label>Features (Comma Separated)</label>
+                    <textarea id="service5Features" rows="3" placeholder="High Resolution, 3 Revisions..."></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service 6 -->
+    <div class="card">
+        <h3>💡 Service 6: Design Consultation</h3>
+        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+            <div class="service-image-slot" onclick="uploadServiceImage(6)">
+                <img src="assets/images/render4.jpg" alt="Service 6" id="service6ImagePreview">
+                <div class="image-overlay">📷</div>
+                <input type="file" id="service6ImageInput" accept="image/*" hidden
+                    onchange="handleServiceImageChange(6, this)">
+            </div>
+            <div style="flex: 1; min-width: 300px;">
+                <div class="form-row">
+                    <div class="form-group"><label>Title</label><input type="text" id="service6Title"
+                            value="Design & Construction Consultation"></div>
+                    <div class="form-group"><label>Icon</label><input type="text" id="service6Icon" value="💡"
+                            style="width: 60px;"></div>
+                </div>
+                <div class="form-group"><label>Description</label><textarea id="service6Short"
+                        rows="2">Expert guidance from concept to completion.</textarea></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Timeline</label><input type="text" id="service6Timeline"
+                            value="Flexible"></div>
+                    <div class="form-group"><label>Price</label><input type="text" id="service6Price" value="$100/hour">
                     </div>
                 </div>
-
-                <!-- Service 6 -->
-                <div class="card">
-                    <h3>💡 Service 6: Design Consultation</h3>
-                    <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
-                        <div class="service-image-slot" onclick="uploadServiceImage(6)">
-                            <img src="assets/images/render4.jpg" alt="Service 6" id="service6ImagePreview">
-                            <div class="image-overlay">📷</div>
-                            <input type="file" id="service6ImageInput" accept="image/*" hidden
-                                onchange="handleServiceImageChange(6, this)">
-                        </div>
-                        <div style="flex: 1; min-width: 300px;">
-                            <div class="form-row">
-                                <div class="form-group"><label>Title</label><input type="text" id="service6Title"
-                                        value="Design & Construction Consultation"></div>
-                                <div class="form-group"><label>Icon</label><input type="text" id="service6Icon"
-                                        value="💡" style="width: 60px;"></div>
-                            </div>
-                            <div class="form-group"><label>Description</label><textarea id="service6Short"
-                                    rows="2">Expert guidance from concept to completion.</textarea></div>
-                            <div class="form-row">
-                                <div class="form-group"><label>Timeline</label><input type="text" id="service6Timeline"
-                                        value="Flexible"></div>
-                                <div class="form-group"><label>Price</label><input type="text" id="service6Price"
-                                        value="$100/hour"></div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>Features (Comma Separated)</label>
+                    <textarea id="service6Features" rows="3" placeholder="High Resolution, 3 Revisions..."></textarea>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <button class="btn btn-primary" onclick="saveServices()">💾 Save All Services</button>
-            </section>
+    <button class="btn btn-primary" onclick="saveServices()">💾 Save All Services</button>
+    </section>
 
-            <!-- Messages Section -->
-            <section id="section-messages" class="section">
-                <div class="page-header">
-                    <h1>Contact Messages</h1>
-                    <p>View and manage customer inquiries</p>
+    <!-- Messages Section -->
+    <section id="section-messages" class="section">
+        <div class="page-header">
+            <h1>Contact Messages</h1>
+            <p>View and manage customer inquiries</p>
+        </div>
+
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Project Type</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="messagesTable">
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 2rem;">No messages yet</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Contact Page Section -->
+    <section id="section-contact" class="section">
+        <div class="page-header">
+            <h1>Contact Page Content</h1>
+            <p>Edit your contact page text and information</p>
+        </div>
+
+        <div class="card">
+            <h3>📄 Page Header</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Heading</label>
+                    <input type="text" id="contactHeading" value="Get In Touch">
                 </div>
-
-                <div class="card">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Project Type</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="messagesTable">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 2rem;">No messages yet</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="form-group">
+                    <label>Subheading</label>
+                    <input type="text" id="contactSubheading"
+                        value="Ready to bring your architectural vision to life? Let's discuss your project.">
                 </div>
-            </section>
+            </div>
+        </div>
 
-            <!-- Contact Page Section -->
-            <section id="section-contact" class="section">
-                <div class="page-header">
-                    <h1>Contact Page Content</h1>
-                    <p>Edit your contact page text and information</p>
+        <div class="card">
+            <h3>📧 Contact Information</h3>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="contactEmail" value="inforenderline@gmail.com">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>WhatsApp Number (with country code)</label>
+                    <input type="text" id="contactWhatsapp" value="923114544040">
                 </div>
-
-                <div class="card">
-                    <h3>📄 Page Header</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Heading</label>
-                            <input type="text" id="contactHeading" value="Get In Touch">
-                        </div>
-                        <div class="form-group">
-                            <label>Subheading</label>
-                            <input type="text" id="contactSubheading"
-                                value="Ready to bring your architectural vision to life? Let's discuss your project.">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>Phone Display Format</label>
+                    <input type="text" id="contactPhoneDisplay" value="0311-4544040">
                 </div>
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="contactLocation" value="Lahore, Pakistan">
+            </div>
+        </div>
 
-                <div class="card">
-                    <h3>📧 Contact Information</h3>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" id="contactEmail" value="inforenderline@gmail.com">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>WhatsApp Number (with country code)</label>
-                            <input type="text" id="contactWhatsapp" value="923114544040">
-                        </div>
-                        <div class="form-group">
-                            <label>Phone Display Format</label>
-                            <input type="text" id="contactPhoneDisplay" value="0311-4544040">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="contactLocation" value="Lahore, Pakistan">
-                    </div>
+        <button class="btn btn-primary" onclick="saveContactContent()">💾 Save Contact Page</button>
+    </section>
+
+    <!-- Footer Section -->
+    <section id="section-footer" class="section">
+        <div class="page-header">
+            <h1>Footer Content</h1>
+            <p>Edit footer that appears on all pages</p>
+        </div>
+
+        <div class="card">
+            <h3>🏷️ Brand Section</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Brand Name</label>
+                    <input type="text" id="footerBrand" value="RenderLine.">
                 </div>
-
-                <button class="btn btn-primary" onclick="saveContactContent()">💾 Save Contact Page</button>
-            </section>
-
-            <!-- Footer Section -->
-            <section id="section-footer" class="section">
-                <div class="page-header">
-                    <h1>Footer Content</h1>
-                    <p>Edit footer that appears on all pages</p>
+                <div class="form-group">
+                    <label>Tagline</label>
+                    <input type="text" id="footerTagline" value="Premium Architectural Visualization">
                 </div>
+            </div>
+        </div>
 
-                <div class="card">
-                    <h3>🏷️ Brand Section</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Brand Name</label>
-                            <input type="text" id="footerBrand" value="RenderLine.">
-                        </div>
-                        <div class="form-group">
-                            <label>Tagline</label>
-                            <input type="text" id="footerTagline" value="Premium Architectural Visualization">
-                        </div>
-                    </div>
+        <div class="card">
+            <h3>📍 Footer Contact Info</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Address/City</label>
+                    <input type="text" id="footerAddress" value="Lahore, Pakistan">
                 </div>
-
-                <div class="card">
-                    <h3>📍 Footer Contact Info</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Address/City</label>
-                            <input type="text" id="footerAddress" value="Lahore, Pakistan">
-                        </div>
-                        <div class="form-group">
-                            <label>Phone Display</label>
-                            <input type="text" id="footerPhone" value="0311-4544040">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>Phone Display</label>
+                    <input type="text" id="footerPhone" value="0311-4544040">
                 </div>
+            </div>
+        </div>
 
-                <div class="card">
-                    <h3>©️ Copyright</h3>
-                    <div class="form-group">
-                        <label>Copyright Text</label>
-                        <input type="text" id="footerCopyright" value="© 2024 RenderLine. All Rights Reserved.">
-                    </div>
+        <div class="card">
+            <h3>©️ Copyright</h3>
+            <div class="form-group">
+                <label>Copyright Text</label>
+                <input type="text" id="footerCopyright" value="© 2024 RenderLine. All Rights Reserved.">
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveFooterContent()">💾 Save Footer</button>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="section-settings" class="section">
+        <div class="page-header">
+            <h1>Site Settings</h1>
+            <p>Configure your website settings</p>
+        </div>
+
+        <div class="card">
+            <h3>📧 Contact Information</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="contactEmail" placeholder="info@renderline.com">
                 </div>
-
-                <button class="btn btn-primary" onclick="saveFooterContent()">💾 Save Footer</button>
-            </section>
-
-            <!-- Settings Section -->
-            <section id="section-settings" class="section">
-                <div class="page-header">
-                    <h1>Site Settings</h1>
-                    <p>Configure your website settings</p>
+                <div class="form-group">
+                    <label>WhatsApp (with country code)</label>
+                    <input type="text" id="contactWhatsapp" placeholder="923114544040">
                 </div>
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="contactLocation" placeholder="Lahore, Pakistan">
+            </div>
+        </div>
 
-                <div class="card">
-                    <h3>📧 Contact Information</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="contactEmail" placeholder="info@renderline.com">
-                        </div>
-                        <div class="form-group">
-                            <label>WhatsApp (with country code)</label>
-                            <input type="text" id="contactWhatsapp" placeholder="923114544040">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="contactLocation" placeholder="Lahore, Pakistan">
-                    </div>
+        <div class="card">
+            <h3>🔗 Supabase Connection</h3>
+            <div id="connectionStatus">
+                <p style="color: var(--text-dim);">Checking connection...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>☁️ Cloudinary Settings</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cloud Name</label>
+                    <input type="text" id="cloudName" value="dzp70azv3" readonly style="background: var(--bg-dark);">
                 </div>
-
-                <div class="card">
-                    <h3>🔗 Supabase Connection</h3>
-                    <div id="connectionStatus">
-                        <p style="color: var(--text-dim);">Checking connection...</p>
-                    </div>
+                <div class="form-group">
+                    <label>Upload Preset Name</label>
+                    <input type="text" id="cloudPreset" value="renderline_unsigned" placeholder="renderline_unsigned">
                 </div>
+            </div>
+            <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.5rem;">
+                ⚡ <strong>Important:</strong> Cloudinary Dashboard → Settings → Upload → Add preset → Set
+                "Unsigned"
+            </p>
+        </div>
 
-                <div class="card">
-                    <h3>☁️ Cloudinary Settings</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Cloud Name</label>
-                            <input type="text" id="cloudName" value="dzp70azv3" readonly
-                                style="background: var(--bg-dark);">
-                        </div>
-                        <div class="form-group">
-                            <label>Upload Preset Name</label>
-                            <input type="text" id="cloudPreset" value="renderline_unsigned"
-                                placeholder="renderline_unsigned">
-                        </div>
-                    </div>
-                    <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.5rem;">
-                        ⚡ <strong>Important:</strong> Cloudinary Dashboard → Settings → Upload → Add preset → Set
-                        "Unsigned"
-                    </p>
-                </div>
+        <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
 
-                <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+        <div class="card" style="margin-top: 2rem; border-color: var(--gold);">
+            <h3>🛠️ Data Migration Tools</h3>
+            <p style="color: var(--text-dim); margin-bottom: 1rem;">Use these if you lost videos during the
+                update.</p>
+            <button class="btn" onclick="restoreLegacyVideos()"
+                style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold);">↻
+                Restore Legacy YouTube Videos</button>
+            <button class="btn" id="migrateBtn" onclick="migrateLocalAssets()"
+                style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold); margin-top: 1rem;">☁️
+                Migrate Local Assets to Cloud</button>
+            <div id="migrationLog"
+                style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); max-height: 150px; overflow-y: auto;">
+            </div>
+        </div>
+    </section>
 
-                <div class="card" style="margin-top: 2rem; border-color: var(--gold);">
-                    <h3>🛠️ Data Migration Tools</h3>
-                    <p style="color: var(--text-dim); margin-bottom: 1rem;">Use these if you lost videos during the
-                        update.</p>
-                    <button class="btn" onclick="restoreLegacyVideos()"
-                        style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold);">↻
-                        Restore Legacy YouTube Videos</button>
-                    <button class="btn" id="migrateBtn" onclick="migrateLocalAssets()"
-                        style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold); margin-top: 1rem;">☁️
-                        Migrate Local Assets to Cloud</button>
-                    <div id="migrationLog"
-                        style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); max-height: 150px; overflow-y: auto;">
-                    </div>
-                </div>
-            </section>
-
-        </main>
+    </main>
     </div>
 
     <!-- Scripts -->
@@ -1904,7 +1999,12 @@
                     <td>${msg.project_type || '-'}</td>
                     <td>${new Date(msg.created_at).toLocaleDateString()}</td>
                     <td><span class="badge badge-${msg.status}">${msg.status}</span></td>
-                    <td><button class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; background: var(--bg-hover); color: var(--text);">View</button></td>
+                    <td>
+                        <div style="display:flex; gap:0.5rem;">
+                            <a href="https://wa.me/${msg.phone}" target="_blank" class="btn" style="padding: 0.4rem 0.6rem; font-size: 0.8rem; background: #25D366; color: white; text-decoration: none;" title="Reply via WhatsApp">WhatsApp</a>
+                            <a href="mailto:${msg.email}" class="btn" style="padding: 0.4rem 0.6rem; font-size: 0.8rem; background: var(--primary); color: white; text-decoration: none;" title="Reply via Email">Email</a>
+                        </div>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -2018,13 +2118,16 @@
 
                 const priceEl = document.getElementById('service' + i + 'Price');
                 if (priceEl) content['service' + i + '_price'] = priceEl.value;
+
+                const featuresEl = document.getElementById('service' + i + 'Features');
+                if (featuresEl) content['service' + i + '_features'] = featuresEl.value;
             }
 
             if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                 const { error } = await updateSiteContent(content);
                 if (error) {
                     console.error('DB Error:', error);
-                    alert('❌ DB Save Failed: ' + error.message + '\n\nPlease run "fix-schema-services-text.sql" in Supabase!');
+                    alert('❌ DB Save Failed: ' + error.message + '\n\nPlease run "database-complete.sql" in Supabase!');
                 } else {
                     alert('✅ Services saved successfully!');
                 }
@@ -2134,7 +2237,7 @@
                             title: file.name.replace(/\.[^/.]+$/, ''),
                             image_url: data.secure_url,
                             public_id: data.public_id,
-                            category: 'render',
+                            category: document.getElementById('portfolioCategoryUpload').value || 'exterior',
                             uploaded_at: new Date().toISOString()
                         };
 
@@ -2340,7 +2443,7 @@
                     const { error: dbError } = await updateSiteContent({ ['cloudinary_service' + index]: data.url });
                     if (dbError) {
                         console.error('DB Error:', dbError);
-                        alert('⚠️ DB Save Failed: ' + dbError.message + '\n\nPlease go to Supabase SQL Editor and run the "fix-schema-upload-error.sql" script!');
+                        alert('⚠️ DB Save Failed: ' + dbError.message + '\n\nPlease go to Supabase SQL Editor and run the "database-complete.sql" script!');
                     } else {
                         alert('✅ Service ' + index + ' image uploaded to Cloudinary + saved!');
                     }
@@ -2703,6 +2806,18 @@
             log.innerHTML += `<br><strong>Migration Finished. ${success} assets migrated.</strong>`;
             alert('Migration finished!');
             renderPortfolioGrid(await getPortfolioItems());
+        }
+
+        function loadAllAdminFields(content) {
+            // Load Services
+            for (let i = 1; i <= 6; i++) {
+                if (document.getElementById('service' + i + 'Title') && content['service' + i + '_title']) document.getElementById('service' + i + 'Title').value = content['service' + i + '_title'];
+                if (document.getElementById('service' + i + 'Short') && content['service' + i + '_desc']) document.getElementById('service' + i + 'Short').value = content['service' + i + '_desc'];
+                if (document.getElementById('service' + i + 'Icon') && content['service' + i + '_icon']) document.getElementById('service' + i + 'Icon').value = content['service' + i + '_icon'];
+                if (document.getElementById('service' + i + 'Timeline') && content['service' + i + '_timeline']) document.getElementById('service' + i + 'Timeline').value = content['service' + i + '_timeline'];
+                if (document.getElementById('service' + i + 'Price') && content['service' + i + '_price']) document.getElementById('service' + i + 'Price').value = content['service' + i + '_price'];
+                if (document.getElementById('service' + i + 'Features') && content['service' + i + '_features']) document.getElementById('service' + i + 'Features').value = content['service' + i + '_features'];
+            }
         }
 
         function toggleSidebar() {

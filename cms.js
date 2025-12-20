@@ -172,18 +172,19 @@ async function loadSiteContent() {
     }
 
     // Update WhatsApp
-    if (content.contact_whatsapp) {
-        const waLink = `https://wa.me/${content.contact_whatsapp}`;
-        document.querySelectorAll('.whatsapp-float').forEach(el => el.href = waLink);
+    // Update WhatsApp (Force correct number)
+    const waNumber = '923114544040';
+    const waDisplay = '0311-4544040';
 
-        const ctaWaValues = document.querySelectorAll('#ctaWhatsappBtn, #footerWhatsapp');
-        ctaWaValues.forEach(btn => {
-            if (btn) {
-                btn.href = waLink;
-                btn.innerText = `WhatsApp: ${formatPhoneNumber(content.contact_whatsapp)}`;
-            }
-        });
-    }
+    const waLink = `https://wa.me/${waNumber}`;
+    document.querySelectorAll('.whatsapp-float').forEach(el => el.href = waLink);
+
+    const ctaWaValues = document.querySelectorAll('#ctaWhatsappBtn, #footerWhatsapp, #contactWhatsappDisplay');
+    ctaWaValues.forEach(btn => {
+        btn.innerHTML = `WhatsApp: ${waDisplay}`;
+        btn.href = waLink;
+    });
+
 
     // Footer Specific
     setText('footerBrand', content.footer_brand);
@@ -412,6 +413,11 @@ async function loadServices() {
                 if (title) window.serviceData[key].title = title;
                 if (desc) window.serviceData[key].description = desc;
                 if (imgUrl) window.serviceData[key].image = imgUrl;
+
+                if (content['service' + i + '_price']) window.serviceData[key].price = content['service' + i + '_price'];
+                if (content['service' + i + '_features']) {
+                    window.serviceData[key].features = content['service' + i + '_features'].split(/,\s*|\n/).map(s => s.trim()).filter(s => s);
+                }
             }
         }
     }

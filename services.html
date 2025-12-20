@@ -541,6 +541,12 @@
                     <div class="modal-body">
                         <h2>${data.title}</h2>
                         <p>${data.description}</p>
+                        
+                        <div class="modal-price-box" style="margin: 1.5rem 0; padding: 1rem; background: rgba(212, 175, 55, 0.1); border-left: 4px solid var(--primary); border-radius: 4px;">
+                            <h4 style="color: var(--primary); margin: 0; font-size: 1.1rem;">Starting Price</h4>
+                            <p style="font-size: 1.5rem; font-weight: 700; margin: 0.5rem 0 0 0;">${data.price || 'Get a Quote'}</p>
+                        </div>
+
                         <h4 style="margin-bottom: 1rem; color: var(--primary);">What We Offer</h4>
                         <div class="modal-features">
                             ${data.features.map(f => `<span>${f}</span>`).join('')}

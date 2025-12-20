@@ -1,16 +1,11 @@
 -- =============================================
--- COMPLETE DATABASE SCHEMA FOR RENDERLINE
+-- COMPLETE DATABASE SCHEMA (MERGED & CLEANED)
 -- Run this in Supabase SQL Editor
+-- This script supercedes all previous fix scripts.
 -- =============================================
 
--- Drop existing tables if needed (be careful in production!)
--- DROP TABLE IF EXISTS site_content CASCADE;
--- DROP TABLE IF EXISTS services CASCADE;
--- DROP TABLE IF EXISTS portfolio_items CASCADE;
--- DROP TABLE IF EXISTS contacts CASCADE;
-
 -- =============================================
--- 1. SITE CONTENT TABLE - ALL WEBSITE TEXT
+-- 1. SITE CONTENT TABLE - ALL WEBSITE TEXT & IMAGES
 -- =============================================
 CREATE TABLE IF NOT EXISTS site_content (
     id SERIAL PRIMARY KEY,
@@ -25,6 +20,19 @@ CREATE TABLE IF NOT EXISTS site_content (
     hero_btn1_link TEXT DEFAULT 'portfolio.html',
     hero_btn2_text TEXT DEFAULT 'Get Free Quote',
     hero_btn2_link TEXT DEFAULT 'contact.html',
+    
+    -- Cloudinary Hero Images
+    cloudinary_hero1 TEXT,
+    cloudinary_hero2 TEXT,
+    cloudinary_hero3 TEXT,
+    cloudinary_hero4 TEXT,
+    cloudinary_hero5 TEXT,
+
+    -- YouTube Videos (Columns)
+    youtube_video1 TEXT,
+    youtube_video2 TEXT,
+    youtube_video3 TEXT,
+    youtube_video4 TEXT,
     
     -- HOME PAGE - Services Section
     services_heading TEXT DEFAULT 'Our Expertise',
@@ -65,50 +73,14 @@ CREATE TABLE IF NOT EXISTS site_content (
     stat_experience TEXT DEFAULT '5+',
     stat_experience_label TEXT DEFAULT 'Years Experience',
     
-    -- ABOUT PAGE - Expertise (8 items)
-    expertise1 TEXT DEFAULT 'Residential Exteriors',
-    expertise2 TEXT DEFAULT 'Commercial Buildings',
-    expertise3 TEXT DEFAULT 'Luxury Interiors',
-    expertise4 TEXT DEFAULT 'Landscape Design',
-    expertise5 TEXT DEFAULT 'Aerial Views',
-    expertise6 TEXT DEFAULT 'Night Renders',
-    expertise7 TEXT DEFAULT '3D Floor Plans',
-    expertise8 TEXT DEFAULT 'Virtual Tours',
-    
-    -- ABOUT PAGE - Tools (12 items)
-    tool1 TEXT DEFAULT '3ds Max',
-    tool2 TEXT DEFAULT 'SketchUp',
-    tool3 TEXT DEFAULT 'V-Ray',
-    tool4 TEXT DEFAULT 'Corona',
-    tool5 TEXT DEFAULT 'Lumion',
-    tool6 TEXT DEFAULT 'D5 Render',
-    tool7 TEXT DEFAULT 'Unreal Engine',
-    tool8 TEXT DEFAULT 'Photoshop',
-    tool9 TEXT DEFAULT 'After Effects',
-    tool10 TEXT DEFAULT 'AutoCAD',
-    tool11 TEXT DEFAULT 'Revit',
-    tool12 TEXT DEFAULT 'AI Tools',
-    
-    -- ABOUT PAGE - How I Work (5 steps)
-    step1_title TEXT DEFAULT 'Consultation',
-    step1_desc TEXT DEFAULT 'We discuss your project, deadlines, and specific requirements. I analyze your drawings to provide an accurate quote.',
-    step2_title TEXT DEFAULT '3D Modeling',
-    step2_desc TEXT DEFAULT 'I create an accurate 3D model based on your drawings. You receive a clay render for approval.',
-    step3_title TEXT DEFAULT 'Materials & Lighting',
-    step3_desc TEXT DEFAULT 'Textures, materials, and lighting are applied. We agree on the atmosphere and mood.',
-    step4_title TEXT DEFAULT 'Rendering',
-    step4_desc TEXT DEFAULT 'High-resolution photorealistic renders are produced using V-Ray or Corona.',
-    step5_title TEXT DEFAULT 'Revisions',
-    step5_desc TEXT DEFAULT 'Final adjustments based on your feedback. Delivery in multiple formats.',
-    
-    -- PORTFOLIO PAGE
-    portfolio_page_heading TEXT DEFAULT 'Our Portfolio',
-    portfolio_page_subheading TEXT DEFAULT 'A complete collection of 70+ high-end architectural visualizations and walkthrough animations.',
-    
-    -- SERVICES PAGE
-    services_page_heading TEXT DEFAULT 'Our Services',
-    services_page_subheading TEXT DEFAULT 'Premium architectural visualization solutions tailored to bring your vision to life with stunning photorealistic quality.',
-    
+    -- SERVICES DATA (Stored in columns for Admin Panel simplicity)
+    service1_title TEXT, service1_desc TEXT, service1_icon TEXT, service1_timeline TEXT, service1_price TEXT, service1_features TEXT, cloudinary_service1 TEXT,
+    service2_title TEXT, service2_desc TEXT, service2_icon TEXT, service2_timeline TEXT, service2_price TEXT, service2_features TEXT, cloudinary_service2 TEXT,
+    service3_title TEXT, service3_desc TEXT, service3_icon TEXT, service3_timeline TEXT, service3_price TEXT, service3_features TEXT, cloudinary_service3 TEXT,
+    service4_title TEXT, service4_desc TEXT, service4_icon TEXT, service4_timeline TEXT, service4_price TEXT, service4_features TEXT, cloudinary_service4 TEXT,
+    service5_title TEXT, service5_desc TEXT, service5_icon TEXT, service5_timeline TEXT, service5_price TEXT, service5_features TEXT, cloudinary_service5 TEXT,
+    service6_title TEXT, service6_desc TEXT, service6_icon TEXT, service6_timeline TEXT, service6_price TEXT, service6_features TEXT, cloudinary_service6 TEXT,
+
     -- CONTACT PAGE
     contact_heading TEXT DEFAULT 'Get In Touch',
     contact_subheading TEXT DEFAULT 'Ready to bring your architectural vision to life? Let''s discuss your project.',
@@ -129,155 +101,32 @@ CREATE TABLE IF NOT EXISTS site_content (
 INSERT INTO site_content (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
 
 -- =============================================
--- 2. SERVICES TABLE - 6 SERVICES
+-- 2. MESSAGES TABLE (New Contact Form)
 -- =============================================
-DROP TABLE IF EXISTS services CASCADE;
-CREATE TABLE services (
-    id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
-    short_desc TEXT,
-    full_desc TEXT,
-    icon TEXT DEFAULT '🏠',
-    image_url TEXT,
-    timeline TEXT,
-    price_from TEXT,
-    feature1 TEXT,
-    feature2 TEXT,
-    feature3 TEXT,
-    feature4 TEXT,
-    feature5 TEXT,
-    feature6 TEXT,
-    deliverable1 TEXT,
-    deliverable2 TEXT,
-    deliverable3 TEXT,
-    deliverable4 TEXT,
-    sort_order INTEGER DEFAULT 0,
-    is_active BOOLEAN DEFAULT true,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+CREATE TABLE IF NOT EXISTS public.messages (
+  id uuid default gen_random_uuid() primary key,
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  name text not null,
+  email text not null,
+  phone text,
+  subject text,
+  project_type text,
+  message text not null,
+  status text default 'new',
+  read boolean default false
 );
 
--- Insert 6 default services
-INSERT INTO services (title, short_desc, full_desc, icon, image_url, timeline, price_from, feature1, feature2, feature3, feature4, feature5, feature6, deliverable1, deliverable2, deliverable3, deliverable4, sort_order) VALUES
-(
-    'Exterior Visualization',
-    'Transform your building designs into stunning, photorealistic exterior renders.',
-    'Our exterior visualization service transforms your architectural designs into stunning, photorealistic images that showcase every detail of your building''s exterior. From residential villas to commercial towers, we capture the essence of your design with perfect lighting, materials, and environmental context.',
-    '🏢',
-    'assets/images/render2.jpg',
-    '3-5 business days',
-    '$150',
-    'Day & Night Scenes',
-    'Multiple Camera Angles',
-    'Aerial/Drone Views',
-    'Landscape Integration',
-    '4K Ultra HD Resolution',
-    'Photorealistic Materials',
-    'High-res JPG/PNG files',
-    'PSD with layers',
-    'Print-ready formats',
-    '3D model files (optional)',
-    1
-),
-(
-    'Interior Visualization',
-    'Showcase interiors with realistic lighting, materials, and furniture placement.',
-    'Create stunning interior visualizations that bring your design concepts to life. We specialize in luxury residential interiors, high-end commercial spaces, and hospitality projects. Our renders capture the perfect ambiance, lighting, and material textures.',
-    '🛋️',
-    'assets/images/render10.jpg',
-    '2-4 business days',
-    '$120',
-    'Photorealistic Materials',
-    'Custom Furniture Staging',
-    'Natural & Artificial Lighting',
-    'Multiple Room Angles',
-    'Lifestyle Visualization',
-    'Material Variations',
-    'High-res JPG/PNG files',
-    'Before/After comparisons',
-    'Mood board matching',
-    'VR-ready renders (optional)',
-    2
-),
-(
-    '3D Animations & Walkthroughs',
-    'Cinematic walkthrough animations for real estate marketing.',
-    'Our cinematic 3D animations bring your projects to life with smooth camera movements, realistic lighting transitions, and immersive spatial experiences. Perfect for pre-sales, investor presentations, and marketing campaigns.',
-    '🎬',
-    'assets/images/render12.jpg',
-    '7-14 business days',
-    '$500',
-    'Cinematic Camera Work',
-    'Professional Color Grading',
-    'Background Music',
-    'Voiceover Integration',
-    '4K/HD Video Output',
-    'Day-to-Night Transitions',
-    'MP4/MOV video files',
-    'Social media cuts',
-    'Presentation versions',
-    'Raw footage (optional)',
-    3
-),
-(
-    'Floor Plan Visualization',
-    '2D CAD to 3D floor plan conversion with furniture layout.',
-    'Transform your 2D floor plans into clear, visually appealing 3D representations. Perfect for real estate listings, client presentations, and marketing materials. Includes furniture layout and space planning visualization.',
-    '📐',
-    'assets/images/render21.jpg',
-    '1-2 business days',
-    '$50',
-    '3D Isometric Views',
-    'Furniture Layout',
-    'Color-Coded Zones',
-    'Dimension Labels',
-    'Multiple Style Options',
-    'Print-Ready Quality',
-    'High-res images',
-    'PDF floor plans',
-    'Interactive versions',
-    'CAD file updates',
-    4
-),
-(
-    'AutoCAD Drawings',
-    'Professional 2D drafting and technical drawings.',
-    'Complete AutoCAD drafting services including architectural drawings, construction documents, and technical plans. We deliver accurate, industry-standard drawings ready for permits and construction.',
-    '📏',
-    'assets/images/render3.jpg',
-    '2-5 business days',
-    '$80',
-    'Architectural Plans',
-    'Elevation Drawings',
-    'Section Details',
-    'Construction Documents',
-    'As-Built Drawings',
-    'Permit-Ready Docs',
-    'DWG/DXF files',
-    'PDF drawings',
-    'Revision sets',
-    'Print-ready formats',
-    5
-),
-(
-    'Design & Construction Consultation',
-    'Expert guidance from concept to completion.',
-    'Get professional advice on your architectural and construction projects. From initial concept development to material selection and construction oversight, we provide comprehensive consultation services.',
-    '💡',
-    'assets/images/render4.jpg',
-    'Flexible',
-    '$100/hour',
-    'Concept Development',
-    'Material Selection',
-    'Cost Estimation',
-    'Contractor Coordination',
-    'Site Visits',
-    'Design Reviews',
-    'Consultation reports',
-    'Material specifications',
-    'Budget estimates',
-    'Project timelines',
-    6
-);
+-- RLS for Messages
+ALTER TABLE public.messages ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Allow public insert to messages" ON public.messages;
+CREATE POLICY "Allow public insert to messages" ON public.messages FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow admin select messages" ON public.messages;
+CREATE POLICY "Allow admin select messages" ON public.messages FOR SELECT USING (auth.role() = 'authenticated');
+
+DROP POLICY IF EXISTS "Allow admin update messages" ON public.messages;
+CREATE POLICY "Allow admin update messages" ON public.messages FOR UPDATE USING (auth.role() = 'authenticated');
 
 -- =============================================
 -- 3. PORTFOLIO ITEMS TABLE
@@ -297,8 +146,14 @@ CREATE TABLE IF NOT EXISTS portfolio_items (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+ALTER TABLE portfolio_items ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public read portfolio" ON portfolio_items;
+CREATE POLICY "Public read portfolio" ON portfolio_items FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Admin all portfolio" ON portfolio_items;
+CREATE POLICY "Admin all portfolio" ON portfolio_items FOR ALL USING (auth.role() = 'authenticated');
+
 -- =============================================
--- 4. VIDEOS TABLE
+-- 4. VIDEOS TABLE (Dynamic Gallery)
 -- =============================================
 CREATE TABLE IF NOT EXISTS videos (
     id SERIAL PRIMARY KEY,
@@ -312,72 +167,116 @@ CREATE TABLE IF NOT EXISTS videos (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Insert default videos
-INSERT INTO videos (title, description, thumbnail_url, video_url, sort_order) VALUES
-('House Animation 1', 'Exterior walkthrough animation', 'assets/images/render12.jpg', 'assets/videos/1.mp4', 1),
-('House Animation 2', 'Interior walkthrough animation', 'assets/images/render21.jpg', 'assets/videos/2.mp4', 2);
+ALTER TABLE videos ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public read videos" ON videos;
+CREATE POLICY "Public read videos" ON videos FOR SELECT USING (is_active = true);
+DROP POLICY IF EXISTS "Admin all videos" ON videos;
+CREATE POLICY "Admin all videos" ON videos FOR ALL USING (auth.role() = 'authenticated');
 
 -- =============================================
--- 5. CONTACTS TABLE
+-- 5. STORAGE BUCKETS (If needed)
+-- =============================================
+-- Buckets are usually global, but inserting confirms existence
+INSERT INTO storage.buckets (id, name, public) VALUES ('portfolio-images', 'portfolio-images', true) ON CONFLICT (id) DO NOTHING;
+INSERT INTO storage.buckets (id, name, public) VALUES ('service-images', 'service-images', true) ON CONFLICT (id) DO NOTHING;
+INSERT INTO storage.buckets (id, name, public) VALUES ('videos', 'videos', true) ON CONFLICT (id) DO NOTHING;
+
+-- Storage Policies
+DROP POLICY IF EXISTS "Public view storage" ON storage.objects;
+CREATE POLICY "Public view storage" ON storage.objects FOR SELECT USING (bucket_id IN ('portfolio-images', 'service-images', 'videos'));
+
+DROP POLICY IF EXISTS "Auth upload storage" ON storage.objects;
+CREATE POLICY "Auth upload storage" ON storage.objects FOR INSERT WITH CHECK (auth.role() = 'authenticated');
+
+DROP POLICY IF EXISTS "Auth delete storage" ON storage.objects;
+CREATE POLICY "Auth delete storage" ON storage.objects FOR DELETE USING (auth.role() = 'authenticated');
+
+-- =============================================
+-- 6. LEGACY CONTACTS TABLE (Optional Backup)
 -- =============================================
 CREATE TABLE IF NOT EXISTS contacts (
     id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL,
-    phone TEXT,
-    project_type TEXT,
-    message TEXT,
-    status TEXT DEFAULT 'new',
-    replied_at TIMESTAMP WITH TIME ZONE,
+    name TEXT, email TEXT, phone TEXT, message TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
 -- =============================================
--- 6. STORAGE BUCKETS
+-- 8. SCHEMA MIGRATIONS (Ensure columns exist if table already exists)
+-- This is critical because CREATE TABLE IF NOT EXISTS won't add new columns to an existing table.
 -- =============================================
-INSERT INTO storage.buckets (id, name, public) 
-VALUES ('portfolio-images', 'portfolio-images', true)
-ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO storage.buckets (id, name, public) 
-VALUES ('service-images', 'service-images', true)
-ON CONFLICT (id) DO NOTHING;
+-- Cloudinary & YouTube
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_hero1 TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_hero2 TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_hero3 TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_hero4 TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_hero5 TEXT;
 
-INSERT INTO storage.buckets (id, name, public) 
-VALUES ('profile-images', 'profile-images', true)
-ON CONFLICT (id) DO NOTHING;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS youtube_video1 TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS youtube_video2 TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS youtube_video3 TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS youtube_video4 TEXT;
 
-INSERT INTO storage.buckets (id, name, public) 
-VALUES ('videos', 'videos', true)
-ON CONFLICT (id) DO NOTHING;
+-- Service Page Headings
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS services_heading TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS services_subheading TEXT;
 
--- =============================================
--- 7. ROW LEVEL SECURITY
--- =============================================
-ALTER TABLE site_content ENABLE ROW LEVEL SECURITY;
-ALTER TABLE services ENABLE ROW LEVEL SECURITY;
-ALTER TABLE portfolio_items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE videos ENABLE ROW LEVEL SECURITY;
-ALTER TABLE contacts ENABLE ROW LEVEL SECURITY;
+-- Service 1
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service1_title TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service1_desc TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service1_icon TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service1_timeline TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service1_price TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service1_features TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_service1 TEXT;
 
--- Public read access
-CREATE POLICY "Public read site_content" ON site_content FOR SELECT USING (true);
-CREATE POLICY "Public read services" ON services FOR SELECT USING (is_active = true);
-CREATE POLICY "Public read portfolio" ON portfolio_items FOR SELECT USING (true);
-CREATE POLICY "Public read videos" ON videos FOR SELECT USING (is_active = true);
-CREATE POLICY "Public insert contacts" ON contacts FOR INSERT WITH CHECK (true);
+-- Service 2
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service2_title TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service2_desc TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service2_icon TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service2_timeline TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service2_price TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service2_features TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_service2 TEXT;
 
--- Admin full access (authenticated users)
-CREATE POLICY "Admin all site_content" ON site_content FOR ALL USING (auth.role() = 'authenticated');
-CREATE POLICY "Admin all services" ON services FOR ALL USING (auth.role() = 'authenticated');
-CREATE POLICY "Admin all portfolio" ON portfolio_items FOR ALL USING (auth.role() = 'authenticated');
-CREATE POLICY "Admin all videos" ON videos FOR ALL USING (auth.role() = 'authenticated');
-CREATE POLICY "Admin all contacts" ON contacts FOR ALL USING (auth.role() = 'authenticated');
+-- Service 3
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service3_title TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service3_desc TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service3_icon TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service3_timeline TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service3_price TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service3_features TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_service3 TEXT;
 
--- Storage policies
-CREATE POLICY "Public view storage" ON storage.objects FOR SELECT USING (bucket_id IN ('portfolio-images', 'service-images', 'profile-images', 'videos'));
-CREATE POLICY "Auth upload storage" ON storage.objects FOR INSERT WITH CHECK (auth.role() = 'authenticated' AND bucket_id IN ('portfolio-images', 'service-images', 'profile-images', 'videos'));
-CREATE POLICY "Auth delete storage" ON storage.objects FOR DELETE USING (auth.role() = 'authenticated');
+-- Service 4
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service4_title TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service4_desc TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service4_icon TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service4_timeline TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service4_price TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service4_features TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_service4 TEXT;
+
+-- Service 5
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service5_title TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service5_desc TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service5_icon TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service5_timeline TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service5_price TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service5_features TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_service5 TEXT;
+
+-- Service 6
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service6_title TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service6_desc TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service6_icon TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service6_timeline TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service6_price TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS service6_features TEXT;
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS cloudinary_service6 TEXT;
+
+-- About Image
+ALTER TABLE site_content ADD COLUMN IF NOT EXISTS about_image TEXT;
 
 -- =============================================
 -- DONE! Complete schema ready.

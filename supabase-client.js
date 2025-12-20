@@ -181,7 +181,7 @@ async function submitContactForm(formData) {
     }
 
     const { data, error } = await supabaseDb
-        .from('contacts')
+        .from('messages')
         .insert([{
             name: formData.name,
             email: formData.email,
@@ -201,7 +201,7 @@ async function getContactMessages(status = 'all') {
     if (!isSupabaseConfigured()) return { data: [], error: null };
 
     let query = supabaseDb
-        .from('contacts')
+        .from('messages')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -218,7 +218,7 @@ async function updateContactStatus(id, status) {
     if (!isSupabaseConfigured()) return { error: { message: 'Supabase not configured' } };
 
     const { data, error } = await supabaseDb
-        .from('contacts')
+        .from('messages')
         .update({ status, replied_at: status === 'replied' ? new Date().toISOString() : null })
         .eq('id', id)
         .select();
