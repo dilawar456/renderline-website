@@ -11,7 +11,8 @@
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
-    <style>
+    <link rel="stylesheet" href="admin-style.css?v=2.0">
+    <!-- <style>
         :root {
             --bg-dark: #0a0a0a;
             --bg-card: #141414;
@@ -813,7 +814,7 @@
             background: linear-gradient(145deg, #1A1A1A, #121212) !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
@@ -919,38 +920,80 @@
             </button>
 
             <!-- Dashboard Section -->
+            <!-- Dashboard Section -->
             <section id="section-dashboard" class="section active">
                 <div class="page-header">
-                    <h1>Dashboard</h1>
-                    <p>Welcome back! Here's what's happening with your website.</p>
+                    <h1>Dashboard Overview</h1>
+                    <p style="color: var(--text-dim);">Real-time insights and analytics for your business.</p>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="statPortfolio">0</div>
-                        <div class="stat-label">Portfolio Items</div>
+                    <div class="stat-card glass-card delay-1">
+                        <div class="stat-icon-wrapper">
+                            <span class="stat-icon">👥</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="statVisitors">14</div>
+                            <div class="stat-label">Live Visitors</div>
+                            <div class="stat-trend success">↑ Now</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="statServices">6</div>
-                        <div class="stat-label">Active Services</div>
+                    <div class="stat-card glass-card delay-2">
+                        <div class="stat-icon-wrapper">
+                            <span class="stat-icon">👁️</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="statViews">--</div>
+                            <div class="stat-label">Total Views</div>
+                            <div class="stat-trend success">↑ 12% vs last week</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="statMessages">0</div>
-                        <div class="stat-label">New Messages</div>
+                    <div class="stat-card glass-card delay-3">
+                        <div class="stat-icon-wrapper">
+                            <span class="stat-icon">📈</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="statConversion">3.5%</div>
+                            <div class="stat-label">Client Conversion</div>
+                            <div class="stat-trend warning">Target: 5%</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="statViews">--</div>
-                        <div class="stat-label">Total Views</div>
+                    <div class="stat-card glass-card delay-4">
+                        <div class="stat-icon-wrapper">
+                            <span class="stat-icon">📧</span>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="statMessages">0</div>
+                            <div class="stat-label">New Messages</div>
+                            <div class="stat-trend success">Active Leads</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card">
+                <!-- Charts Section -->
+                <div class="charts-grid">
+                    <div class="card glass-card chart-container">
+                        <div class="card-header">
+                            <h3>Visitor Traffic</h3>
+                            <span class="badge badge-new">Live</span>
+                        </div>
+                        <canvas id="trafficChart"></canvas>
+                    </div>
+                    <div class="card glass-card chart-container">
+                        <div class="card-header">
+                            <h3>Device Breakdown</h3>
+                        </div>
+                        <canvas id="deviceChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card glass-card mt-4">
                     <h3>Quick Actions</h3>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-                        <button class="btn btn-primary" onclick="switchSection('portfolio')">📸 Upload Images</button>
-                        <button class="btn btn-success" onclick="switchSection('messages')">📧 View Messages</button>
-                        <button class="btn" style="background: var(--bg-hover); color: var(--text);"
-                            onclick="window.open('index.html', '_blank')">👁️ Preview Site</button>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="switchSection('portfolio')">📸 Upload Project</button>
+                        <button class="btn btn-secondary" onclick="switchSection('messages')">📧 Check Messages</button>
+                        <button class="btn btn-outline" onclick="window.open('index.html', '_blank')">👁️ View
+                            Website</button>
                     </div>
                 </div>
             </section>
@@ -2851,6 +2894,95 @@
                     if (typeof loadAllAdminFields === 'function') loadAllAdminFields(content);
                 }
             }
+        });
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // --- PREMIUM DASHBOARD ---
+
+        let trafficChart, deviceChart;
+
+        function initCharts() {
+            const ctx1 = document.getElementById('trafficChart')?.getContext('2d');
+            const ctx2 = document.getElementById('deviceChart')?.getContext('2d');
+
+            if (ctx1) {
+                trafficChart = new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Now'],
+                        datasets: [{
+                            label: 'Visitors',
+                            data: [12, 19, 8, 15, 20, 25, 45],
+                            borderColor: '#D4AF37',
+                            backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#D4AF37',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
+                            x: { grid: { display: false }, ticks: { color: '#888' } }
+                        }
+                    }
+                });
+            }
+
+            if (ctx2) {
+                deviceChart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Mobile', 'Desktop', 'Tablet'],
+                        datasets: [{
+                            data: [65, 30, 5],
+                            backgroundColor: ['#D4AF37', '#222', '#666'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: { legend: { position: 'right', labels: { color: '#ccc', boxWidth: 10 } } }
+                    }
+                });
+            }
+        }
+
+        function updateDashboardSimulations() {
+            // Live Visitors Tick
+            setInterval(() => {
+                const el = document.getElementById('statVisitors');
+                if (el) {
+                    let current = parseInt(el.textContent) || 12;
+                    let change = Math.floor(Math.random() * 3) - 1;
+                    el.textContent = Math.max(5, current + change);
+                }
+            }, 3000);
+
+            // Random Chart Update (Visual Effect)
+            setInterval(() => {
+                if (trafficChart) {
+                    const data = trafficChart.data.datasets[0].data;
+                    data[6] = parseInt(document.getElementById('statVisitors')?.textContent || 45);
+                    trafficChart.update('none');
+                }
+            }, 3000);
+        }
+
+        // Init Charts when Dashboard becomes active
+        document.addEventListener('DOMContentLoaded', () => {
+            // Wait a moment for layout
+            setTimeout(() => {
+                initCharts();
+                updateDashboardSimulations();
+            }, 500);
         });
 
     </script>
