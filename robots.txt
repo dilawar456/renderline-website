@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://renderline.com/sitemap.xml
+Sitemap: https://dilawarali.com/sitemap.xml
