@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -11,7 +11,809 @@
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="admin-style.css?v=3.0">
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --bg-hover: #1a1a1a;
+            --gold: #d4af37;
+            --gold-dark: #b8960c;
+            --text: #ffffff;
+            --text-dim: #999;
+            --border: #2a2a2a;
+            --success: #4ade80;
+            --danger: #ef4444;
+            --warning: #fbbf24;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* ========== LOGIN PAGE ========== */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+        }
+
+        .login-container {
+            background: var(--bg-card);
+            padding: 3rem 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-logo h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-logo p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: #000;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
+        }
+
+        .error-msg {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-msg.show {
+            display: block;
+        }
+
+        /* ========== ADMIN DASHBOARD ========== */
+        .admin-wrapper {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .admin-wrapper.active {
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 0.2rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+        }
+
+        .nav-section-title {
+            padding: 0.8rem 1.5rem 0.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+
+        .nav-item {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-dim);
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            border-left-color: var(--gold);
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+        }
+
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .user-details h4 {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .user-details p {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            width: 100%;
+            padding: 0.6rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 2rem;
+            width: calc(100% - 260px);
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-dim);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--gold);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* Forms */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        /* Upload Zone */
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        /* Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .portfolio-item-admin {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .portfolio-item-admin:hover {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item-admin img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .portfolio-item-admin .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .portfolio-item-admin:hover .overlay {
+            opacity: 1;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #000;
+        }
+
+        .alert {
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-success {
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            color: var(--success);
+        }
+
+        .alert-warning {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            color: var(--warning);
+        }
+
+        /* Messages Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background: var(--bg-dark);
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        td {
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-new {
+            background: rgba(74, 222, 128, 0.2);
+            color: var(--success);
+        }
+
+        .badge-read {
+            background: rgba(153, 153, 153, 0.2);
+            color: var(--text-dim);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Image Grid for Media Management */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1rem;
+        }
+
+        .image-slot {
+            position: relative;
+            aspect-ratio: 16/10;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .image-slot:hover {
+            border-color: var(--gold);
+            transform: scale(1.02);
+        }
+
+        .image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .image-slot:hover .image-overlay {
+            opacity: 1;
+        }
+
+        /* Service Image Slot (larger) */
+        .service-image-slot {
+            position: relative;
+            width: 150px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .service-image-slot:hover {
+            border-color: var(--gold);
+        }
+
+        .service-image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Video Grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .video-slot {
+            position: relative;
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid var(--border);
+            background: var(--bg-dark);
+        }
+
+        .video-slot:hover {
+            border-color: var(--gold);
+        }
+
+        .video-slot video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        @media (max-width: 1024px) {
+            .image-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Mobile Responsive Admin - NEW */
+        @media (max-width: 900px) {
+            .sidebar {
+                left: -260px;
+                width: 260px !important;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1050;
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1040;
+                backdrop-filter: blur(4px);
+            }
+
+            .sidebar-overlay.active {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0 !important;
+                width: 100% !important;
+                padding: 1.5rem 1rem;
+            }
+
+            .mobile-menu-btn {
+                display: flex !important;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--gold);
+                padding: 0.8rem 1rem;
+                border-radius: 6px;
+                cursor: pointer;
+                align-items: center;
+                gap: 0.8rem;
+                margin-bottom: 1.5rem;
+                font-weight: 600;
+                width: 100%;
+                justify-content: center;
+                font-family: 'Cinzel', serif;
+                letter-spacing: 1px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .nav-actions {
+                display: none;
+            }
+        }
+
+        .mobile-menu-btn {
+            display: none;
+        }
+
+        .sidebar-overlay {
+            display: none;
+        }
+    </style>
+    <style>
+        /* --- PREMIUM DESIGN UPDATES --- */
+        .sidebar {
+            background: linear-gradient(180deg, #111, #050505) !important;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.4);
+            border-right: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, #1A1A1A, #121212) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            border-color: var(--gold);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.1), transparent);
+            border-right: 3px solid var(--gold);
+        }
+
+        input,
+        textarea,
+        select {
+            background: #0f0f0f !important;
+            border: 1px solid #333 !important;
+            border-radius: 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            background: #151515 !important;
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1) !important;
+            outline: none;
+        }
+
+        .btn {
+            border-radius: 8px !important;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Mobile Menu Polish */
+        .mobile-menu-btn {
+            background: linear-gradient(145deg, #1A1A1A, #121212) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 
 <body>
@@ -34,7 +836,7 @@
 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢" required>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary">
@@ -57,43 +859,43 @@
             <nav class="sidebar-nav">
                 <div class="nav-section-title">Main</div>
                 <div class="nav-item active" data-section="dashboard">
-                    <span class="nav-icon">ðŸ“Š</span>
+                    <span class="nav-icon">📊</span>
                     <span>Dashboard</span>
                 </div>
 
                 <div class="nav-section-title">Pages</div>
                 <div class="nav-item" data-section="home">
-                    <span class="nav-icon">ðŸ </span>
+                    <span class="nav-icon">🏠</span>
                     <span>Home Page</span>
                 </div>
                 <div class="nav-item" data-section="about">
-                    <span class="nav-icon">ðŸ‘¤</span>
+                    <span class="nav-icon">👤</span>
                     <span>About Page</span>
                 </div>
                 <div class="nav-item" data-section="portfolio">
-                    <span class="nav-icon">ðŸ–¼ï¸</span>
+                    <span class="nav-icon">🖼️</span>
                     <span>Portfolio</span>
                 </div>
                 <div class="nav-item" data-section="services">
-                    <span class="nav-icon">âš™ï¸</span>
+                    <span class="nav-icon">⚙️</span>
                     <span>Services</span>
                 </div>
                 <div class="nav-item" data-section="contact">
-                    <span class="nav-icon">ðŸ“ž</span>
+                    <span class="nav-icon">📞</span>
                     <span>Contact Page</span>
                 </div>
                 <div class="nav-item" data-section="footer">
-                    <span class="nav-icon">ðŸ“</span>
+                    <span class="nav-icon">📝</span>
                     <span>Footer</span>
                 </div>
 
                 <div class="nav-section-title">Management</div>
                 <div class="nav-item" data-section="messages">
-                    <span class="nav-icon">ðŸ“§</span>
+                    <span class="nav-icon">📧</span>
                     <span>Messages</span>
                 </div>
                 <div class="nav-item" data-section="settings">
-                    <span class="nav-icon">âš™ï¸</span>
+                    <span class="nav-icon">⚙️</span>
                     <span>Settings</span>
                 </div>
             </nav>
@@ -113,84 +915,42 @@
         <!-- Main Content -->
         <main class="main-content">
             <button class="mobile-menu-btn" onclick="toggleSidebar()">
-                <span style="font-size: 1.2rem;">â˜°</span> Menu
+                <span style="font-size: 1.2rem;">☰</span> Menu
             </button>
 
             <!-- Dashboard Section -->
-            <!-- Dashboard Section -->
             <section id="section-dashboard" class="section active">
                 <div class="page-header">
-                    <h1>Dashboard Overview</h1>
-                    <p style="color: var(--text-dim);">Real-time insights and analytics for your business.</p>
+                    <h1>Dashboard</h1>
+                    <p>Welcome back! Here's what's happening with your website.</p>
                 </div>
 
                 <div class="stats-grid">
-                    <div class="stat-card glass-card delay-1">
-                        <div class="stat-icon-wrapper">
-                            <span class="stat-icon">ðŸ‘¥</span>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value" id="statVisitors">14</div>
-                            <div class="stat-label">Live Visitors</div>
-                            <div class="stat-trend success">â†‘ Now</div>
-                        </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statPortfolio">0</div>
+                        <div class="stat-label">Portfolio Items</div>
                     </div>
-                    <div class="stat-card glass-card delay-2">
-                        <div class="stat-icon-wrapper">
-                            <span class="stat-icon">ðŸ‘ï¸</span>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value" id="statViews">--</div>
-                            <div class="stat-label">Total Views</div>
-                            <div class="stat-trend success">â†‘ 12% vs last week</div>
-                        </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statServices">6</div>
+                        <div class="stat-label">Active Services</div>
                     </div>
-                    <div class="stat-card glass-card delay-3">
-                        <div class="stat-icon-wrapper">
-                            <span class="stat-icon">ðŸ“ˆ</span>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value" id="statConversion">3.5%</div>
-                            <div class="stat-label">Client Conversion</div>
-                            <div class="stat-trend warning">Target: 5%</div>
-                        </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statMessages">0</div>
+                        <div class="stat-label">New Messages</div>
                     </div>
-                    <div class="stat-card glass-card delay-4">
-                        <div class="stat-icon-wrapper">
-                            <span class="stat-icon">ðŸ“§</span>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-value" id="statMessages">0</div>
-                            <div class="stat-label">New Messages</div>
-                            <div class="stat-trend success">Active Leads</div>
-                        </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statViews">--</div>
+                        <div class="stat-label">Total Views</div>
                     </div>
                 </div>
 
-                <!-- Charts Section -->
-                <div class="charts-grid">
-                    <div class="card glass-card chart-container">
-                        <div class="card-header">
-                            <h3>Visitor Traffic</h3>
-                            <span class="badge badge-new">Live</span>
-                        </div>
-                        <canvas id="trafficChart"></canvas>
-                    </div>
-                    <div class="card glass-card chart-container">
-                        <div class="card-header">
-                            <h3>Device Breakdown</h3>
-                        </div>
-                        <canvas id="deviceChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card glass-card mt-4">
+                <div class="card">
                     <h3>Quick Actions</h3>
-                    <div class="action-buttons">
-                        <button class="btn btn-primary" onclick="switchSection('portfolio')">ðŸ“¸ Upload Project</button>
-                        <button class="btn btn-secondary" onclick="switchSection('messages')">ðŸ“§ Check Messages</button>
-                        <button class="btn btn-outline" onclick="window.open('index.html', '_blank')">ðŸ‘ï¸ View
-                            Website</button>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="switchSection('portfolio')">📸 Upload Images</button>
+                        <button class="btn btn-success" onclick="switchSection('messages')">📧 View Messages</button>
+                        <button class="btn" style="background: var(--bg-hover); color: var(--text);"
+                            onclick="window.open('index.html', '_blank')">👁️ Preview Site</button>
                     </div>
                 </div>
             </section>
@@ -203,10 +963,10 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸŽ¯ Hero Section</h3>
+                    <h3>🎯 Hero Section</h3>
                     <div class="form-group">
                         <label>Badge Text</label>
-                        <input type="text" id="heroBadge" value="âœ¦ Premium 3D Visualization">
+                        <input type="text" id="heroBadge" value="✦ Premium 3D Visualization">
                     </div>
                     <div class="form-group">
                         <label>Heading Line 1</label>
@@ -238,37 +998,37 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ–¼ï¸ Hero Carousel Images (5 Slides)</h3>
+                    <h3>🖼️ Hero Carousel Images (5 Slides)</h3>
                     <p style="color: var(--text-dim); margin-bottom: 1rem;">Click any image to change it. These images
                         appear in the hero slideshow.</p>
                     <div class="image-grid">
                         <div class="image-slot" onclick="uploadHeroImage(1)">
                             <img src="assets/images/render2.jpg" alt="Hero 1" id="heroImage1Preview">
-                            <div class="image-overlay">ðŸ“· Change</div>
+                            <div class="image-overlay">📷 Change</div>
                             <input type="file" id="heroImage1Input" accept="image/*" hidden
                                 onchange="handleHeroImageChange(1, this)">
                         </div>
                         <div class="image-slot" onclick="uploadHeroImage(2)">
                             <img src="assets/images/render10.jpg" alt="Hero 2" id="heroImage2Preview">
-                            <div class="image-overlay">ðŸ“· Change</div>
+                            <div class="image-overlay">📷 Change</div>
                             <input type="file" id="heroImage2Input" accept="image/*" hidden
                                 onchange="handleHeroImageChange(2, this)">
                         </div>
                         <div class="image-slot" onclick="uploadHeroImage(3)">
                             <img src="assets/images/render3.jpg" alt="Hero 3" id="heroImage3Preview">
-                            <div class="image-overlay">ðŸ“· Change</div>
+                            <div class="image-overlay">📷 Change</div>
                             <input type="file" id="heroImage3Input" accept="image/*" hidden
                                 onchange="handleHeroImageChange(3, this)">
                         </div>
                         <div class="image-slot" onclick="uploadHeroImage(4)">
                             <img src="assets/images/render12.jpg" alt="Hero 4" id="heroImage4Preview">
-                            <div class="image-overlay">ðŸ“· Change</div>
+                            <div class="image-overlay">📷 Change</div>
                             <input type="file" id="heroImage4Input" accept="image/*" hidden
                                 onchange="handleHeroImageChange(4, this)">
                         </div>
                         <div class="image-slot" onclick="uploadHeroImage(5)">
                             <img src="assets/images/render21.jpg" alt="Hero 5" id="heroImage5Preview">
-                            <div class="image-overlay">ðŸ“· Change</div>
+                            <div class="image-overlay">📷 Change</div>
                             <input type="file" id="heroImage5Input" accept="image/*" hidden
                                 onchange="handleHeroImageChange(5, this)">
                         </div>
@@ -276,7 +1036,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ† Services Preview Section</h3>
+                    <h3>🏆 Services Preview Section</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Heading</label>
@@ -291,7 +1051,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ–¼ï¸ Portfolio Preview Section</h3>
+                    <h3>🖼️ Portfolio Preview Section</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Heading</label>
@@ -306,7 +1066,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ’¡ Why RenderLine Section</h3>
+                    <h3>💡 Why RenderLine Section</h3>
                     <div class="form-group">
                         <label>Section Heading</label>
                         <input type="text" id="whyHeading" value="Why RenderLine?">
@@ -338,7 +1098,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸš€ CTA Section</h3>
+                    <h3>🚀 CTA Section</h3>
                     <div class="form-group">
                         <label>CTA Heading</label>
                         <input type="text" id="ctaHeading" value="Ready to Visualize Your Vision?">
@@ -360,7 +1120,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="saveHomeContent()">ðŸ’¾ Save Home Page</button>
+                <button class="btn btn-primary" onclick="saveHomeContent()">💾 Save Home Page</button>
             </section>
 
             <!-- About Page Section -->
@@ -371,7 +1131,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ‘¤ Profile Information</h3>
+                    <h3>👤 Profile Information</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Name</label>
@@ -387,7 +1147,7 @@
                         <div style="display: flex; align-items: center; gap: 1rem;">
                             <div class="service-image-slot" onclick="uploadAboutImage()">
                                 <img src="assets/images/dilawar-ali.jpg" alt="Profile" id="aboutImagePreview">
-                                <div class="image-overlay">ðŸ“· Change</div>
+                                <div class="image-overlay">📷 Change</div>
                                 <input type="file" id="aboutImageInput" accept="image/*" hidden
                                     onchange="handleAboutImageChange(this)">
                             </div>
@@ -398,22 +1158,22 @@
                     <div class="form-group">
                         <label>Bio Paragraph 1</label>
                         <textarea id="aboutBio1"
-                            rows="3">Welcome to RenderLine â€“ where architectural dreams transform into breathtaking visual realities. I founded this studio with a singular vision: to bridge the gap between an architect's imagination and their client's understanding through the power of photorealistic visualization.</textarea>
+                            rows="3">Welcome to RenderLine – where architectural dreams transform into breathtaking visual realities. I founded this studio with a singular vision: to bridge the gap between an architect's imagination and their client's understanding through the power of photorealistic visualization.</textarea>
                     </div>
                     <div class="form-group">
                         <label>Bio Paragraph 2</label>
                         <textarea id="aboutBio2"
-                            rows="3">With expertise spanning 3D modeling, V-Ray & Corona rendering, Lumion animations, and Unreal Engine real-time visualization, I deliver renders that don't just show spaces â€“ they evoke emotions.</textarea>
+                            rows="3">With expertise spanning 3D modeling, V-Ray & Corona rendering, Lumion animations, and Unreal Engine real-time visualization, I deliver renders that don't just show spaces – they evoke emotions.</textarea>
                     </div>
                     <div class="form-group">
                         <label>Bio Paragraph 3</label>
                         <textarea id="aboutBio3"
-                            rows="3">My deep understanding of the Saudi Arabian market â€“ from the majestic Najdi architecture of Riyadh to the coastal elegance of Jeddah â€“ enables me to create culturally resonant visualizations.</textarea>
+                            rows="3">My deep understanding of the Saudi Arabian market – from the majestic Najdi architecture of Riyadh to the coastal elegance of Jeddah – enables me to create culturally resonant visualizations.</textarea>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ“Š Statistics</h3>
+                    <h3>📊 Statistics</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Projects Completed</label>
@@ -431,7 +1191,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸŽ¯ Areas of Expertise (8 Items)</h3>
+                    <h3>🎯 Areas of Expertise (8 Items)</h3>
                     <div class="form-row">
                         <div class="form-group"><input type="text" id="expertise1" value="Residential Exteriors"></div>
                         <div class="form-group"><input type="text" id="expertise2" value="Commercial Buildings"></div>
@@ -447,7 +1207,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ› ï¸ Tools & Technologies (12 Items)</h3>
+                    <h3>🛠️ Tools & Technologies (12 Items)</h3>
                     <div class="form-row">
                         <div class="form-group"><input type="text" id="tool1" value="3ds Max"></div>
                         <div class="form-group"><input type="text" id="tool2" value="SketchUp"></div>
@@ -469,7 +1229,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ“‹ How I Work (5 Steps)</h3>
+                    <h3>📋 How I Work (5 Steps)</h3>
                     <div class="form-group">
                         <label>Step 1 Title</label>
                         <input type="text" id="step1Title" value="Consultation">
@@ -517,18 +1277,18 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary" onclick="saveAboutContent()">ðŸ’¾ Save About Page</button>
+                <button class="btn btn-primary" onclick="saveAboutContent()">💾 Save About Page</button>
             </section>
 
             <!-- Portfolio Section -->
             <section id="section-portfolio" class="section">
                 <div class="page-header">
                     <h1>Portfolio Management</h1>
-                    <p>Upload and manage your portfolio renders - Direct to Cloudinary â˜ï¸</p>
+                    <p>Upload and manage your portfolio renders - Direct to Cloudinary ☁️</p>
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ“¤ Upload Portfolio Images to Cloudinary</h3>
+                    <h3>📤 Upload Portfolio Images to Cloudinary</h3>
                     <div class="form-group" style="margin-bottom: 1rem;">
                         <label
                             style="color: var(--gold); font-weight: 500; margin-bottom: 0.5rem; display: block;">Select
@@ -542,7 +1302,7 @@
                         </select>
                     </div>
                     <div class="upload-zone" id="uploadZone">
-                        <div class="upload-icon">â˜ï¸</div>
+                        <div class="upload-icon">☁️</div>
                         <h4>Drag & Drop Images Here</h4>
                         <p style="color: var(--text-dim); margin-top: 0.5rem;">Images upload directly to Cloudinary
                             (auto-optimized)</p>
@@ -552,7 +1312,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ–¼ï¸ Your Portfolio (<span id="portfolioCount">0</span> images)</h3>
+                    <h3>🖼️ Your Portfolio (<span id="portfolioCount">0</span> images)</h3>
                     <div class="portfolio-grid" id="portfolioGrid">
                         <!-- Portfolio items will be loaded here -->
                         <p style="color: var(--text-dim); text-align: center; padding: 2rem;">Upload images to see them
@@ -561,7 +1321,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸŽ¬ Video Gallery (Unlimited)</h3>
+                    <h3>🎬 Video Gallery (Unlimited)</h3>
                     <p style="color: var(--text-dim); margin-bottom: 1rem;">Manage your YouTube/Vimeo videos. These will
                         appear in the Videos/Animations section.</p>
 
@@ -573,7 +1333,7 @@
                                 style="flex: 2; min-width: 200px;" oninput="updateVideoPreview(this.value)">
                             <input type="text" id="newVideoTitle" placeholder="Video Title (Optional)"
                                 style="flex: 1; min-width: 150px;">
-                            <button class="btn btn-primary" onclick="addVideoItem()">âž• Add</button>
+                            <button class="btn btn-primary" onclick="addVideoItem()">➕ Add</button>
                         </div>
                         <div id="newVideoPreview"
                             style="margin-top: 1rem; display: none; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
@@ -587,7 +1347,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>â˜ï¸ Direct Upload to Cloudinary</h3>
+                    <h3>☁️ Direct Upload to Cloudinary</h3>
                     <p style="color: var(--text-dim); margin-bottom: 1rem;">Click any image to upload directly. Images
                         auto-optimize and save.</p>
 
@@ -595,31 +1355,31 @@
                     <div class="image-grid" style="margin-bottom: 1.5rem;">
                         <div class="image-slot" onclick="uploadCloudinaryImage('hero', 1)">
                             <img src="assets/images/render2.jpg" alt="Hero 1" id="cloudHero1Preview">
-                            <div class="image-overlay">ðŸ“¤ Upload</div>
+                            <div class="image-overlay">📤 Upload</div>
                             <input type="file" id="cloudHero1Input" accept="image/*" hidden
                                 onchange="handleCloudinaryUpload('hero', 1, this)">
                         </div>
                         <div class="image-slot" onclick="uploadCloudinaryImage('hero', 2)">
                             <img src="assets/images/render10.jpg" alt="Hero 2" id="cloudHero2Preview">
-                            <div class="image-overlay">ðŸ“¤ Upload</div>
+                            <div class="image-overlay">📤 Upload</div>
                             <input type="file" id="cloudHero2Input" accept="image/*" hidden
                                 onchange="handleCloudinaryUpload('hero', 2, this)">
                         </div>
                         <div class="image-slot" onclick="uploadCloudinaryImage('hero', 3)">
                             <img src="assets/images/render3.jpg" alt="Hero 3" id="cloudHero3Preview">
-                            <div class="image-overlay">ðŸ“¤ Upload</div>
+                            <div class="image-overlay">📤 Upload</div>
                             <input type="file" id="cloudHero3Input" accept="image/*" hidden
                                 onchange="handleCloudinaryUpload('hero', 3, this)">
                         </div>
                         <div class="image-slot" onclick="uploadCloudinaryImage('hero', 4)">
                             <img src="assets/images/render12.jpg" alt="Hero 4" id="cloudHero4Preview">
-                            <div class="image-overlay">ðŸ“¤ Upload</div>
+                            <div class="image-overlay">📤 Upload</div>
                             <input type="file" id="cloudHero4Input" accept="image/*" hidden
                                 onchange="handleCloudinaryUpload('hero', 4, this)">
                         </div>
                         <div class="image-slot" onclick="uploadCloudinaryImage('hero', 5)">
                             <img src="assets/images/render21.jpg" alt="Hero 5" id="cloudHero5Preview">
-                            <div class="image-overlay">ðŸ“¤ Upload</div>
+                            <div class="image-overlay">📤 Upload</div>
                             <input type="file" id="cloudHero5Input" accept="image/*" hidden
                                 onchange="handleCloudinaryUpload('hero', 5, this)">
                         </div>
@@ -637,7 +1397,7 @@
                 </div>
 
                 <div class="card">
-                    <h3>ðŸ“„ Services Page Header</h3>
+                    <h3>📄 Services Page Header</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Page Heading</label>
@@ -653,11 +1413,11 @@
 
                 <!-- Service 1 -->
                 <div class="card">
-                    <h3>ðŸ¢ Service 1: Exterior Visualization</h3>
+                    <h3>🏢 Service 1: Exterior Visualization</h3>
                     <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
                         <div class="service-image-slot" onclick="uploadServiceImage(1)">
                             <img src="assets/images/render2.jpg" alt="Service 1" id="service1ImagePreview">
-                            <div class="image-overlay">ðŸ“·</div>
+                            <div class="image-overlay">📷</div>
                             <input type="file" id="service1ImageInput" accept="image/*" hidden
                                 onchange="handleServiceImageChange(1, this)">
                         </div>
@@ -669,7 +1429,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Icon</label>
-                                    <input type="text" id="service1Icon" value="ðŸ¢" style="width: 60px;">
+                                    <input type="text" id="service1Icon" value="🏢" style="width: 60px;">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -698,11 +1458,11 @@
 
     <!-- Service 2 -->
     <div class="card">
-        <h3>ðŸ›‹ï¸ Service 2: Interior Visualization</h3>
+        <h3>🛋️ Service 2: Interior Visualization</h3>
         <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
             <div class="service-image-slot" onclick="uploadServiceImage(2)">
                 <img src="assets/images/render10.jpg" alt="Service 2" id="service2ImagePreview">
-                <div class="image-overlay">ðŸ“·</div>
+                <div class="image-overlay">📷</div>
                 <input type="file" id="service2ImageInput" accept="image/*" hidden
                     onchange="handleServiceImageChange(2, this)">
             </div>
@@ -710,7 +1470,7 @@
                 <div class="form-row">
                     <div class="form-group"><label>Title</label><input type="text" id="service2Title"
                             value="Interior Visualization"></div>
-                    <div class="form-group"><label>Icon</label><input type="text" id="service2Icon" value="ðŸ›‹ï¸"
+                    <div class="form-group"><label>Icon</label><input type="text" id="service2Icon" value="🛋️"
                             style="width: 60px;"></div>
                 </div>
                 <div class="form-group"><label>Description</label><textarea id="service2Short"
@@ -732,11 +1492,11 @@
 
     <!-- Service 3 -->
     <div class="card">
-        <h3>ðŸŽ¬ Service 3: 3D Animations</h3>
+        <h3>🎬 Service 3: 3D Animations</h3>
         <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
             <div class="service-image-slot" onclick="uploadServiceImage(3)">
                 <img src="assets/images/render12.jpg" alt="Service 3" id="service3ImagePreview">
-                <div class="image-overlay">ðŸ“·</div>
+                <div class="image-overlay">📷</div>
                 <input type="file" id="service3ImageInput" accept="image/*" hidden
                     onchange="handleServiceImageChange(3, this)">
             </div>
@@ -744,7 +1504,7 @@
                 <div class="form-row">
                     <div class="form-group"><label>Title</label><input type="text" id="service3Title"
                             value="3D Animations & Walkthroughs"></div>
-                    <div class="form-group"><label>Icon</label><input type="text" id="service3Icon" value="ðŸŽ¬"
+                    <div class="form-group"><label>Icon</label><input type="text" id="service3Icon" value="🎬"
                             style="width: 60px;"></div>
                 </div>
                 <div class="form-group"><label>Description</label><textarea id="service3Short"
@@ -766,11 +1526,11 @@
 
     <!-- Service 4 -->
     <div class="card">
-        <h3>ðŸ“ Service 4: Floor Plan Visualization</h3>
+        <h3>📐 Service 4: Floor Plan Visualization</h3>
         <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
             <div class="service-image-slot" onclick="uploadServiceImage(4)">
                 <img src="assets/images/render21.jpg" alt="Service 4" id="service4ImagePreview">
-                <div class="image-overlay">ðŸ“·</div>
+                <div class="image-overlay">📷</div>
                 <input type="file" id="service4ImageInput" accept="image/*" hidden
                     onchange="handleServiceImageChange(4, this)">
             </div>
@@ -778,7 +1538,7 @@
                 <div class="form-row">
                     <div class="form-group"><label>Title</label><input type="text" id="service4Title"
                             value="Floor Plan Visualization"></div>
-                    <div class="form-group"><label>Icon</label><input type="text" id="service4Icon" value="ðŸ“"
+                    <div class="form-group"><label>Icon</label><input type="text" id="service4Icon" value="📐"
                             style="width: 60px;"></div>
                 </div>
                 <div class="form-group"><label>Description</label><textarea id="service4Short"
@@ -798,11 +1558,11 @@
 
     <!-- Service 5 -->
     <div class="card">
-        <h3>ðŸ“ Service 5: AutoCAD Drawings</h3>
+        <h3>📏 Service 5: AutoCAD Drawings</h3>
         <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
             <div class="service-image-slot" onclick="uploadServiceImage(5)">
                 <img src="assets/images/render3.jpg" alt="Service 5" id="service5ImagePreview">
-                <div class="image-overlay">ðŸ“·</div>
+                <div class="image-overlay">📷</div>
                 <input type="file" id="service5ImageInput" accept="image/*" hidden
                     onchange="handleServiceImageChange(5, this)">
             </div>
@@ -810,7 +1570,7 @@
                 <div class="form-row">
                     <div class="form-group"><label>Title</label><input type="text" id="service5Title"
                             value="AutoCAD Drawings"></div>
-                    <div class="form-group"><label>Icon</label><input type="text" id="service5Icon" value="ðŸ“"
+                    <div class="form-group"><label>Icon</label><input type="text" id="service5Icon" value="📏"
                             style="width: 60px;"></div>
                 </div>
                 <div class="form-group"><label>Description</label><textarea id="service5Short"
@@ -830,11 +1590,11 @@
 
     <!-- Service 6 -->
     <div class="card">
-        <h3>ðŸ’¡ Service 6: Design Consultation</h3>
+        <h3>💡 Service 6: Design Consultation</h3>
         <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
             <div class="service-image-slot" onclick="uploadServiceImage(6)">
                 <img src="assets/images/render4.jpg" alt="Service 6" id="service6ImagePreview">
-                <div class="image-overlay">ðŸ“·</div>
+                <div class="image-overlay">📷</div>
                 <input type="file" id="service6ImageInput" accept="image/*" hidden
                     onchange="handleServiceImageChange(6, this)">
             </div>
@@ -842,7 +1602,7 @@
                 <div class="form-row">
                     <div class="form-group"><label>Title</label><input type="text" id="service6Title"
                             value="Design & Construction Consultation"></div>
-                    <div class="form-group"><label>Icon</label><input type="text" id="service6Icon" value="ðŸ’¡"
+                    <div class="form-group"><label>Icon</label><input type="text" id="service6Icon" value="💡"
                             style="width: 60px;"></div>
                 </div>
                 <div class="form-group"><label>Description</label><textarea id="service6Short"
@@ -861,7 +1621,7 @@
         </div>
     </div>
 
-    <button class="btn btn-primary" onclick="saveServices()">ðŸ’¾ Save All Services</button>
+    <button class="btn btn-primary" onclick="saveServices()">💾 Save All Services</button>
     </section>
 
     <!-- Messages Section -->
@@ -900,7 +1660,7 @@
         </div>
 
         <div class="card">
-            <h3>ðŸ“„ Page Header</h3>
+            <h3>📄 Page Header</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label>Heading</label>
@@ -915,7 +1675,7 @@
         </div>
 
         <div class="card">
-            <h3>ðŸ“§ Contact Information</h3>
+            <h3>📧 Contact Information</h3>
             <div class="form-group">
                 <label>Email Address</label>
                 <input type="email" id="contactEmail" value="inforenderline@gmail.com">
@@ -936,7 +1696,7 @@
             </div>
         </div>
 
-        <button class="btn btn-primary" onclick="saveContactContent()">ðŸ’¾ Save Contact Page</button>
+        <button class="btn btn-primary" onclick="saveContactContent()">💾 Save Contact Page</button>
     </section>
 
     <!-- Footer Section -->
@@ -947,7 +1707,7 @@
         </div>
 
         <div class="card">
-            <h3>ðŸ·ï¸ Brand Section</h3>
+            <h3>🏷️ Brand Section</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label>Brand Name</label>
@@ -961,7 +1721,7 @@
         </div>
 
         <div class="card">
-            <h3>ðŸ“ Footer Contact Info</h3>
+            <h3>📍 Footer Contact Info</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label>Address/City</label>
@@ -975,14 +1735,14 @@
         </div>
 
         <div class="card">
-            <h3>Â©ï¸ Copyright</h3>
+            <h3>©️ Copyright</h3>
             <div class="form-group">
                 <label>Copyright Text</label>
-                <input type="text" id="footerCopyright" value="Â© 2024 RenderLine. All Rights Reserved.">
+                <input type="text" id="footerCopyright" value="© 2024 RenderLine. All Rights Reserved.">
             </div>
         </div>
 
-        <button class="btn btn-primary" onclick="saveFooterContent()">ðŸ’¾ Save Footer</button>
+        <button class="btn btn-primary" onclick="saveFooterContent()">💾 Save Footer</button>
     </section>
 
     <!-- Settings Section -->
@@ -993,7 +1753,7 @@
         </div>
 
         <div class="card">
-            <h3>ðŸ“§ Contact Information</h3>
+            <h3>📧 Contact Information</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label>Email</label>
@@ -1011,14 +1771,14 @@
         </div>
 
         <div class="card">
-            <h3>ðŸ”— Supabase Connection</h3>
+            <h3>🔗 Supabase Connection</h3>
             <div id="connectionStatus">
                 <p style="color: var(--text-dim);">Checking connection...</p>
             </div>
         </div>
 
         <div class="card">
-            <h3>â˜ï¸ Cloudinary Settings</h3>
+            <h3>☁️ Cloudinary Settings</h3>
             <div class="form-row">
                 <div class="form-group">
                     <label>Cloud Name</label>
@@ -1030,7 +1790,7 @@
                 </div>
             </div>
             <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.5rem;">
-                âš¡ <strong>Important:</strong> Cloudinary Dashboard â†’ Settings â†’ Upload â†’ Add preset â†’ Set
+                ⚡ <strong>Important:</strong> Cloudinary Dashboard → Settings → Upload → Add preset → Set
                 "Unsigned"
             </p>
         </div>
@@ -1038,14 +1798,14 @@
         <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
 
         <div class="card" style="margin-top: 2rem; border-color: var(--gold);">
-            <h3>ðŸ› ï¸ Data Migration Tools</h3>
+            <h3>🛠️ Data Migration Tools</h3>
             <p style="color: var(--text-dim); margin-bottom: 1rem;">Use these if you lost videos during the
                 update.</p>
             <button class="btn" onclick="restoreLegacyVideos()"
-                style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold);">â†»
+                style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold);">↻
                 Restore Legacy YouTube Videos</button>
             <button class="btn" id="migrateBtn" onclick="migrateLocalAssets()"
-                style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold); margin-top: 1rem;">â˜ï¸
+                style="width: 100%; border: 1px solid var(--gold); background: transparent; color: var(--gold); margin-top: 1rem;">☁️
                 Migrate Local Assets to Cloud</button>
             <div id="migrationLog"
                 style="margin-top: 1rem; font-size: 0.8rem; color: var(--text-dim); max-height: 150px; overflow-y: auto;">
@@ -1066,15 +1826,15 @@
         let currentUser = null;
 
         // ========== DEBUG: Check dependencies at startup ==========
-        console.log('ðŸ” Admin Panel Dependencies Check:');
-        console.log('  ðŸ“¦ window.supabase:', typeof window.supabase !== 'undefined' ? 'âœ… Loaded' : 'âŒ Not loaded');
-        console.log('  ðŸ“¦ supabase client:', typeof supabase !== 'undefined' ? 'âœ… Initialized' : 'âŒ Not initialized');
-        console.log('  ðŸ“¦ isSupabaseConfigured:', typeof isSupabaseConfigured === 'function' ? 'âœ… Available' : 'âŒ Not available');
-        console.log('  ðŸ“¦ uploadToCloudinary:', typeof uploadToCloudinary === 'function' ? 'âœ… Available' : 'âŒ Not available');
-        console.log('  ðŸ“¦ addPortfolioItem:', typeof addPortfolioItem === 'function' ? 'âœ… Available' : 'âŒ Not available');
+        console.log('🔍 Admin Panel Dependencies Check:');
+        console.log('  📦 window.supabase:', typeof window.supabase !== 'undefined' ? '✅ Loaded' : '❌ Not loaded');
+        console.log('  📦 supabase client:', typeof supabase !== 'undefined' ? '✅ Initialized' : '❌ Not initialized');
+        console.log('  📦 isSupabaseConfigured:', typeof isSupabaseConfigured === 'function' ? '✅ Available' : '❌ Not available');
+        console.log('  📦 uploadToCloudinary:', typeof uploadToCloudinary === 'function' ? '✅ Available' : '❌ Not available');
+        console.log('  📦 addPortfolioItem:', typeof addPortfolioItem === 'function' ? '✅ Available' : '❌ Not available');
 
         if (typeof isSupabaseConfigured === 'function') {
-            console.log('  ðŸ”Œ Supabase configured:', isSupabaseConfigured() ? 'âœ… Yes' : 'âŒ No');
+            console.log('  🔌 Supabase configured:', isSupabaseConfigured() ? '✅ Yes' : '❌ No');
         }
 
         // ========== LOGIN ==========
@@ -1194,9 +1954,9 @@
                     document.getElementById('contactLocation').value = content.contact_location || '';
                 }
 
-                document.getElementById('connectionStatus').innerHTML = '<p style="color: var(--success);">âœ… Connected (Cloudinary + Supabase)</p>';
+                document.getElementById('connectionStatus').innerHTML = '<p style="color: var(--success);">✅ Connected (Cloudinary + Supabase)</p>';
             } else {
-                document.getElementById('connectionStatus').innerHTML = '<p style="color: var(--gold);">â˜ï¸ Using Cloudinary (Local Mode)</p>';
+                document.getElementById('connectionStatus').innerHTML = '<p style="color: var(--gold);">☁️ Using Cloudinary (Local Mode)</p>';
             }
         }
 
@@ -1279,9 +2039,9 @@
 
             if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                 const { error } = await updateSiteContent(content);
-                alert(error ? 'âŒ Error: ' + error.message : 'âœ… Home page saved!');
+                alert(error ? '❌ Error: ' + error.message : '✅ Home page saved!');
             } else {
-                alert('âš ï¸ Supabase not configured');
+                alert('⚠️ Supabase not configured');
             }
         }
 
@@ -1329,9 +2089,9 @@
 
             if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                 const { error } = await updateSiteContent(content);
-                alert(error ? 'âŒ Error: ' + error.message : 'âœ… About page saved!');
+                alert(error ? '❌ Error: ' + error.message : '✅ About page saved!');
             } else {
-                alert('âš ï¸ Supabase not configured');
+                alert('⚠️ Supabase not configured');
             }
         }
 
@@ -1367,12 +2127,12 @@
                 const { error } = await updateSiteContent(content);
                 if (error) {
                     console.error('DB Error:', error);
-                    alert('âŒ DB Save Failed: ' + error.message + '\n\nPlease run "database-complete.sql" in Supabase!');
+                    alert('❌ DB Save Failed: ' + error.message + '\n\nPlease run "database-complete.sql" in Supabase!');
                 } else {
-                    alert('âœ… Services saved successfully!');
+                    alert('✅ Services saved successfully!');
                 }
             } else {
-                alert('âš ï¸ Supabase not configured');
+                alert('⚠️ Supabase not configured');
             }
         }
 
@@ -1388,9 +2148,9 @@
 
             if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                 const { error } = await updateSiteContent(content);
-                alert(error ? 'âŒ Error: ' + error.message : 'âœ… Contact page saved!');
+                alert(error ? '❌ Error: ' + error.message : '✅ Contact page saved!');
             } else {
-                alert('âš ï¸ Supabase not configured');
+                alert('⚠️ Supabase not configured');
             }
         }
 
@@ -1403,9 +2163,9 @@
 
             if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                 const { error } = await updateSiteContent(content);
-                alert(error ? 'âŒ Error: ' + error.message : 'âœ… Footer saved!');
+                alert(error ? '❌ Error: ' + error.message : '✅ Footer saved!');
             } else {
-                alert('âš ï¸ Supabase not configured');
+                alert('⚠️ Supabase not configured');
             }
         }
 
@@ -1418,9 +2178,9 @@
 
             if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                 const { error } = await updateSiteContent(content);
-                alert(error ? 'âŒ Error: ' + error.message : 'âœ… Settings saved!');
+                alert(error ? '❌ Error: ' + error.message : '✅ Settings saved!');
             } else {
-                alert('âš ï¸ Supabase not configured');
+                alert('⚠️ Supabase not configured');
             }
         }
 
@@ -1448,7 +2208,7 @@
 
         async function handleFiles(files) {
             const progressDiv = document.getElementById('uploadProgress');
-            progressDiv.innerHTML = `<p style="color: var(--gold);">ðŸ“¤ Uploading ${files.length} file(s) to Cloudinary...</p>`;
+            progressDiv.innerHTML = `<p style="color: var(--gold);">📤 Uploading ${files.length} file(s) to Cloudinary...</p>`;
 
             const portfolioItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
 
@@ -1459,7 +2219,7 @@
                     formData.append('upload_preset', CLOUDINARY_PRESET);
                     formData.append('folder', 'portfolio');
 
-                    progressDiv.innerHTML += `<p>â³ Uploading ${file.name}...</p>`;
+                    progressDiv.innerHTML += `<p>⏳ Uploading ${file.name}...</p>`;
 
                     const response = await fetch(
                         `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`,
@@ -1469,8 +2229,8 @@
                     const data = await response.json();
 
                     if (data.error) {
-                        progressDiv.innerHTML += `<p style="color: var(--danger);">âŒ ${file.name}: ${data.error.message}</p>`;
-                        progressDiv.innerHTML += `<p style="color: orange; font-size: 0.85rem;">âš ï¸ Make sure you created 'renderline_unsigned' upload preset in Cloudinary Dashboard â†’ Settings â†’ Upload â†’ Add upload preset â†’ Set to "Unsigned"</p>`;
+                        progressDiv.innerHTML += `<p style="color: var(--danger);">❌ ${file.name}: ${data.error.message}</p>`;
+                        progressDiv.innerHTML += `<p style="color: orange; font-size: 0.85rem;">⚠️ Make sure you created 'renderline_unsigned' upload preset in Cloudinary Dashboard → Settings → Upload → Add upload preset → Set to "Unsigned"</p>`;
                     } else {
                         const newItem = {
                             id: Date.now() + Math.random(),
@@ -1494,16 +2254,16 @@
                             });
                             if (dbError) {
                                 console.error('Supabase save error:', dbError);
-                                progressDiv.innerHTML += `<p style="color: orange;">âš ï¸ ${file.name} uploaded to Cloudinary but cloud DB save failed</p>`;
+                                progressDiv.innerHTML += `<p style="color: orange;">⚠️ ${file.name} uploaded to Cloudinary but cloud DB save failed</p>`;
                             } else {
-                                progressDiv.innerHTML += `<p style="color: var(--success);">âœ… ${file.name} uploaded to Cloudinary + saved to cloud DB!</p>`;
+                                progressDiv.innerHTML += `<p style="color: var(--success);">✅ ${file.name} uploaded to Cloudinary + saved to cloud DB!</p>`;
                             }
                         } else {
-                            progressDiv.innerHTML += `<p style="color: var(--success);">âœ… ${file.name} uploaded to Cloudinary!</p>`;
+                            progressDiv.innerHTML += `<p style="color: var(--success);">✅ ${file.name} uploaded to Cloudinary!</p>`;
                         }
                     }
                 } catch (error) {
-                    progressDiv.innerHTML += `<p style="color: var(--danger);">âŒ ${file.name}: ${error.message}</p>`;
+                    progressDiv.innerHTML += `<p style="color: var(--danger);">❌ ${file.name}: ${error.message}</p>`;
                 }
             }
 
@@ -1517,7 +2277,7 @@
 
             fileInput.value = '';
 
-            progressDiv.innerHTML += `<p style="color: var(--gold); margin-top: 1rem;">âœ¨ All uploads complete! Images saved to Cloudinary cloud storage.</p>`;
+            progressDiv.innerHTML += `<p style="color: var(--gold); margin-top: 1rem;">✨ All uploads complete! Images saved to Cloudinary cloud storage.</p>`;
         }
 
         function deletePortfolio(id) {
@@ -1537,7 +2297,7 @@
             document.getElementById('portfolioCount').textContent = portfolioItems.length;
             document.getElementById('statPortfolio').textContent = portfolioItems.length;
 
-            alert('âœ… Image deleted!');
+            alert('✅ Image deleted!');
         }
 
         // ========== HERO IMAGE UPLOAD ==========
@@ -1558,10 +2318,10 @@
 
             // Upload to Cloudinary (primary)
             if (typeof uploadToCloudinary === 'function') {
-                alert('ðŸ“¤ Uploading hero image to Cloudinary...');
+                alert('📤 Uploading hero image to Cloudinary...');
                 const { data, error } = await uploadToCloudinary(file, 'hero');
                 if (error) {
-                    alert('âŒ Cloudinary upload failed: ' + error.message);
+                    alert('❌ Cloudinary upload failed: ' + error.message);
                     return;
                 }
 
@@ -1571,19 +2331,19 @@
                 if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                     const { error: dbError } = await updateSiteContent({ ['cloudinary_hero' + index]: data.url });
                     if (dbError) {
-                        alert('âš ï¸ Uploaded to Cloudinary but DB save failed: ' + dbError.message);
+                        alert('⚠️ Uploaded to Cloudinary but DB save failed: ' + dbError.message);
                     } else {
-                        alert('âœ… Hero image ' + index + ' uploaded to Cloudinary + saved to database!');
+                        alert('✅ Hero image ' + index + ' uploaded to Cloudinary + saved to database!');
                     }
                 } else {
                     // Save to localStorage as backup
                     const heroImages = JSON.parse(localStorage.getItem('hero_images') || '{}');
                     heroImages['hero_' + index] = data.url;
                     localStorage.setItem('hero_images', JSON.stringify(heroImages));
-                    alert('âœ… Hero image ' + index + ' uploaded to Cloudinary! (Saved locally)');
+                    alert('✅ Hero image ' + index + ' uploaded to Cloudinary! (Saved locally)');
                 }
             } else {
-                alert('âŒ Cloudinary not configured. Please check cloudinary-config.js');
+                alert('❌ Cloudinary not configured. Please check cloudinary-config.js');
             }
         }
 
@@ -1601,10 +2361,10 @@
 
             // Upload to Cloudinary
             if (typeof uploadVideoToCloudinary === 'function') {
-                alert('ðŸ“¤ Uploading video to Cloudinary... This may take a moment for large files.');
+                alert('📤 Uploading video to Cloudinary... This may take a moment for large files.');
                 const { data, error } = await uploadVideoToCloudinary(file, 'videos');
                 if (error) {
-                    alert('âŒ Cloudinary upload failed: ' + error.message);
+                    alert('❌ Cloudinary upload failed: ' + error.message);
                     return;
                 }
 
@@ -1614,19 +2374,19 @@
                 if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                     const { error: dbError } = await updateSiteContent({ ['video_url' + index]: data.url });
                     if (dbError) {
-                        alert('âš ï¸ Uploaded to Cloudinary but DB save failed: ' + dbError.message);
+                        alert('⚠️ Uploaded to Cloudinary but DB save failed: ' + dbError.message);
                     } else {
-                        alert('âœ… Video ' + index + ' uploaded to Cloudinary + saved to database!');
+                        alert('✅ Video ' + index + ' uploaded to Cloudinary + saved to database!');
                     }
                 } else {
                     // Save to localStorage as backup
                     const videos = JSON.parse(localStorage.getItem('cloudinary_videos') || '{}');
                     videos['video_' + index] = data.url;
                     localStorage.setItem('cloudinary_videos', JSON.stringify(videos));
-                    alert('âœ… Video ' + index + ' uploaded to Cloudinary! (Saved locally)');
+                    alert('✅ Video ' + index + ' uploaded to Cloudinary! (Saved locally)');
                 }
             } else {
-                alert('âŒ Cloudinary video upload not available. Please check cloudinary-config.js');
+                alert('❌ Cloudinary video upload not available. Please check cloudinary-config.js');
             }
         }
 
@@ -1645,11 +2405,11 @@
                 updateSiteContent({ ['video_url' + index]: null });
             }
 
-            alert('âœ… Video removed');
+            alert('✅ Video removed');
         }
 
         function addNewVideo() {
-            alert('âž• Use the upload slots above to add videos!');
+            alert('➕ Use the upload slots above to add videos!');
         }
 
         // ========== SERVICE IMAGE UPLOAD ==========
@@ -1672,7 +2432,7 @@
             if (typeof uploadToCloudinary === 'function') {
                 const { data, error } = await uploadToCloudinary(file, 'services');
                 if (error) {
-                    alert('âŒ Cloudinary upload failed: ' + error.message);
+                    alert('❌ Cloudinary upload failed: ' + error.message);
                     return;
                 }
 
@@ -1683,18 +2443,18 @@
                     const { error: dbError } = await updateSiteContent({ ['cloudinary_service' + index]: data.url });
                     if (dbError) {
                         console.error('DB Error:', dbError);
-                        alert('âš ï¸ DB Save Failed: ' + dbError.message + '\n\nPlease go to Supabase SQL Editor and run the "database-complete.sql" script!');
+                        alert('⚠️ DB Save Failed: ' + dbError.message + '\n\nPlease go to Supabase SQL Editor and run the "database-complete.sql" script!');
                     } else {
-                        alert('âœ… Service ' + index + ' image uploaded to Cloudinary + saved!');
+                        alert('✅ Service ' + index + ' image uploaded to Cloudinary + saved!');
                     }
                 } else {
                     const serviceImages = JSON.parse(localStorage.getItem('service_images') || '{}');
                     serviceImages['service_' + index] = data.url;
                     localStorage.setItem('service_images', JSON.stringify(serviceImages));
-                    alert('âœ… Service ' + index + ' image uploaded to Cloudinary! (Saved locally)');
+                    alert('✅ Service ' + index + ' image uploaded to Cloudinary! (Saved locally)');
                 }
             } else {
-                alert('âŒ Cloudinary not configured');
+                alert('❌ Cloudinary not configured');
             }
         }
 
@@ -1716,7 +2476,7 @@
             if (typeof uploadToCloudinary === 'function') {
                 const { data, error } = await uploadToCloudinary(file, 'profile');
                 if (error) {
-                    alert('âŒ Cloudinary upload failed: ' + error.message);
+                    alert('❌ Cloudinary upload failed: ' + error.message);
                     return;
                 }
 
@@ -1726,16 +2486,16 @@
                 if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
                     const { error: dbError } = await updateSiteContent({ about_image: data.url });
                     if (dbError) {
-                        alert('âš ï¸ Uploaded to Cloudinary but DB save failed');
+                        alert('⚠️ Uploaded to Cloudinary but DB save failed');
                     } else {
-                        alert('âœ… Profile photo uploaded to Cloudinary + saved!');
+                        alert('✅ Profile photo uploaded to Cloudinary + saved!');
                     }
                 } else {
                     localStorage.setItem('about_image', data.url);
-                    alert('âœ… Profile photo uploaded to Cloudinary! (Saved locally)');
+                    alert('✅ Profile photo uploaded to Cloudinary! (Saved locally)');
                 }
             } else {
-                alert('âŒ Cloudinary not configured');
+                alert('❌ Cloudinary not configured');
             }
         }
 
@@ -1802,13 +2562,13 @@
                     item.innerHTML = `
                         <div style="width: 120px; height: 80px; flex-shrink: 0; position: relative; border-radius: 6px; overflow: hidden;">
                             <img src="${thumbUrl}" style="width: 100%; height: 100%; object-fit: cover;">
-                            <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">â–¶ï¸</div>
+                            <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center;">▶️</div>
                         </div>
                         <div style="flex: 1;">
                             <h4 style="margin: 0; color: #fff; font-size: 1rem;">${video.title || 'Untitled'}</h4>
                             <a href="${video.video_url}" target="_blank" style="color: var(--primary); font-size: 0.85rem;">${video.video_url}</a>
                         </div>
-                        <button class="btn-delete" onclick="deleteVideoItem('${video.id}')">ðŸ—‘ï¸</button>
+                        <button class="btn-delete" onclick="deleteVideoItem('${video.id}')">🗑️</button>
                     `;
                     container.appendChild(item);
                 });
@@ -1887,7 +2647,7 @@
             // Show uploading status
             statusDiv.style.display = 'block';
             statusDiv.style.background = 'rgba(212, 175, 55, 0.1)';
-            statusDiv.innerHTML = 'ðŸ“¤ Uploading to Cloudinary...';
+            statusDiv.innerHTML = '📤 Uploading to Cloudinary...';
 
             try {
                 const formData = new FormData();
@@ -1905,8 +2665,8 @@
 
                 if (data.error) {
                     statusDiv.style.background = 'rgba(239, 68, 68, 0.1)';
-                    statusDiv.innerHTML = `âŒ Error: ${data.error.message}. <br><small>Create upload preset in Cloudinary Settings â†’ Upload â†’ Add upload preset â†’ Set to Unsigned</small>`;
-                    alert('âŒ Cloudinary error: ' + data.error.message);
+                    statusDiv.innerHTML = `❌ Error: ${data.error.message}. <br><small>Create upload preset in Cloudinary Settings → Upload → Add upload preset → Set to Unsigned</small>`;
+                    alert('❌ Cloudinary error: ' + data.error.message);
                 } else {
                     preview.src = data.secure_url;
 
@@ -1917,7 +2677,7 @@
                     console.log('Saved to localStorage:', savedUrls);
 
                     statusDiv.style.background = 'rgba(74, 222, 128, 0.1)';
-                    statusDiv.innerHTML = `âœ… Uploaded! URL: <small>${data.secure_url.substring(0, 50)}...</small>`;
+                    statusDiv.innerHTML = `✅ Uploaded! URL: <small>${data.secure_url.substring(0, 50)}...</small>`;
 
                     // Save to Supabase
                     if (typeof updateSiteContent === 'function' && isSupabaseConfigured()) {
@@ -1926,19 +2686,19 @@
                         const { error: dbError } = await updateSiteContent({ [dbColumn]: data.secure_url });
                         if (dbError) {
                             console.error('Supabase save error:', dbError);
-                            statusDiv.innerHTML += `<br><small style="color: orange;">âš ï¸ Cloud save failed: ${dbError.message}</small>`;
+                            statusDiv.innerHTML += `<br><small style="color: orange;">⚠️ Cloud save failed: ${dbError.message}</small>`;
                         } else {
                             console.log('Saved to Supabase successfully');
-                            statusDiv.innerHTML += `<br><small style="color: lime;">âœ“ Saved to cloud database</small>`;
+                            statusDiv.innerHTML += `<br><small style="color: lime;">✓ Saved to cloud database</small>`;
                         }
                     }
-                    alert('âœ… Image uploaded and saved!');
+                    alert('✅ Image uploaded and saved!');
                 }
             } catch (error) {
                 console.error('Upload error:', error);
                 statusDiv.style.background = 'rgba(239, 68, 68, 0.1)';
-                statusDiv.innerHTML = `âŒ Upload failed: ${error.message}`;
-                alert('âŒ Upload failed: ' + error.message);
+                statusDiv.innerHTML = `❌ Upload failed: ${error.message}`;
+                alert('❌ Upload failed: ' + error.message);
             }
         }
 
@@ -2091,95 +2851,6 @@
                     if (typeof loadAllAdminFields === 'function') loadAllAdminFields(content);
                 }
             }
-        });
-
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // --- PREMIUM DASHBOARD ---
-
-        let trafficChart, deviceChart;
-
-        function initCharts() {
-            const ctx1 = document.getElementById('trafficChart')?.getContext('2d');
-            const ctx2 = document.getElementById('deviceChart')?.getContext('2d');
-
-            if (ctx1) {
-                trafficChart = new Chart(ctx1, {
-                    type: 'line',
-                    data: {
-                        labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Now'],
-                        datasets: [{
-                            label: 'Visitors',
-                            data: [12, 19, 8, 15, 20, 25, 45],
-                            borderColor: '#D4AF37',
-                            backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                            pointBackgroundColor: '#fff',
-                            pointBorderColor: '#D4AF37',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { display: false } },
-                        scales: {
-                            y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#888' } },
-                            x: { grid: { display: false }, ticks: { color: '#888' } }
-                        }
-                    }
-                });
-            }
-
-            if (ctx2) {
-                deviceChart = new Chart(ctx2, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Mobile', 'Desktop', 'Tablet'],
-                        datasets: [{
-                            data: [65, 30, 5],
-                            backgroundColor: ['#D4AF37', '#222', '#666'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: { legend: { position: 'right', labels: { color: '#ccc', boxWidth: 10 } } }
-                    }
-                });
-            }
-        }
-
-        function updateDashboardSimulations() {
-            // Live Visitors Tick
-            setInterval(() => {
-                const el = document.getElementById('statVisitors');
-                if (el) {
-                    let current = parseInt(el.textContent) || 12;
-                    let change = Math.floor(Math.random() * 3) - 1;
-                    el.textContent = Math.max(5, current + change);
-                }
-            }, 3000);
-
-            // Random Chart Update (Visual Effect)
-            setInterval(() => {
-                if (trafficChart) {
-                    const data = trafficChart.data.datasets[0].data;
-                    data[6] = parseInt(document.getElementById('statVisitors')?.textContent || 45);
-                    trafficChart.update('none');
-                }
-            }, 3000);
-        }
-
-        // Init Charts when Dashboard becomes active
-        document.addEventListener('DOMContentLoaded', () => {
-            // Wait a moment for layout
-            setTimeout(() => {
-                initCharts();
-                updateDashboardSimulations();
-            }, 500);
         });
 
     </script>
