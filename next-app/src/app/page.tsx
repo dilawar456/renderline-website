@@ -26,19 +26,24 @@ export default async function HomePage() {
   });
 
   const previewItems = sortedItems.slice(0, 5);
-  const heroImages = [1, 2, 3, 4, 5].map(i => content[`cloudinary_hero${i}`] || null).filter(Boolean);
+  const heroImages = [1, 2, 3, 4, 5]
+    .map(i => content[`cloudinary_hero${i}`] || null)
+    .filter(Boolean) as string[];
 
   return (
     <>
-      {/* ============ HERO ============ */}
+      {/* ============================================================
+          HERO — Fixed layout: body flex-col, content + stats
+          ============================================================ */}
       <header className="hero">
-        <div className="hero-carousel">
+        {/* Background slides */}
+        <div className="hero-bg">
           {heroImages.length > 0 ? (
             heroImages.map((src, i) => (
-              <div key={i} className={`hero-slide ${i === 0 ? 'active' : ''}`}>
+              <div key={i} className={`hero-slide${i === 0 ? ' active' : ''}`}>
                 <Image
-                  src={optimizeCloudinaryUrl(src!, 1920)}
-                  alt={`Architectural Render ${i + 1}`}
+                  src={optimizeCloudinaryUrl(src, 1920)}
+                  alt={`Render ${i + 1}`}
                   fill
                   priority={i === 0}
                   sizes="100vw"
@@ -47,162 +52,251 @@ export default async function HomePage() {
               </div>
             ))
           ) : (
-            <div className="hero-slide active">
-              <Image src="/assets/logo.png" alt="RenderLine" fill style={{ objectFit: 'cover', opacity: 0.08 }} />
-            </div>
+            /* Fallback dark gradient when no images */
+            <div className="hero-slide active" style={{ background: 'linear-gradient(135deg, #0d0b09 0%, #161210 100%)' }} />
           )}
         </div>
+
+        {/* Gradient overlay */}
         <div className="hero-overlay" />
 
-        <div className="container">
-          <div className="hero-content">
-            <div className="hero-eyebrow">
-              <span>Premium Architectural Visualization</span>
-            </div>
-            <h1>
-              <span className="hero-line-1">{content.hero_line1 || 'High-Quality Architectural'}</span>
-              <span className="hero-line-2">{content.hero_line2 || 'Visualization that'}</span>
-              <span className="hero-line-3">{content.hero_line3 || 'Helps Architects Win Clients'}</span>
-            </h1>
-            <p>{content.hero_description || 'We transform your architectural concepts into stunning photorealistic renders that captivate your clients and close deals faster.'}</p>
-            <div className="hero-cta">
-              <Link href="/portfolio" className="btn btn-primary">View Portfolio</Link>
-              <Link href="/contact" className="btn btn-outline">Start a Project</Link>
+        {/* Main content area */}
+        <div className="hero-body">
+          <div className="container">
+            <div className="hero-text">
+              <div className="hero-eyebrow">
+                <span>Premium Architectural Visualization</span>
+              </div>
+
+              <h1>
+                {content.hero_line1 || 'High-Quality Architectural'}{' '}
+                {content.hero_line2 || 'Visualization That'}{' '}
+                <span style={{ color: 'var(--gold)' }}>
+                  {content.hero_line3 || 'Wins Clients'}
+                </span>
+              </h1>
+
+              <p>
+                {content.hero_description ||
+                  'We transform architectural concepts into stunning photorealistic renders that captivate clients and close deals faster.'}
+              </p>
+
+              <div className="hero-cta">
+                <Link href="/portfolio" className="btn btn-primary">
+                  View Portfolio
+                </Link>
+                <Link href="/contact" className="btn btn-outline">
+                  Start a Project
+                </Link>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Stats bar */}
-        <div className="hero-stats">
-          <div className="hero-stat">
-            <strong>{content.stat_projects || '200+'}</strong>
-            <span>Projects</span>
-          </div>
-          <div className="hero-stat">
-            <strong>{content.stat_clients || '80+'}</strong>
-            <span>Clients</span>
-          </div>
-          <div className="hero-stat">
-            <strong>{content.stat_experience || '5+'}</strong>
-            <span>Years</span>
+        {/* Stats Bar — pinned at bottom of hero */}
+        <div className="hero-stats-bar">
+          <div className="hero-stats-inner">
+            <div className="hero-stat">
+              <strong>{content.stat_projects || '200+'}</strong>
+              <span>Projects Completed</span>
+            </div>
+            <div className="hero-stat">
+              <strong>{content.stat_clients || '80+'}</strong>
+              <span>Happy Clients</span>
+            </div>
+            <div className="hero-stat">
+              <strong>{content.stat_experience || '5+'}</strong>
+              <span>Years Experience</span>
+            </div>
+            <div className="hero-stat">
+              <strong>70+</strong>
+              <span>Portfolio Works</span>
+            </div>
           </div>
         </div>
 
-        <HeroScript />
+        {/* Carousel auto-advance */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+          (function() {
+            var slides = document.querySelectorAll('.hero-slide');
+            if (slides.length < 2) return;
+            var cur = 0;
+            setInterval(function() {
+              slides[cur].classList.remove('active');
+              cur = (cur + 1) % slides.length;
+              slides[cur].classList.add('active');
+            }, 5500);
+          })();
+        ` }} />
       </header>
 
-      {/* ============ SERVICES ============ */}
+      {/* ===================================
+          SERVICES
+          =================================== */}
       <section className="section-pad" style={{ background: 'var(--bg)' }}>
         <div className="container">
-          <div className="text-center fade-in" style={{ marginBottom: '3.5rem' }}>
+          <div className="section-header reveal">
             <span className="section-label">What We Offer</span>
-            <h2 className="section-title">{content.services_heading || 'Our Expertise'}</h2>
-            <div className="gold-divider" />
-            <p className="section-desc">{content.services_subheading || 'Tailored visualization solutions for architects, developers, and real estate professionals.'}</p>
+            <h2 className="section-title">
+              {content.services_heading || 'Our'} <span>Expertise</span>
+            </h2>
+            <div className="gold-line" />
+            <p className="section-desc">
+              {content.services_subheading ||
+                'Tailored visualization solutions for architects, developers, and real estate professionals.'}
+            </p>
           </div>
 
-          <div className="services-grid stagger">
-            {[1, 2, 3].map((i, idx) => (
-              <div key={i} className="service-card fade-in" style={{ '--i': idx } as React.CSSProperties}>
-                <div className="card-img-wrap">
-                  {content[`cloudinary_service${i}`] ? (
-                    <Image
-                      className="card-img"
-                      src={optimizeCloudinaryUrl(content[`cloudinary_service${i}`], 600)}
-                      alt={content[`service${i}_title`] || `Service ${i}`}
-                      width={600} height={220}
-                      style={{ objectFit: 'cover', width: '100%', height: '220px' }}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div style={{ height: '220px', background: 'var(--bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>
-                      {['🏛️', '🛋️', '🎬'][i - 1]}
-                    </div>
-                  )}
+          <div className="services-grid stagger-children">
+            {[1, 2, 3].map((i, idx) => {
+              const imgSrc = content[`cloudinary_service${i}`];
+              const icons = ['🏛️', '🛋️', '🎬'];
+              const defaults = {
+                title: ['Exterior Visualization', 'Interior Visualization', '3D Animations'][idx],
+                desc: [
+                  'High-rise towers, villas, facades & landscape integration.',
+                  'Luxury residential and commercial interior styling.',
+                  'Cinematic walkthroughs for real estate marketing.',
+                ][idx],
+              };
+              return (
+                <div key={i} className="service-card reveal">
+                  <div className="card-img-wrap">
+                    {imgSrc ? (
+                      <img
+                        src={optimizeCloudinaryUrl(imgSrc, 600)}
+                        alt={content[`service${i}_title`] || defaults.title}
+                        loading="lazy"
+                        style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }}
+                      />
+                    ) : (
+                      <div style={{ height: '220px', background: 'var(--bg-card2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem' }}>
+                        {icons[idx]}
+                      </div>
+                    )}
+                  </div>
+                  <div className="info">
+                    <h3>{content[`service${i}_title`] || defaults.title}</h3>
+                    <p>{content[`service${i}_desc`] || defaults.desc}</p>
+                    <Link href="/services" className="link">Explore Service →</Link>
+                  </div>
                 </div>
-                <div className="info">
-                  <h3>{content[`service${i}_title`] || ['Exterior Visualization', 'Interior Visualization', '3D Animations'][i - 1]}</h3>
-                  <p>{content[`service${i}_desc`] || ['High-rise towers, villas, facades & landscape integration.', 'Luxury residential and commercial interior styling.', 'Cinematic walkthroughs for real estate marketing.'][i - 1]}</p>
-                  <Link href="/services" className="link">Explore Service →</Link>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* ============ PORTFOLIO PREVIEW ============ */}
+      {/* ===================================
+          PORTFOLIO PREVIEW
+          =================================== */}
       <section className="section-pad" style={{ background: 'var(--bg-card)' }}>
         <div className="container">
-          <div className="text-center fade-in" style={{ marginBottom: '3rem' }}>
+          <div className="section-header reveal">
             <span className="section-label">Selected Work</span>
-            <h2 className="section-title">Featured <span>Projects</span></h2>
-            <div className="gold-divider" />
-            <p className="section-desc">A curated selection of our finest architectural visualizations.</p>
+            <h2 className="section-title">
+              Featured <span>Projects</span>
+            </h2>
+            <div className="gold-line" />
+            <p className="section-desc">
+              A curated selection of our finest architectural visualizations from the last year.
+            </p>
           </div>
 
-          <div className="portfolio-preview fade-in">
+          <div className="portfolio-preview reveal">
             {previewItems.length > 0
               ? previewItems.map(item => (
-                <div key={item.id} className="preview-item">
-                  <Image
+                <Link key={item.id} href="/portfolio" className="preview-item">
+                  <img
                     src={optimizeCloudinaryUrl(item.image_url, 600)}
                     alt={item.title || 'Project'}
-                    width={600} height={500}
-                    style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     loading="lazy"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                   />
-                </div>
+                </Link>
               ))
-              : [0, 1, 2, 3, 4].map(n => (
-                <div key={n} className="preview-item" style={{ background: 'var(--bg-card2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', fontSize: '0.8rem', letterSpacing: '0.1em' }}>
+              : Array.from({ length: 5 }, (_, n) => (
+                <div key={n} className="preview-item" style={{ background: 'var(--bg-card2)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)', fontSize: '0.72rem', letterSpacing: '0.12em' }}>
                   PROJECT {n + 1}
                 </div>
               ))}
           </div>
 
-          <div className="text-center fade-in" style={{ marginTop: '3rem' }}>
+          <div className="text-center reveal" style={{ marginTop: '3rem' }}>
             <Link href="/portfolio" className="btn btn-primary">View Full Portfolio</Link>
           </div>
         </div>
       </section>
 
-      {/* ============ WHY ============ */}
+      {/* ===================================
+          WHY RENDERLINE
+          =================================== */}
       <section className="why-section section-pad">
         <div className="container">
           <div className="why-grid">
-            <div className="fade-in">
+            <div className="reveal-left">
               <span className="section-label">Why Choose Us</span>
-              <h2 className="section-title">{content.why_heading || 'Why RenderLine?'}</h2>
-              <div className="gold-divider" style={{ margin: '1.25rem 0' }} />
+              <h2 className="section-title">
+                {content.why_heading || 'Why'} <span>RenderLine?</span>
+              </h2>
+              <div className="gold-line" style={{ margin: '1.2rem 0' }} />
               <ul className="benefits-list">
-                {[1, 2, 3, 4, 5].map(i => (
+                {[
+                  'Architect-first collaborative workflow',
+                  'Realistic lighting & material accuracy',
+                  'Industry-leading software & techniques',
+                  'Fast revisions & project confidentiality',
+                  'Affordable pricing, premium results',
+                ].map((pt, i) => (
                   <li key={i}>
                     <span className="check">✔</span>
-                    {content[`why_point${i}`] || ['Architect-first collaborative workflow', 'Realistic lighting & material accuracy', 'Industry-leading software & techniques', 'Fast revisions & project confidentiality', 'Affordable pricing, premium results'][i - 1]}
+                    {content[`why_point${i + 1}`] || pt}
                   </li>
                 ))}
               </ul>
-              <Link href="/contact" className="btn btn-primary" style={{ marginTop: '2rem' }}>Start Your Project</Link>
+              <Link href="/contact" className="btn btn-primary" style={{ marginTop: '2rem' }}>
+                Start Your Project
+              </Link>
             </div>
-            <div className="why-logo-container fade-in">
-              <Image src="/assets/logo.png" alt="RenderLine" width={260} height={260} className="why-logo-glow" loading="lazy" />
+
+            <div className="why-visual reveal-right">
+              <Image
+                src="/assets/logo.png"
+                alt="RenderLine"
+                width={240}
+                height={240}
+                className="why-logo"
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============ CTA ============ */}
+      {/* ===================================
+          CTA
+          =================================== */}
       <section className="cta-section">
         <div className="container">
-          <div className="fade-in">
-            <span className="section-label">Get Started</span>
-            <h2 className="section-title">{content.cta_heading || 'Ready to Visualize Your Vision?'}</h2>
-            <div className="gold-divider" />
-            <p className="section-desc">{content.cta_text || "Let's discuss your project. Get a free consultation and custom quote today."}</p>
+          <div className="reveal">
+            <span className="section-label">Get Started Today</span>
+            <h2 className="section-title">
+              {content.cta_heading || 'Ready to Visualize Your Vision?'}
+            </h2>
+            <div className="gold-line" />
+            <p className="section-desc">
+              {content.cta_text ||
+                "Let's discuss your project. Get a free consultation and custom quote today."}
+            </p>
             <div className="cta-buttons">
               <Link href="/contact" className="btn btn-primary">Contact Us</Link>
-              <a href="https://wa.me/923114544040" className="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://wa.me/923114544040"
+                className="btn btn-whatsapp"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 WhatsApp: 0311-4544040
               </a>
             </div>
@@ -210,23 +304,5 @@ export default async function HomePage() {
         </div>
       </section>
     </>
-  );
-}
-
-function HeroScript() {
-  return (
-    <script dangerouslySetInnerHTML={{
-      __html: `(function() {
-        var slides = document.querySelectorAll('.hero-slide');
-        if (slides.length < 2) return;
-        var cur = 0;
-        function next() {
-          slides[cur].classList.remove('active');
-          cur = (cur + 1) % slides.length;
-          slides[cur].classList.add('active');
-        }
-        setInterval(next, 5500);
-      })();`
-    }} />
   );
 }

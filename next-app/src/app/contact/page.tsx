@@ -10,51 +10,51 @@ export const metadata: Metadata = {
 export default function ContactPage() {
     return (
         <>
-            <header className="section-padding" style={{ paddingTop: '150px' }}>
-                <div className="container text-center">
-                    <h1 className="primary">Start Your Project</h1>
-                    <p style={{ maxWidth: '500px', margin: '0 auto' }}>
-                        Ready to bring your architectural vision to life? Get in touch today.
+            <div className="page-hero" style={{ background: 'var(--bg-card)' }}>
+                <div className="container">
+                    <span className="section-label">Let&apos;s Work Together</span>
+                    <h1 className="section-title">Start Your <span className="gold">Project</span></h1>
+                    <div className="gold-divider" style={{ margin: '1.25rem auto' }} />
+                    <p className="section-desc" style={{ marginBottom: 0 }}>
+                        Ready to bring your architectural vision to life? Reach out today.
                     </p>
                 </div>
-            </header>
+            </div>
 
-            <section className="section-padding" style={{ paddingTop: '2rem' }}>
+            <section className="contact-section">
                 <div className="container">
                     <div className="contact-grid">
-                        {/* Contact Info */}
-                        <div className="contact-info">
-                            <div className="info-block">
-                                <h3>Contact Details</h3>
-                                <p>
-                                    <strong>Email:</strong><br />
-                                    <a href="mailto:inforenderline@gmail.com" style={{ color: 'var(--primary)' }}>
-                                        inforenderline@gmail.com
-                                    </a>
-                                </p>
-                                <p><strong>Location:</strong><br />Lahore, Pakistan</p>
+                        {/* Info */}
+                        <div>
+                            <div className="contact-info-block">
+                                <h3>Email</h3>
+                                <p><a href="mailto:inforenderline@gmail.com">inforenderline@gmail.com</a></p>
                             </div>
-                            <div className="info-block">
-                                <h3>Quick Chat</h3>
-                                <p>Prefer WhatsApp? Click below for a quick response.</p>
+                            <div className="contact-info-block">
+                                <h3>Location</h3>
+                                <p>Lahore, Pakistan</p>
+                            </div>
+                            <div className="contact-info-block">
+                                <h3>WhatsApp</h3>
+                                <p>Fastest response — usually within an hour.</p>
                                 <a
                                     href="https://wa.me/923114544040"
                                     className="btn btn-whatsapp"
-                                    style={{ marginTop: '1rem', display: 'inline-block' }}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    style={{ marginTop: '1rem', display: 'inline-flex' }}
                                 >
                                     Chat on WhatsApp
                                 </a>
                             </div>
-                            <div className="info-block">
+                            <div className="contact-info-block">
                                 <h3>Working Hours</h3>
-                                <p>Sunday – Thursday: 9AM – 6PM</p>
-                                <p>Response within 24 hours</p>
+                                <p>Sunday – Thursday</p>
+                                <p>9:00 AM – 6:00 PM (PKT)</p>
                             </div>
                         </div>
 
-                        {/* Contact Form — Client Component */}
+                        {/* Form */}
                         <ContactForm />
                     </div>
                 </div>
