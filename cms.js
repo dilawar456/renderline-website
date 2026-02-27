@@ -132,14 +132,7 @@ async function loadSiteContent() {
     setText('aboutName', content.about_name);
     setText('aboutTitle', content.about_title);
 
-    // Fix: Match ID for About Profile Image (Home & About Page)
-    if (content.about_image) {
-        const optimizedSrc = optimizeUrl(content.about_image, 600);
-        // About Page
-        setImg('aboutProfileImg', optimizedSrc);
-        // Index Page Preview
-        setImg('aboutProfileImg', optimizedSrc); // ID is same on both pages
-    }
+
 
     setText('step1Title', content.step1_title);
     setText('step2Title', content.step2_title);
@@ -295,8 +288,10 @@ async function loadPortfolio() {
     // 3. SORT Items if order exists
     if (pOrder && pOrder.length > 0) {
         items.sort((a, b) => {
-            const idxA = pOrder.indexOf(a.id);
-            const idxB = pOrder.indexOf(b.id);
+            // Find index treating both numbers and strings uniformly
+            const idxA = pOrder.findIndex(id => String(id) === String(a.id));
+            const idxB = pOrder.findIndex(id => String(id) === String(b.id));
+
             if (idxA === -1 && idxB === -1) return 0;
             if (idxA === -1) return 1;
             if (idxB === -1) return -1;

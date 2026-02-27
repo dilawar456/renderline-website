@@ -3,8 +3,8 @@
 // =============================================
 
 const CLOUDINARY_CONFIG = {
-    cloudName: 'dzp70azv3',
-    apiKey: '124754412421972',
+    cloudName: 'dzp70azv3', // Note: Make sure this is your correct Cloud Name
+    apiKey: '955354685127514', // Using the Root API Key provided
     // Note: API Secret should NOT be exposed in frontend code
     // It's only needed for server-side uploads
     uploadPreset: 'renderline_unsigned' // You'll create this in Cloudinary dashboard

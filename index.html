@@ -159,90 +159,7 @@
             }
         }
 
-        /* About Section Redesign */
-        .about-section {
-            background: var(--bg-card);
-            position: relative;
-            overflow: hidden;
-        }
 
-        .about-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top right, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-image {
-            position: relative;
-        }
-
-        .about-image img {
-            width: 100%;
-            border-radius: 12px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .about-image::after {
-            content: '';
-            position: absolute;
-            inset: -20px;
-            border: 2px solid var(--primary);
-            border-radius: 16px;
-            opacity: 0.3;
-            z-index: -1;
-        }
-
-        .about-text .subtitle {
-            color: var(--primary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin-bottom: 0.5rem;
-        }
-
-        .about-text h2 {
-            margin-bottom: 1.5rem;
-        }
-
-        .about-text p {
-            font-size: 1.05rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-            margin: 2rem 0;
-            padding: 1.5rem 0;
-            border-top: 1px solid var(--border-dark);
-            border-bottom: 1px solid var(--border-dark);
-        }
-
-        .stat-item h3 {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 0.25rem;
-        }
-
-        .stat-item p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
 
         /* Why Section - Logo on Right */
         .why-section {
@@ -280,15 +197,9 @@
         }
 
         @media (max-width: 900px) {
-
-            .about-grid,
             .why-grid {
                 grid-template-columns: 1fr;
                 gap: 2.5rem;
-            }
-
-            .about-stats {
-                grid-template-columns: repeat(3, 1fr);
             }
 
             .why-logo-container {
@@ -335,19 +246,29 @@
     <header class="hero">
         <div class="hero-carousel">
             <div class="hero-slide active">
-                <img id="heroSlide1" src="assets/images/render40.jpg" alt="Architectural Render">
+                <img id="heroSlide1" src="assets/images/render40.jpg" alt="Architectural Render" fetchpriority="high">
+                <script>
+                    (function () {
+                        try {
+                            const images = JSON.parse(localStorage.getItem('cloudinary_images'));
+                            if (images && images.cloudinary_hero1) {
+                                document.getElementById('heroSlide1').src = images.cloudinary_hero1;
+                            }
+                        } catch (e) { }
+                    })();
+                </script>
             </div>
             <div class="hero-slide">
-                <img id="heroSlide2" src="assets/images/render2.jpg" alt="Exterior Design">
+                <img id="heroSlide2" src="assets/images/render2.jpg" alt="Exterior Design" loading="lazy">
             </div>
             <div class="hero-slide">
-                <img id="heroSlide3" src="assets/images/render10.jpg" alt="Interior Design">
+                <img id="heroSlide3" src="assets/images/render10.jpg" alt="Interior Design" loading="lazy">
             </div>
             <div class="hero-slide">
-                <img id="heroSlide4" src="assets/images/render13.jpg" alt="Luxury Interior">
+                <img id="heroSlide4" src="assets/images/render13.jpg" alt="Luxury Interior" loading="lazy">
             </div>
             <div class="hero-slide">
-                <img id="heroSlide5" src="assets/images/render15.jpg" alt="Modern Architecture">
+                <img id="heroSlide5" src="assets/images/render15.jpg" alt="Modern Architecture" loading="lazy">
             </div>
         </div>
 
@@ -355,7 +276,6 @@
 
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge" id="heroBadge">✦ Premium 3D Visualization</div>
                 <h1>
                     <span class="hero-line-1" id="heroLine1">High-Quality Architectural</span>
                     <span class="hero-line-2" id="heroLine2">Visualization that</span>
@@ -366,7 +286,6 @@
                     clients and close deals faster.</p>
                 <div class="hero-buttons">
                     <a href="portfolio.html" class="btn btn-primary" id="heroBtn1">View Portfolio</a>
-                    <a href="contact.html" class="btn" id="heroBtn2">Get Free Quote</a>
                 </div>
             </div>
         </div>
@@ -380,41 +299,7 @@
         </div>
     </header>
 
-    <!-- About Section - Redesigned -->
-    <section class="about-section section-padding">
-        <div class="container">
-            <div class="about-grid">
-                <div class="about-image">
-                    <img src="assets/images/render40.jpg" alt="RenderLine Studio" id="aboutProfileImg">
-                </div>
-                <div class="about-text">
-                    <p class="subtitle" id="aboutTitle">About RenderLine</p>
-                    <h2 id="aboutName">Dilawar Ali</h2>
-                    <div id="aboutBio">
-                        <p>At <strong>RenderLine</strong>, I specialize in bringing architectural concepts to life
-                            through
-                            photorealistic visualization. With years of industry experience, I deliver renders that
-                            captivate clients and help architects close deals faster.</p>
-                    </div>
-                    <div class="about-stats">
-                        <div class="stat-item">
-                            <h3 id="statClients">50+</h3>
-                            <p>Happy Clients</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3 id="statProjects">200+</h3>
-                            <p>Projects Done</p>
-                        </div>
-                        <div class="stat-item">
-                            <h3 id="statExperience">5+</h3>
-                            <p>Years Experience</p>
-                        </div>
-                    </div>
-                    <a href="about.html" class="btn">Learn More About Me</a>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Services Section -->
     <section class="services-section section-padding">
