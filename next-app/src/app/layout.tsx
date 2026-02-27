@@ -7,7 +7,7 @@ import "./globals.css";
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   preload: true,
 });
@@ -15,7 +15,7 @@ const cinzel = Cinzel({
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
-  weight: ["200", "300", "400", "500"],
+  weight: ["200", "300", "400", "500", "600"],
   display: "swap",
   preload: true,
 });
@@ -27,15 +27,7 @@ export const metadata: Metadata = {
   },
   description:
     "RenderLine is a premium architectural visualization studio in Lahore, Pakistan, specializing in photorealistic 3D rendering, interior design, and walkthrough animations.",
-  keywords: [
-    "Architectural Visualization",
-    "3D Rendering",
-    "Interior Design",
-    "Walkthrough Animation",
-    "RenderLine",
-    "Lahore",
-    "Pakistan",
-  ],
+  keywords: ["Architectural Visualization", "3D Rendering", "Interior Design", "Walkthrough Animation", "RenderLine", "Lahore", "Pakistan"],
   authors: [{ name: "RenderLine" }],
   robots: "index, follow",
   openGraph: {
@@ -47,15 +39,32 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${cinzel.variable} ${outfit.variable}`}>
         <Navbar />
         <main>{children}</main>
         <Footer />
+
+        {/* Scroll animation observer */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(e) {
+                  if (e.isIntersecting) { e.target.classList.add('visible'); }
+                });
+              }, { threshold: 0.12 });
+              document.querySelectorAll('.fade-in').forEach(function(el) { obs.observe(el); });
+
+              // Re-observe after dynamic content
+              setTimeout(function() {
+                document.querySelectorAll('.fade-in').forEach(function(el) { obs.observe(el); });
+              }, 1000);
+            })();
+          `
+        }} />
       </body>
     </html>
   );
