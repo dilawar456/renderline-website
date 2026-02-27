@@ -263,6 +263,13 @@ async function loadAboutSections(content) {
     }
 }
 
+// CLOUDINARY URL OPTIMIZER — auto-optimize any Cloudinary URL
+function optimizeCloudinaryUrl(url, width = 800) {
+    if (!url || !url.includes('res.cloudinary.com')) return url;
+    // Insert transformations after /upload/
+    return url.replace('/upload/', `/upload/q_auto,f_auto,w_${width},c_limit/`);
+}
+
 // PORTFOLIO LOADING WITH SORTING
 async function loadPortfolio() {
     let items = [];
@@ -306,11 +313,12 @@ async function loadPortfolio() {
         items.forEach((item, index) => {
             const card = document.createElement('div');
             card.className = `portfolio-item mix ${item.category || ''}`;
+            const optimizedSrc = optimizeCloudinaryUrl(item.image_url, 800);
             // Clean Image Only - No Text/Overlay
             card.innerHTML = `
-                <img src="${item.image_url}" alt="${item.title}" loading="lazy">
+                <img src="${optimizedSrc}" alt="${item.title}" loading="lazy">
             `;
-            // Click to Open Lightbox
+            // Click to Open Lightbox — use full quality for lightbox
             card.onclick = () => {
                 if (window.openLightbox) {
                     window.openLightbox(index, items);
@@ -328,7 +336,8 @@ async function loadPortfolio() {
         previewItems.forEach(item => {
             const div = document.createElement('div');
             div.className = 'preview-item';
-            div.innerHTML = `<img src="${item.image_url}" alt="${item.title}" loading="lazy">`;
+            const optimizedSrc = optimizeCloudinaryUrl(item.image_url, 600);
+            div.innerHTML = `<img src="${optimizedSrc}" alt="${item.title}" loading="lazy">`;
             preview.appendChild(div);
         });
     }
