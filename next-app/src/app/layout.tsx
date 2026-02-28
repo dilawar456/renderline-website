@@ -63,14 +63,28 @@ export default function RootLayout({
         </div>
 
         {/* ========================================================
-            SCROLL REVEAL — IntersectionObserver
-            Watches .reveal, .reveal-left, .reveal-right
+            SCROLL REVEAL — Reliable version
             ======================================================== */}
         <script dangerouslySetInnerHTML={{
           __html: `
           (function() {
+            // Fallback: if anything goes wrong, show everything after 2s
+            var fallbackTimer = setTimeout(function() {
+              document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+                el.classList.add('in-view');
+              });
+            }, 2000);
+
             function init() {
-              var threshold = 0.13;
+              if (!window.IntersectionObserver) {
+                // No support — show all immediately
+                clearTimeout(fallbackTimer);
+                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
+                  el.classList.add('in-view');
+                });
+                return;
+              }
+
               var obs = new IntersectionObserver(function(entries) {
                 entries.forEach(function(entry) {
                   if (entry.isIntersecting) {
@@ -78,18 +92,32 @@ export default function RootLayout({
                     obs.unobserve(entry.target);
                   }
                 });
-              }, { threshold: threshold, rootMargin: '0px 0px -40px 0px' });
+              }, { 
+                threshold: 0.05,
+                rootMargin: '0px 0px 0px 0px'
+              });
 
               function observe() {
-                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
-                  if (!el.classList.contains('in-view')) obs.observe(el);
+                var els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+                els.forEach(function(el) {
+                  if (!el.classList.contains('in-view')) {
+                    // If element is already in viewport, add in-view immediately
+                    var rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                      el.classList.add('in-view');
+                    } else {
+                      obs.observe(el);
+                    }
+                  }
                 });
               }
 
               observe();
-              // Re-run after Next.js hydration might add more elements
-              setTimeout(observe, 400);
-              setTimeout(observe, 1000);
+              setTimeout(observe, 300);
+              setTimeout(observe, 800);
+              setTimeout(function() {
+                clearTimeout(fallbackTimer);
+              }, 1000);
             }
 
             if (document.readyState === 'loading') {

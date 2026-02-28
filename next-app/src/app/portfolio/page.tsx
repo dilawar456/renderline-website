@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
 import { getPortfolioItems, getPortfolioOrder, getSiteContent, getVideos, optimizeCloudinaryUrl } from '@/lib/supabase';
 import PortfolioClient from './PortfolioClient';
 
@@ -39,26 +37,6 @@ export default async function PortfolioPage() {
         full_url: item.image_url, // Full quality for lightbox
     }));
 
-    return (
-        <>
-            {/* Hero */}
-            <section className="portfolio-hero">
-                <div className="container">
-                    <h1>Our <span>Portfolio</span></h1>
-                    <p>A complete collection of 70+ high-end architectural visualizations and walkthrough animations.</p>
-                    <div className="filter-buttons">
-                        <button className="filter-btn active" data-filter="all">All</button>
-                        <button className="filter-btn" data-filter="exterior">Exterior</button>
-                        <button className="filter-btn" data-filter="interior">Interior</button>
-                        <button className="filter-btn" data-filter="commercial">Commercial</button>
-                        <button className="filter-btn" data-filter="floorplan">3D Floorplan</button>
-                        <button className="filter-btn" data-filter="animation">Animation</button>
-                    </div>
-                </div>
-            </section>
-
-            {/* Portfolio Grid — Client component handles filtering + lightbox */}
-            <PortfolioClient items={optimizedItems} videos={videos} />
-        </>
-    );
+    // Fully client-rendered — filter pills + grid + lightbox all in PortfolioClient
+    return <PortfolioClient items={optimizedItems} videos={videos} />;
 }

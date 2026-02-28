@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 
 interface PortfolioItem {
@@ -22,6 +22,15 @@ interface Props {
     videos: Video[];
 }
 
+const FILTERS = [
+    { key: 'all', label: 'All' },
+    { key: 'exterior', label: 'Exterior' },
+    { key: 'interior', label: 'Interior' },
+    { key: 'commercial', label: 'Commercial' },
+    { key: 'floorplan', label: '3D Floorplan' },
+    { key: 'animation', label: 'Animation' },
+];
+
 function getYouTubeId(url: string) {
     const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\s?]+)/);
     return match ? match[1] : null;
@@ -30,121 +39,243 @@ function getYouTubeId(url: string) {
 export default function PortfolioClient({ items, videos }: Props) {
     const [filter, setFilter] = useState('all');
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-    const [showVideos, setShowVideos] = useState(false);
 
-    const filtered = filter === 'all' ? items : items.filter(i => i.category === filter);
+    // Derive what to show from filter alone
+    const showVideos = filter === 'animation';
+    const filtered = filter === 'all' || filter === 'animation'
+        ? items.filter(i => filter === 'animation' ? false : true)
+        : items.filter(i => i.category === filter);
 
-    const handleFilter = useCallback((f: string) => {
-        if (f === 'animation') {
-            setShowVideos(true);
-        } else {
-            setShowVideos(false);
-            setFilter(f);
-        }
+    // For 'all' show everything except animation items (they go to video section)
+    const displayItems = filter === 'all'
+        ? items
+        : filter === 'animation'
+            ? []
+            : items.filter(i => i.category === filter);
+
+    const handleFilter = useCallback((key: string) => {
+        setFilter(key);
+        setLightboxIndex(null);
     }, []);
 
     const openLightbox = useCallback((idx: number) => setLightboxIndex(idx), []);
     const closeLightbox = useCallback(() => setLightboxIndex(null), []);
-    const prevImage = useCallback(() => setLightboxIndex(i => i !== null ? (i - 1 + filtered.length) % filtered.length : 0), [filtered.length]);
-    const nextImage = useCallback(() => setLightboxIndex(i => i !== null ? (i + 1) % filtered.length : 0), [filtered.length]);
+
+    const prevImage = useCallback(() => {
+        setLightboxIndex(i => i !== null ? (i - 1 + displayItems.length) % displayItems.length : 0);
+    }, [displayItems.length]);
+
+    const nextImage = useCallback(() => {
+        setLightboxIndex(i => i !== null ? (i + 1) % displayItems.length : 0);
+    }, [displayItems.length]);
+
+    // Close lightbox on Escape key
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') prevImage();
+            if (e.key === 'ArrowRight') nextImage();
+        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, [closeLightbox, prevImage, nextImage]);
 
     return (
         <>
-            {/* Portfolio Grid */}
-            {!showVideos && (
-                <section className="portfolio-grid-section" id="portfolioSection">
-                    <div className="portfolio-grid">
-                        {filtered.map((item, idx) => (
-                            <div
-                                key={item.id}
-                                className={`portfolio-item mix ${item.category || ''}`}
-                                onClick={() => openLightbox(idx)}
+            {/* ============================
+                FILTER PILLS — All in client
+                ============================ */}
+            <section className="portfolio-hero">
+                <div className="container">
+                    <h1>Our <span>Portfolio</span></h1>
+                    <p>A complete collection of 70+ high-end architectural visualizations and walkthrough animations.</p>
+
+                    <div className="filter-pills">
+                        {FILTERS.map(f => (
+                            <button
+                                key={f.key}
+                                className={`filter-btn${filter === f.key ? ' active' : ''}`}
+                                onClick={() => handleFilter(f.key)}
+                                type="button"
                             >
-                                <Image
-                                    src={item.image_url}
-                                    alt={item.title}
-                                    width={600}
-                                    height={400}
-                                    style={{ objectFit: 'cover', width: '100%', height: '250px' }}
-                                    loading="lazy"
-                                />
-                            </div>
+                                {f.label}
+                                {f.key !== 'all' && f.key !== 'animation' && (
+                                    <span style={{
+                                        marginLeft: '5px',
+                                        fontSize: '0.65rem',
+                                        opacity: 0.6,
+                                        fontWeight: 400,
+                                    }}>
+                                        ({items.filter(i => i.category === f.key).length})
+                                    </span>
+                                )}
+                                {f.key === 'animation' && (
+                                    <span style={{ marginLeft: '5px', fontSize: '0.65rem', opacity: 0.6 }}>
+                                        ({videos.length})
+                                    </span>
+                                )}
+                                {f.key === 'all' && (
+                                    <span style={{ marginLeft: '5px', fontSize: '0.65rem', opacity: 0.6 }}>
+                                        ({items.length})
+                                    </span>
+                                )}
+                            </button>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            {/* ============================
+                IMAGES GRID
+                ============================ */}
+            {!showVideos && (
+                <section className="portfolio-grid-section" id="portfolioSection">
+                    {displayItems.length > 0 ? (
+                        <div className="portfolio-grid">
+                            {displayItems.map((item, idx) => (
+                                <div
+                                    key={item.id}
+                                    className="portfolio-item"
+                                    onClick={() => openLightbox(idx)}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={e => e.key === 'Enter' && openLightbox(idx)}
+                                >
+                                    <Image
+                                        src={item.image_url}
+                                        alt={item.title || 'Project'}
+                                        width={600}
+                                        height={400}
+                                        style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                                        loading="lazy"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div style={{
+                            textAlign: 'center',
+                            padding: '5rem 1rem',
+                            color: 'var(--text-muted)',
+                            fontSize: '0.9rem',
+                        }}>
+                            No items found in this category.
+                        </div>
+                    )}
                 </section>
             )}
 
-            {/* Videos */}
+            {/* ============================
+                ANIMATION / VIDEO SECTION
+                ============================ */}
             {showVideos && (
                 <section className="video-section">
                     <div className="container">
-                        <h2 className="text-center">3D Walkthroughs & Animations</h2>
-                        <p className="text-center" style={{ maxWidth: '500px', margin: '0 auto 3rem' }}>
-                            Cinematic architectural animations for real estate marketing.
-                        </p>
-                        <div className="video-grid">
-                            {videos.map(vid => {
-                                const ytId = getYouTubeId(vid.video_url);
-                                return (
-                                    <a
-                                        key={vid.id}
-                                        href={vid.video_url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="video-card"
-                                    >
-                                        <div className="video-thumb">
-                                            {ytId && (
-                                                <img
-                                                    src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
-                                                    alt={vid.title || 'Video'}
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                    loading="lazy"
-                                                />
-                                            )}
-                                            <div className="play-icon" />
-                                        </div>
-                                        <div className="video-info">
-                                            <h4>{vid.title || 'Walkthrough Animation'}</h4>
-                                        </div>
-                                    </a>
-                                );
-                            })}
+                        <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                            <span className="section-label">Cinematic Work</span>
+                            <h2 className="section-title">
+                                3D Walkthroughs &amp; <span>Animations</span>
+                            </h2>
+                            <div className="gold-line" />
+                            <p className="section-desc">
+                                Cinematic architectural animations for real estate marketing.
+                            </p>
                         </div>
+
+                        {videos.length > 0 ? (
+                            <div className="video-grid">
+                                {videos.map(vid => {
+                                    const ytId = getYouTubeId(vid.video_url);
+                                    return (
+                                        <a
+                                            key={vid.id}
+                                            href={vid.video_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="video-card"
+                                        >
+                                            <div className="video-thumb">
+                                                {ytId && (
+                                                    <img
+                                                        src={`https://img.youtube.com/vi/${ytId}/hqdefault.jpg`}
+                                                        alt={vid.title || 'Video'}
+                                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                        loading="lazy"
+                                                    />
+                                                )}
+                                                <div className="play-overlay">
+                                                    <div className="play-btn" />
+                                                </div>
+                                            </div>
+                                            <div className="video-info">
+                                                <h4>{vid.title || 'Walkthrough Animation'}</h4>
+                                            </div>
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        ) : (
+                            <div style={{
+                                textAlign: 'center',
+                                padding: '4rem 1rem',
+                                color: 'var(--text-muted)',
+                            }}>
+                                No videos added yet. Add videos from the admin panel.
+                            </div>
+                        )}
                     </div>
                 </section>
             )}
 
-            {/* Filter Buttons Script */}
-            <script dangerouslySetInnerHTML={{
-                __html: `
-        (function() {
-          document.querySelectorAll('.filter-btn').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-              document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-              btn.classList.add('active');
-            });
-          });
-        })();
-      ` }} />
+            {/* ============================
+                LIGHTBOX
+                ============================ */}
+            {lightboxIndex !== null && displayItems[lightboxIndex] && (
+                <div
+                    className="lightbox active"
+                    onClick={closeLightbox}
+                    role="dialog"
+                    aria-modal="true"
+                >
+                    <button className="lightbox-close" onClick={closeLightbox} type="button">×</button>
+                    <button
+                        className="lightbox-nav lightbox-prev"
+                        onClick={e => { e.stopPropagation(); prevImage(); }}
+                        type="button"
+                    >
+                        &#10094;
+                    </button>
 
-            {/* Lightbox */}
-            {lightboxIndex !== null && (
-                <div className="lightbox active" onClick={closeLightbox}>
-                    <span className="lightbox-close" onClick={closeLightbox}>×</span>
-                    <span className="lightbox-nav lightbox-prev" onClick={e => { e.stopPropagation(); prevImage(); }}>&#10094;</span>
-                    <Image
-                        src={filtered[lightboxIndex].full_url}
-                        alt={filtered[lightboxIndex].title}
-                        width={1200}
-                        height={800}
-                        style={{ maxWidth: '90%', maxHeight: '85%', objectFit: 'contain', borderRadius: '8px' }}
+                    <div
+                        style={{ position: 'relative', maxWidth: '90vw', maxHeight: '85vh' }}
                         onClick={e => e.stopPropagation()}
-                        priority
-                    />
-                    <span className="lightbox-nav lightbox-next" onClick={e => { e.stopPropagation(); nextImage(); }}>&#10095;</span>
+                    >
+                        <Image
+                            src={displayItems[lightboxIndex].full_url}
+                            alt={displayItems[lightboxIndex].title || 'Project'}
+                            width={1200}
+                            height={800}
+                            style={{
+                                maxWidth: '90vw',
+                                maxHeight: '85vh',
+                                objectFit: 'contain',
+                                borderRadius: '8px',
+                                display: 'block',
+                            }}
+                            priority
+                        />
+                    </div>
+
+                    <button
+                        className="lightbox-nav lightbox-next"
+                        onClick={e => { e.stopPropagation(); nextImage(); }}
+                        type="button"
+                    >
+                        &#10095;
+                    </button>
+
                     <div className="lightbox-counter">
-                        <span>{lightboxIndex + 1}</span> / <span>{filtered.length}</span>
+                        {lightboxIndex + 1} / {displayItems.length}
                     </div>
                 </div>
             )}
