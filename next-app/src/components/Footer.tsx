@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 
 const navLinks = [
     { href: '/', label: 'Home' },
@@ -13,47 +12,42 @@ export default function Footer() {
     return (
         <footer className="footer">
             <div className="container">
-                <div className="footer-inner">
+
+                {/* Top row — brand + nav + contact inline */}
+                <div className="footer-top">
                     {/* Brand */}
                     <div className="footer-brand">
-                        <p className="footer-brand-name">RenderLine.</p>
-                        <p className="footer-tagline">
-                            Premium Architectural Visualization<br />
-                            by Dilawar Ali — Lahore, Pakistan
-                        </p>
-                        <a
-                            href="https://wa.me/923114544040"
-                            className="btn btn-whatsapp"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            style={{ fontSize: '0.76rem', padding: '0.6rem 1.4rem' }}
-                        >
-                            WhatsApp Us
-                        </a>
+                        <span className="footer-logo-text">RenderLine</span>
+                        <span className="footer-tagline">Premium Architectural Visualization · Lahore, Pakistan</span>
                     </div>
 
-                    {/* Nav */}
-                    <div className="footer-col">
-                        <h4>Navigation</h4>
+                    {/* Nav links */}
+                    <nav className="footer-nav">
                         {navLinks.map(l => (
                             <Link key={l.href} href={l.href}>{l.label}</Link>
                         ))}
-                    </div>
+                    </nav>
 
-                    {/* Contact */}
-                    <div className="footer-col">
-                        <h4>Contact</h4>
-                        <p>Lahore, Pakistan</p>
-                        <a href="mailto:inforenderline@gmail.com">inforenderline@gmail.com</a>
-                        <a href="tel:+923114544040">+92 311-4544040</a>
+                    {/* Social / contact */}
+                    <div className="footer-contact">
+                        <a href="https://wa.me/923114544040" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                        <a href="mailto:inforenderline@gmail.com">Email Us</a>
                         <a href="https://instagram.com/renderline.arch" target="_blank" rel="noopener noreferrer">Instagram</a>
                     </div>
                 </div>
 
-                <div className="footer-bottom container">
-                    <p>© 2025 RenderLine. All Rights Reserved.</p>
-                    <Link href="/contact">Start a Project →</Link>
+                {/* Gold divider */}
+                <div className="footer-divider" />
+
+                {/* Bottom row — copyright + CTA */}
+                <div className="footer-bottom">
+                    <p>© {new Date().getFullYear()} RenderLine · All Rights Reserved · Designed by Dilawar Ali</p>
+                    <div className="footer-bottom-links">
+                        <a href="https://wa.me/923114544040" target="_blank" rel="noopener noreferrer">+92 311-4544040</a>
+                        <Link href="/contact" className="footer-cta-link">Start a Project →</Link>
+                    </div>
                 </div>
+
             </div>
         </footer>
     );
