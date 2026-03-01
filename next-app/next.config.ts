@@ -16,8 +16,16 @@ const nextConfig: NextConfig = {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 86400,
   },
-  // Compress all responses
   compress: true,
+  async redirects() {
+    return [
+      {
+        source: '/admin',
+        destination: '/admin.html',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
