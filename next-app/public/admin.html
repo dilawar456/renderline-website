@@ -711,7 +711,19 @@
         // --- CORE NAVIGATION & LOGIC ---
 
         let currentUser = null;
-        let pOrder = []; // To store portfolio order
+        let pOrder = []; // portfolio order
+        let pPinned = []; // pinned item IDs
+
+        // --- REVALIDATE NEXT.JS CACHE ---
+        async function revalidateWebsite() {
+            try {
+                const res = await fetch('https://next-app-mauve-beta.vercel.app/api/revalidate?secret=renderline_revalidate_2024');
+                const json = await res.json();
+                console.log('✅ Revalidated:', json);
+            } catch(e) {
+                console.warn('Revalidation skipped (offline?):', e.message);
+            }
+        }
 
         // --- 1. LOGIN ---
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
@@ -771,9 +783,12 @@
             if (typeof getSiteContent === 'function') {
                 const { data: content } = await getSiteContent();
                 if (content) {
-                    // LOAD PORTFOLIO ORDER
+                    // LOAD PORTFOLIO ORDER & PINNED
                     if (content.portfolio_order) {
                         try { pOrder = JSON.parse(content.portfolio_order); } catch (e) { }
+                    }
+                    if (content.portfolio_pinned) {
+                        try { pPinned = JSON.parse(content.portfolio_pinned); } catch (e) { }
                     }
 
                     // Home
@@ -950,16 +965,25 @@
             const grid = document.getElementById('portfolioGrid');
             grid.innerHTML = '';
             items.forEach(item => {
+                const isPinned = pPinned.some(id => String(id) === String(item.id));
                 const div = document.createElement('div');
-                div.className = 'portfolio-item';
-                div.setAttribute('data-id', item.id); // for sortable
+                div.className = 'portfolio-item' + (isPinned ? ' pinned-admin' : '');
+                div.setAttribute('data-id', item.id);
                 div.innerHTML = `
                     <img src="${item.image_url}" loading="lazy">
+                    ${isPinned ? '<div style="position:absolute;top:6px;left:6px;background:rgba(212,175,55,0.9);border-radius:4px;padding:2px 7px;font-size:0.7rem;color:#000;font-weight:600;z-index:2">📌 PINNED</div>' : ''}
                     <div class="portfolio-actions">
+                        <button class="btn" style="background:${isPinned ? 'rgba(212,175,55,0.2);border-color:var(--primary);color:var(--primary)' : 'rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#aaa'}; font-size:0.72rem; padding:0.25rem 0.6rem;" 
+                            onclick="togglePin('${item.id}')">${isPinned ? '📌 Unpin' : '📌 Pin'}</button>
                         <button class="btn btn-danger" onclick="deletePortfolioItemWrapper('${item.id}')">Delete</button>
                     </div>
                  `;
                 grid.appendChild(div);
+            });
+
+            // Apply gold border for pinned in admin
+            document.querySelectorAll('.pinned-admin').forEach(el => {
+                el.style.outline = '2px solid var(--primary)';
             });
 
             // INIT SORTABLE JS
@@ -981,7 +1005,8 @@
             console.log("Saving new order:", order);
             await updateSiteContent({ portfolio_order: JSON.stringify(order) });
             pOrder = order;
-            showToast('Portfolio order saved! (' + order.length + ' items)');
+            await revalidateWebsite();
+            showToast('Order saved! Live site will update in ~5 seconds ✅');
         }
 
         async function deletePortfolioItemWrapper(id) {
@@ -993,6 +1018,21 @@
                 items = items.filter(x => x.id != id);
                 localStorage.setItem('portfolio_items', JSON.stringify(items));
             }
+            loadPortfolioGrid();
+        }
+
+        // --- PIN / UNPIN ---
+        async function togglePin(id) {
+            const idStr = String(id);
+            const idx = pPinned.findIndex(p => String(p) === idStr);
+            if (idx === -1) {
+                pPinned.push(isNaN(parseInt(idStr)) ? idStr : parseInt(idStr));
+            } else {
+                pPinned.splice(idx, 1);
+            }
+            await updateSiteContent({ portfolio_pinned: JSON.stringify(pPinned) });
+            await revalidateWebsite();
+            showToast(idx === -1 ? '📌 Item pinned — live site updates in ~5s!' : 'Unpinned successfully');
             loadPortfolioGrid();
         }
 

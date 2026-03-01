@@ -39,6 +39,16 @@ export async function getPortfolioOrder(content: Record<string, string> | null):
     }
 }
 
+// ============ PORTFOLIO PINNED ============
+export async function getPinnedItems(content: Record<string, string> | null): Promise<string[]> {
+    if (!content?.portfolio_pinned) return [];
+    try {
+        return JSON.parse(content.portfolio_pinned);
+    } catch {
+        return [];
+    }
+}
+
 // ============ VIDEOS ============
 export async function getVideos() {
     const { data, error } = await supabase

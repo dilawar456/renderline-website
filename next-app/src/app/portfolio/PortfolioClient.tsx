@@ -9,6 +9,7 @@ interface PortfolioItem {
     image_url: string;
     full_url: string;
     category?: string;
+    is_pinned?: boolean;
 }
 
 interface Video {
@@ -135,12 +136,15 @@ export default function PortfolioClient({ items, videos }: Props) {
                             {displayItems.map((item, idx) => (
                                 <div
                                     key={item.id}
-                                    className="portfolio-item"
+                                    className={`portfolio-item${item.is_pinned ? ' pinned' : ''}`}
                                     onClick={() => openLightbox(idx)}
                                     role="button"
                                     tabIndex={0}
                                     onKeyDown={e => e.key === 'Enter' && openLightbox(idx)}
                                 >
+                                    {item.is_pinned && (
+                                        <div className="pin-badge" title="Featured">📌</div>
+                                    )}
                                     <Image
                                         src={item.image_url}
                                         alt={item.title || 'Project'}
