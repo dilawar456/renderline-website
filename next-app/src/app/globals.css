@@ -572,43 +572,54 @@ body.light-mode .navbar.scrolled {
    }
 }
 
-/* ===== SCROLL REVEAL ANIMATIONS ===== */
-.reveal,
-.reveal-left,
-.reveal-right {
-   will-change: opacity, transform;
-   transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
-}
+/* ===== SCROLL REVEAL ANIMATIONS =====
+   Progressive enhancement approach:
+   - Elements are VISIBLE by default (no JS = fully visible)
+   - Once JS runs, body gets .js-ready class, THEN elements animate
+   This prevents sections from being stuck invisible
+===== */
 
-.reveal {
+/* Only hide when JS is ready */
+.js-ready .reveal,
+html.js-ready .reveal {
    opacity: 0;
    transform: translateY(28px);
 }
 
-.reveal.in-view {
+.js-ready .reveal.in-view,
+html.js-ready .reveal.in-view {
    opacity: 1;
    transform: translateY(0);
+   transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
 }
 
-.reveal-left {
+.js-ready .reveal-left,
+html.js-ready .reveal-left {
    opacity: 0;
    transform: translateX(-32px);
 }
 
-.reveal-left.in-view {
+.js-ready .reveal-left.in-view,
+html.js-ready .reveal-left.in-view {
    opacity: 1;
    transform: translateX(0);
+   transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
 }
 
-.reveal-right {
+.js-ready .reveal-right,
+html.js-ready .reveal-right {
    opacity: 0;
    transform: translateX(32px);
 }
 
-.reveal-right.in-view {
+.js-ready .reveal-right.in-view,
+html.js-ready .reveal-right.in-view {
    opacity: 1;
    transform: translateX(0);
+   transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
 }
+
+
 
 /* Stagger siblings */
 .stagger-children>* {
@@ -1163,7 +1174,8 @@ body.light-mode .navbar.scrolled {
 }
 
 .portfolio-item img,
-.portfolio-item > span { /* Next/Image wrapper */
+.portfolio-item>span {
+   /* Next/Image wrapper */
    width: 100% !important;
    height: 100% !important;
    object-fit: cover;
