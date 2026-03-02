@@ -796,9 +796,10 @@
                 const { data: content } = await getSiteContent();
                 if (content) {
                     // LOAD PORTFOLIO ORDER & PINNED
-                    if (content.portfolio_order) {
+                    const rawOrder = content.portfolio_order || content.contact_phone_display;
+                    if (rawOrder) {
                         try {
-                            const parsed = JSON.parse(content.portfolio_order);
+                            const parsed = JSON.parse(rawOrder);
                             pOrder = Array.isArray(parsed) ? { all: parsed } : parsed;
                         } catch (e) { pOrder = { all: [] }; }
                     }
@@ -1036,7 +1037,10 @@
             pOrder[currentPortfolioCat] = arr;
 
             console.log("Saving full order dict:", pOrder);
-            await updateSiteContent({ portfolio_order: JSON.stringify(pOrder) });
+            await updateSiteContent({
+                portfolio_order: JSON.stringify(pOrder),
+                contact_phone_display: JSON.stringify(pOrder) // Fallback due to missing DB column 
+            });
             await revalidateWebsite();
             showToast('Order saved for ' + currentPortfolioCat + '! Live site will update in ~5 seconds ✅');
         }
@@ -1250,8 +1254,7 @@
                 contact_subheading: document.getElementById('contactSubheading').value,
                 contact_email: document.getElementById('contactEmail').value,
                 contact_whatsapp: document.getElementById('contactWhatsapp').value,
-                contact_location: document.getElementById('contactLocation').value,
-                contact_phone_display: document.getElementById('contactPhoneDisplay').value
+                contact_location: document.getElementById('contactLocation').value
             };
             await updateSiteContent(data);
             showToast('Contact info updated!');
