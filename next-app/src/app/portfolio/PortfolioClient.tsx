@@ -21,6 +21,8 @@ interface Video {
 interface Props {
     items: PortfolioItem[];
     videos: Video[];
+    order: Record<string, string[]>;
+    pinned: Record<string, string[]>;
 }
 
 const FILTERS = [
@@ -37,22 +39,49 @@ function getYouTubeId(url: string) {
     return match ? match[1] : null;
 }
 
-export default function PortfolioClient({ items, videos }: Props) {
+export default function PortfolioClient({ items, videos, order, pinned }: Props) {
     const [filter, setFilter] = useState('all');
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
     // Derive what to show from filter alone
     const showVideos = filter === 'animation';
-    const filtered = filter === 'all' || filter === 'animation'
-        ? items.filter(i => filter === 'animation' ? false : true)
-        : items.filter(i => i.category === filter);
 
-    // For 'all' show everything except animation items (they go to video section)
-    const displayItems = filter === 'all'
+    // Get current category's arrays
+    const currentOrder = order[filter] || [];
+    const currentPinned = pinned[filter] || [];
+
+    // Filter items based on category
+    let displayItems = filter === 'all'
         ? items
         : filter === 'animation'
             ? []
             : items.filter(i => i.category === filter);
+
+    // Apply sorting based on current category order
+    if (!showVideos && displayItems.length > 0) {
+        displayItems = [...displayItems].sort((a, b) => {
+            const aIdStr = String(a.id);
+            const bIdStr = String(b.id);
+
+            const aPinned = currentPinned.findIndex(id => String(id) === aIdStr);
+            const bPinned = currentPinned.findIndex(id => String(id) === bIdStr);
+
+            if (aPinned !== -1 && bPinned !== -1) return aPinned - bPinned;
+            if (aPinned !== -1) return -1;
+            if (bPinned !== -1) return 1;
+
+            const idxA = currentOrder.findIndex(id => String(id) === aIdStr);
+            const idxB = currentOrder.findIndex(id => String(id) === bIdStr);
+
+            if (idxA === -1 && idxB === -1) return 0;
+            if (idxA === -1) return 1;
+            if (idxB === -1) return -1;
+            return idxA - idxB;
+        }).map(item => ({
+            ...item,
+            is_pinned: currentPinned.some(id => String(id) === String(item.id))
+        }));
+    }
 
     const handleFilter = useCallback((key: string) => {
         setFilter(key);

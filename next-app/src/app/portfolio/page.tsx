@@ -24,37 +24,12 @@ export default async function PortfolioPage() {
     const order = await getPortfolioOrder(content);
     const pinned = await getPinnedItems(content);
 
-    // Sort: pinned first (in pin order), then rest by saved order
-    const sortedItems = [...allItems].sort((a, b) => {
-        const aIdStr = String(a.id);
-        const bIdStr = String(b.id);
-
-        const aPinned = pinned.findIndex(id => String(id) === aIdStr);
-        const bPinned = pinned.findIndex(id => String(id) === bIdStr);
-
-        // Both pinned — sort by pin order
-        if (aPinned !== -1 && bPinned !== -1) return aPinned - bPinned;
-        // Only A pinned — A goes first
-        if (aPinned !== -1) return -1;
-        // Only B pinned — B goes first
-        if (bPinned !== -1) return 1;
-
-        // Neither pinned — sort by saved order
-        const idxA = order.findIndex(id => String(id) === aIdStr);
-        const idxB = order.findIndex(id => String(id) === bIdStr);
-        if (idxA === -1 && idxB === -1) return 0;
-        if (idxA === -1) return 1;
-        if (idxB === -1) return -1;
-        return idxA - idxB;
-    });
-
     // Optimize all image URLs server-side
-    const optimizedItems = sortedItems.map(item => ({
+    const optimizedItems = allItems.map(item => ({
         ...item,
         image_url: optimizeCloudinaryUrl(item.image_url, 800),
         full_url: item.image_url,
-        is_pinned: pinned.some(id => String(id) === String(item.id)),
     }));
 
-    return <PortfolioClient items={optimizedItems} videos={videos} />;
+    return <PortfolioClient items={optimizedItems} videos={videos} order={order} pinned={pinned} />;
 }

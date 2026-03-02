@@ -14,7 +14,8 @@ export default async function HomePage() {
   const [contentRes, portfolioRes] = await Promise.all([getSiteContent(), getPortfolioItems()]);
   const content = contentRes.data || {};
   const allItems = portfolioRes.data || [];
-  const order = await getPortfolioOrder(content);
+  const orderRecord = await getPortfolioOrder(content);
+  const order = orderRecord.all || [];
 
   const sortedItems = [...allItems].sort((a, b) => {
     const iA = order.findIndex(id => String(id) === String(a.id));

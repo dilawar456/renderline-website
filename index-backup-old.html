@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KGJ2VTGV');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RenderLine | Premium Architectural Visualization</title>
+    <link rel="canonical" href="https://dilawarali.com/">
+    <meta name="google-site-verification" content="pYra2CAbJlZtTMHFPmfd_DxLRo2PzIFwv8_3PxncZRo" />
+    <link rel="icon" href="assets/logo.png" type="image/png">
+    <meta name="description"
+        content="RenderLine is a premium architectural visualization studio in Lahore, Pakistan, specializing in photorealistic 3D rendering, interior design, and walkthrough animations.">
+    <meta name="keywords"
+        content="Architectural Visualization, 3D Rendering, House Design, Interior Design, Walkthrough Animation, RenderLine, Lahore, Pakistan, Real Estate Marketing">
+    <meta name="author" content="RenderLine">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="RenderLine | Premium Architectural Visualization">
+    <meta property="og:description"
+        content="RenderLine is a premium architectural visualization studio in Lahore, Pakistan, specializing in photorealistic 3D rendering, interior design, and walkthrough animations.">
+    <meta property="og:image" content="assets/images/render12.jpg">
+
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '2141726459960922');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=2141726459960922&ev=PageView&noscript=1" /></noscript>
+    <!-- End Facebook Pixel Code -->
+
+    <!-- Schema Markup -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "RenderLine",
+      "url": "https://dilawarali.com/",
+      "image": "assets/logo.png",
+      "description": "Premium Architectural Visualization Studio in Lahore, Pakistan.",
+      "telephone": "0311-4544040",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lahore",
+        "addressCountry": "PK"
+      }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=2.0">
+
+    <style>
+        /* Hero Text Loop Animation */
+        .hero-content h1 {
+            overflow: hidden;
+        }
+
+        .hero-line-1,
+        .hero-line-2,
+        .hero-line-3 {
+            display: block;
+            opacity: 0;
+        }
+
+        .hero-line-1 {
+            animation: textLoop1 6s ease-in-out infinite;
+        }
+
+        .hero-line-2 {
+            animation: textLoop2 6s ease-in-out infinite;
+        }
+
+        .hero-line-3 {
+            animation: textLoop3 6s ease-in-out infinite;
+        }
+
+
+
+        @keyframes textLoop1 {
+
+            0%,
+            100% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            10%,
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes textLoop2 {
+
+            0%,
+            10% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            20%,
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        }
+
+        @keyframes textLoop3 {
+
+            0%,
+            20% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            30%,
+            90% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        }
+
+
+
+        /* Why Section - Logo on Right */
+        .why-section {
+            background: var(--bg-dark);
+        }
+
+        .why-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .why-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .why-logo-glow {
+            width: 300px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.5));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 60px rgba(212, 175, 55, 0.8));
+            }
+        }
+
+        @media (max-width: 900px) {
+            .why-grid {
+                grid-template-columns: 1fr;
+                gap: 2.5rem;
+            }
+
+            .why-logo-container {
+                order: -1;
+            }
+
+            .why-logo-glow {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KGJ2VTGV" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="RenderLine">
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" title="Toggle Light/Dark Mode">☀</button>
+                <a href="contact.html" class="btn btn-primary">Let's Talk</a>
+            </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Carousel -->
+    <header class="hero">
+        <div class="hero-carousel">
+            <div class="hero-slide active">
+                <img id="heroSlide1" src="assets/images/render40.jpg" alt="Architectural Render" fetchpriority="high">
+                <script>
+                    (function () {
+                        try {
+                            const images = JSON.parse(localStorage.getItem('cloudinary_images'));
+                            if (images && images.cloudinary_hero1) {
+                                document.getElementById('heroSlide1').src = images.cloudinary_hero1;
+                            }
+                        } catch (e) { }
+                    })();
+                </script>
+            </div>
+            <div class="hero-slide">
+                <img id="heroSlide2" src="assets/images/render2.jpg" alt="Exterior Design" loading="lazy">
+            </div>
+            <div class="hero-slide">
+                <img id="heroSlide3" src="assets/images/render10.jpg" alt="Interior Design" loading="lazy">
+            </div>
+            <div class="hero-slide">
+                <img id="heroSlide4" src="assets/images/render13.jpg" alt="Luxury Interior" loading="lazy">
+            </div>
+            <div class="hero-slide">
+                <img id="heroSlide5" src="assets/images/render15.jpg" alt="Modern Architecture" loading="lazy">
+            </div>
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    <span class="hero-line-1" id="heroLine1">High-Quality Architectural</span>
+                    <span class="hero-line-2" id="heroLine2">Visualization that</span>
+                    <span class="hero-line-3" id="heroLine3">Helps Architects Win Clients</span>
+                </h1>
+                <p id="heroDesc">We transform your architectural concepts into stunning photorealistic renders that
+                    captivate your
+                    clients and close deals faster.</p>
+                <div class="hero-buttons">
+                    <a href="portfolio.html" class="btn btn-primary" id="heroBtn1">View Portfolio</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-indicators">
+            <button class="hero-dot active" data-slide="0"></button>
+            <button class="hero-dot" data-slide="1"></button>
+            <button class="hero-dot" data-slide="2"></button>
+            <button class="hero-dot" data-slide="3"></button>
+            <button class="hero-dot" data-slide="4"></button>
+        </div>
+    </header>
+
+
+
+    <!-- Services Section -->
+    <section class="services-section section-padding">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 3rem;">
+                <h2 id="servicesHeading">Our Expertise</h2>
+                <p style="max-width: 600px; margin: 1rem auto 0;" id="servicesSubheading">Tailored visualization
+                    solutions for architects,
+                    developers, and real estate professionals.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <img id="service1ImageHome" src="assets/images/render2.jpg" alt="Exterior Visualization">
+                    <div class="info">
+                        <h3 id="service1TitleHome">Exterior Visualization</h3>
+                        <p id="service1DescHome">High-rise towers, villas, facades, and landscape integration.</p>
+                        <a href="services.html" class="link">Learn More →</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img id="service2ImageHome" src="assets/images/render10.jpg" alt="Interior Visualization">
+                    <div class="info">
+                        <h3 id="service2TitleHome">Interior Visualization</h3>
+                        <p id="service2DescHome">Luxury residential and commercial interior styling.</p>
+                        <a href="services.html" class="link">Learn More →</a>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <img id="service3ImageHome" src="assets/images/render12.jpg" alt="3D Walkthroughs">
+                    <div class="info">
+                        <h3 id="service3TitleHome">3D Animations</h3>
+                        <p id="service3DescHome">Cinematic walkthroughs for real estate marketing.</p>
+                        <a href="services.html" class="link">Learn More →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Preview -->
+    <section class="section-padding" style="background: var(--bg-card);">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: 2.5rem;">
+                <h2 id="portfolioHeading">Featured Projects</h2>
+                <p style="max-width: 500px; margin: 1rem auto 0;" id="portfolioSubheading">A selection of our latest
+                    architectural
+                    visualizations.</p>
+            </div>
+            <div class="portfolio-preview">
+                <div class="preview-item">
+                    <img src="assets/images/render13.jpg" alt="Project">
+                </div>
+                <div class="preview-item">
+                    <img src="assets/images/render15.jpg" alt="Project">
+                </div>
+                <div class="preview-item">
+                    <img src="assets/images/render3.jpg" alt="Project">
+                </div>
+                <div class="preview-item">
+                    <img src="assets/images/render16.jpg" alt="Project">
+                </div>
+                <div class="preview-item">
+                    <img src="assets/images/render4.jpg" alt="Project">
+                </div>
+            </div>
+            <div class="text-center" style="margin-top: 2.5rem;">
+                <a href="portfolio.html" class="btn btn-primary">View Full Portfolio</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Section - Logo on Right -->
+    <section class="why-section section-padding">
+        <div class="container">
+            <div class="why-grid">
+                <div>
+                    <h2 id="whyHeading">Why RenderLine?</h2>
+                    <ul class="benefits-list" id="whyList">
+                        <li id="whyPoint1"><span>✔</span> Architect-first collaborative workflow</li>
+                        <li id="whyPoint2"><span>✔</span> Realistic lighting & material accuracy</li>
+                        <li id="whyPoint3"><span>✔</span> Industry-leading software & techniques</li>
+                        <li id="whyPoint4"><span>✔</span> Fast revisions & project confidentiality</li>
+                        <li id="whyPoint5"><span>✔</span> Affordable pricing, premium results</li>
+                    </ul>
+                    <a href="contact.html" class="btn btn-primary" style="margin-top: 1.5rem;" id="whyBtn">Start Your
+                        Project</a>
+                </div>
+                <div class="why-logo-container">
+                    <img src="assets/logo.png" alt="RenderLine" class="why-logo-glow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 id="ctaHeading">Ready to Visualize Your Vision?</h2>
+            <p id="ctaText">Let's discuss your project. Get a free consultation and custom quote today.</p>
+            <div class="cta-buttons">
+                <a href="contact.html" class="btn btn-primary" id="ctaBtn1">Contact Us</a>
+                <a href="https://wa.me/923114544040" class="btn btn-whatsapp" target="_blank" id="ctaBtn2">WhatsApp:
+                    0311-4544040</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Compact Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h3 id="footerBrand">RenderLine.</h3>
+                <p id="footerTagline">Premium Architectural Visualization by Dilawar Ali</p>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-contact">
+                <p id="footerAddress">Lahore, Pakistan</p>
+                <p><a href="https://wa.me/923114544040" id="footerWhatsapp">WhatsApp: 0311-4544040</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p id="footerCopyright">&copy; 2024 RenderLine. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/923114544040" class="whatsapp-float" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="currentColor">
+            <path
+                d="M12.0041 2C6.48624 2 1.99609 6.49015 1.99609 12.008C1.99609 13.7917 2.4706 15.4853 3.32427 16.9737L2 22L7.2023 20.671C8.63666 21.5281 10.2825 22.016 12.0041 22.016C17.5219 22.016 22.0121 17.5259 22.0121 12.008C22.0121 6.49015 17.5219 2 12.0041 2ZM12.0041 20.216C10.5186 20.216 9.10373 19.8053 7.87324 19.0831L7.56846 18.9042L4.60677 19.6644L5.38541 16.7118L5.19532 16.398C4.39704 15.1118 3.97216 13.5932 3.97216 12.008C3.97216 7.57917 7.57527 3.97606 12.0041 3.97606C16.4329 3.97606 20.036 7.57917 20.036 12.008C20.036 16.4369 16.4329 20.216 12.0041 20.216ZM16.3943 14.5826C16.1493 14.4571 14.9497 13.8587 14.7292 13.7706C14.5087 13.6826 14.3496 13.6385 14.1905 13.8835C14.0314 14.1285 13.5781 14.6823 13.4433 14.8458C13.3086 15.0093 13.1738 15.0219 12.9288 14.8964C12.6838 14.7708 11.8943 14.5064 10.958 13.6554C10.2224 12.9868 9.72517 12.1611 9.5782 11.9032C9.43122 11.6453 9.56276 11.5061 9.6853 11.3813C9.79555 11.269 9.93033 11.0892 10.0528 10.9383C10.1754 10.7874 10.2121 10.6868 10.2979 10.5108C10.3836 10.3347 10.3347 10.1838 10.2734 10.0581C10.2121 9.9324 9.73444 8.73815 9.53856 8.24796C9.34268 7.78287 9.1468 7.84572 9.01211 7.84572C8.88957 7.84572 8.74261 7.83315 8.59564 7.83315C8.44868 7.83315 8.20377 7.89601 7.99547 8.12228C7.78718 8.34854 7.19934 8.91421 7.19934 10.0706C7.19934 11.227 8.03208 12.3584 8.15461 12.5218C8.27715 12.6853 9.8109 15.1118 12.2373 16.143C14.6637 17.1742 14.6637 16.8346 15.0924 16.7844C15.5211 16.7341 16.48 16.1932 16.676 15.6275C16.872 15.0618 16.872 14.5842 16.8107 14.4836C16.7495 14.383 16.5905 14.3195 16.3943 14.2882V14.5826Z">
+            </path>
+        </svg>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase-client.js?v=3.0"></script>
+    <script src="script.js?v=2.0"></script>
+    <script src="cms.js?v=2.0"></script>
+
+    <script>
+        // Hero Carousel
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.hero-dot');
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            slides.forEach((s, i) => s.classList.toggle('active', i === index));
+            dots.forEach((d, i) => d.classList.toggle('active', i === index));
+            currentSlide = index;
+        }
+
+        let auto = setInterval(() => showSlide((currentSlide + 1) % slides.length), 5000);
+
+        dots.forEach(d => d.addEventListener('click', () => {
+            clearInterval(auto);
+            showSlide(parseInt(d.dataset.slide));
+            auto = setInterval(() => showSlide((currentSlide + 1) % slides.length), 5000);
+        }));
+
+        // Hero text color - standard toggle handled by CSS class
+        function updateHeroColors() {
+            // Left empty as we will handle via CSS rules now
+        }
+
+    </script>
+</body>
+
+</html>

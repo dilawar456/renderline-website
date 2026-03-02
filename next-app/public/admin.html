@@ -486,6 +486,17 @@
                             <button class="btn btn-primary" onclick="savePortfolioOrder()">💾 Save Order</button>
                         </div>
                     </div>
+
+                    <!-- NEW CATEGORY TABS -->
+                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px;"
+                        id="adminPortfolioTabs">
+                        <button class="filter-btn active" onclick="setAdminCategory('all')">All</button>
+                        <button class="filter-btn" onclick="setAdminCategory('exterior')">Exterior</button>
+                        <button class="filter-btn" onclick="setAdminCategory('interior')">Interior</button>
+                        <button class="filter-btn" onclick="setAdminCategory('commercial')">Commercial</button>
+                        <button class="filter-btn" onclick="setAdminCategory('floorplan')">Floorplan</button>
+                    </div>
+
                     <div class="portfolio-grid" id="portfolioGrid">
                         <!-- Loaded dynamically -->
                     </div>
@@ -711,8 +722,9 @@
         // --- CORE NAVIGATION & LOGIC ---
 
         let currentUser = null;
-        let pOrder = []; // portfolio order
-        let pPinned = []; // pinned item IDs
+        let pOrder = { all: [] }; // portfolio order map
+        let pPinned = { all: [] }; // pinned item IDs map
+        let currentPortfolioCat = 'all';
 
         // --- REVALIDATE NEXT.JS CACHE ---
         async function revalidateWebsite() {
@@ -720,7 +732,7 @@
                 const res = await fetch('https://next-app-mauve-beta.vercel.app/api/revalidate?secret=renderline_revalidate_2024');
                 const json = await res.json();
                 console.log('✅ Revalidated:', json);
-            } catch(e) {
+            } catch (e) {
                 console.warn('Revalidation skipped (offline?):', e.message);
             }
         }
@@ -785,10 +797,16 @@
                 if (content) {
                     // LOAD PORTFOLIO ORDER & PINNED
                     if (content.portfolio_order) {
-                        try { pOrder = JSON.parse(content.portfolio_order); } catch (e) { }
+                        try {
+                            const parsed = JSON.parse(content.portfolio_order);
+                            pOrder = Array.isArray(parsed) ? { all: parsed } : parsed;
+                        } catch (e) { pOrder = { all: [] }; }
                     }
                     if (content.portfolio_pinned) {
-                        try { pPinned = JSON.parse(content.portfolio_pinned); } catch (e) { }
+                        try {
+                            const parsed = JSON.parse(content.portfolio_pinned);
+                            pPinned = Array.isArray(parsed) ? { all: parsed } : parsed;
+                        } catch (e) { pPinned = { all: [] }; }
                     }
 
                     // Home
@@ -936,22 +954,37 @@
         function setSrc(id, val) { if (document.getElementById(id) && val) document.getElementById(id).src = val; }
 
         // --- 4. PORTFOLIO LOGIC ---
+        function setAdminCategory(cat) {
+            currentPortfolioCat = cat;
+            document.querySelectorAll('#adminPortfolioTabs .filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('onclick').includes(cat)) btn.classList.add('active');
+            });
+            loadPortfolioGrid();
+        }
+
         async function loadPortfolioGrid() {
-            let items = [];
+            let allItems = [];
             if (typeof getPortfolioItems === 'function' && isSupabaseConfigured()) {
                 const { data } = await getPortfolioItems();
-                if (data) items = data;
+                if (data) allItems = data;
             } else {
-                items = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
+                allItems = JSON.parse(localStorage.getItem('portfolio_items') || '[]');
             }
 
-            // SORT Items based on pOrder
-            if (pOrder && pOrder.length > 0) {
+            // FILTER ITEMS
+            const items = currentPortfolioCat === 'all'
+                ? allItems
+                : allItems.filter(i => i.category === currentPortfolioCat);
+
+            const currOrder = pOrder[currentPortfolioCat] || [];
+            const currPinned = pPinned[currentPortfolioCat] || [];
+
+            // SORT Items based on current category order
+            if (items.length > 0) {
                 items.sort((a, b) => {
-                    // Find index treating both numbers and strings uniformly
-                    const idxA = pOrder.findIndex(id => String(id) === String(a.id));
-                    const idxB = pOrder.findIndex(id => String(id) === String(b.id));
-                    // If both found, sort by index. If not found, put at end.
+                    const idxA = currOrder.findIndex(id => String(id) === String(a.id));
+                    const idxB = currOrder.findIndex(id => String(id) === String(b.id));
                     if (idxA === -1 && idxB === -1) return 0;
                     if (idxA === -1) return 1;
                     if (idxB === -1) return -1;
@@ -959,13 +992,13 @@
                 });
             }
 
-            document.getElementById('statPortfolio').innerText = items.length;
+            document.getElementById('statPortfolio').innerText = allItems.length;
             document.getElementById('portfolioCount').innerText = items.length;
 
             const grid = document.getElementById('portfolioGrid');
             grid.innerHTML = '';
             items.forEach(item => {
-                const isPinned = pPinned.some(id => String(id) === String(item.id));
+                const isPinned = currPinned.some(id => String(id) === String(item.id));
                 const div = document.createElement('div');
                 div.className = 'portfolio-item' + (isPinned ? ' pinned-admin' : '');
                 div.setAttribute('data-id', item.id);
@@ -995,18 +1028,17 @@
         }
 
         async function savePortfolioOrder() {
-            const order = [];
-            // Parse order from currently sorted grid elements
+            const arr = [];
             document.querySelectorAll('#portfolioGrid .portfolio-item').forEach((el) => {
                 const idStr = el.getAttribute('data-id');
-                // Ensure we handle both string and int IDs depending on supabase config
-                order.push(isNaN(parseInt(idStr)) ? idStr : parseInt(idStr));
+                arr.push(isNaN(parseInt(idStr)) ? idStr : parseInt(idStr));
             });
-            console.log("Saving new order:", order);
-            await updateSiteContent({ portfolio_order: JSON.stringify(order) });
-            pOrder = order;
+            pOrder[currentPortfolioCat] = arr;
+
+            console.log("Saving full order dict:", pOrder);
+            await updateSiteContent({ portfolio_order: JSON.stringify(pOrder) });
             await revalidateWebsite();
-            showToast('Order saved! Live site will update in ~5 seconds ✅');
+            showToast('Order saved for ' + currentPortfolioCat + '! Live site will update in ~5 seconds ✅');
         }
 
         async function deletePortfolioItemWrapper(id) {
@@ -1023,16 +1055,18 @@
 
         // --- PIN / UNPIN ---
         async function togglePin(id) {
+            if (!pPinned[currentPortfolioCat]) pPinned[currentPortfolioCat] = [];
+            const currPinned = pPinned[currentPortfolioCat];
             const idStr = String(id);
-            const idx = pPinned.findIndex(p => String(p) === idStr);
+            const idx = currPinned.findIndex(p => String(p) === idStr);
             if (idx === -1) {
-                pPinned.push(isNaN(parseInt(idStr)) ? idStr : parseInt(idStr));
+                currPinned.push(isNaN(parseInt(idStr)) ? idStr : parseInt(idStr));
             } else {
-                pPinned.splice(idx, 1);
+                currPinned.splice(idx, 1);
             }
             await updateSiteContent({ portfolio_pinned: JSON.stringify(pPinned) });
             await revalidateWebsite();
-            showToast(idx === -1 ? '📌 Item pinned — live site updates in ~5s!' : 'Unpinned successfully');
+            showToast(idx === -1 ? '📌 Pinned for ' + currentPortfolioCat + ' view!' : 'Unpinned for ' + currentPortfolioCat);
             loadPortfolioGrid();
         }
 

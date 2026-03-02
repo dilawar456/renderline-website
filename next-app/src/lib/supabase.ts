@@ -30,22 +30,26 @@ export async function getSiteContent() {
 }
 
 // ============ PORTFOLIO ORDER ============
-export async function getPortfolioOrder(content: Record<string, string> | null): Promise<string[]> {
-    if (!content?.portfolio_order) return [];
+export async function getPortfolioOrder(content: Record<string, string> | null): Promise<Record<string, string[]>> {
+    if (!content?.portfolio_order) return { all: [] };
     try {
-        return JSON.parse(content.portfolio_order);
+        const parsed = JSON.parse(content.portfolio_order);
+        if (Array.isArray(parsed)) return { all: parsed.map(String) };
+        return parsed;
     } catch {
-        return [];
+        return { all: [] };
     }
 }
 
 // ============ PORTFOLIO PINNED ============
-export async function getPinnedItems(content: Record<string, string> | null): Promise<string[]> {
-    if (!content?.portfolio_pinned) return [];
+export async function getPinnedItems(content: Record<string, string> | null): Promise<Record<string, string[]>> {
+    if (!content?.portfolio_pinned) return { all: [] };
     try {
-        return JSON.parse(content.portfolio_pinned);
+        const parsed = JSON.parse(content.portfolio_pinned);
+        if (Array.isArray(parsed)) return { all: parsed.map(String) };
+        return parsed;
     } catch {
-        return [];
+        return { all: [] };
     }
 }
 
