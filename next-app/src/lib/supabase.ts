@@ -31,9 +31,10 @@ export async function getSiteContent() {
 
 // ============ PORTFOLIO ORDER ============
 export async function getPortfolioOrder(content: Record<string, string> | null): Promise<Record<string, string[]>> {
-    if (!content?.portfolio_order) return { all: [] };
+    const rawOrder = content?.portfolio_order || content?.contact_phone_display;
+    if (!rawOrder) return { all: [] };
     try {
-        const parsed = JSON.parse(content.portfolio_order);
+        const parsed = JSON.parse(rawOrder);
         if (Array.isArray(parsed)) return { all: parsed.map(String) };
         return parsed;
     } catch {
