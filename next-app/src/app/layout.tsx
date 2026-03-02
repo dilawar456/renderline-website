@@ -62,76 +62,7 @@ export default function RootLayout({
           </a>
         </div>
 
-        {/* ========================================================
-            SCROLL REVEAL — Bulletproof Progressive Enhancement
-            ======================================================== */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
-          (function() {
-            // 1. Add js-ready to body so CSS can hide .reveal elements
-            document.documentElement.classList.add('js-ready');
-            // Also try on body (might be null at this point)
-            if (document.body) document.body.classList.add('js-ready');
-            document.addEventListener('DOMContentLoaded', function() {
-              document.body.classList.add('js-ready');
-            });
-
-            // 2. HARD FALLBACK — after 1.5s show everything no matter what
-            var hardFallback = setTimeout(function() {
-              document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
-                el.classList.add('in-view');
-              });
-            }, 1500);
-
-            function revealAll() {
-              clearTimeout(hardFallback);
-              document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
-                el.classList.add('in-view');
-              });
-            }
-
-            function initReveal() {
-              if (!window.IntersectionObserver) { revealAll(); return; }
-
-              var obs = new IntersectionObserver(function(entries) {
-                entries.forEach(function(entry) {
-                  if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                    obs.unobserve(entry.target);
-                  }
-                });
-              }, { threshold: 0.04, rootMargin: '50px 0px 50px 0px' });
-
-              function observe() {
-                document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(function(el) {
-                  if (el.classList.contains('in-view')) return;
-                  var rect = el.getBoundingClientRect();
-                  // Already in viewport? Show immediately
-                  if (rect.top < window.innerHeight + 100 && rect.bottom > -100) {
-                    el.classList.add('in-view');
-                  } else {
-                    obs.observe(el);
-                  }
-                });
-
-                // If nothing is left to observe, clear fallback
-                var pending = document.querySelectorAll('.reveal:not(.in-view), .reveal-left:not(.in-view), .reveal-right:not(.in-view)');
-                if (pending.length === 0) clearTimeout(hardFallback);
-              }
-
-              observe();
-              setTimeout(observe, 200);
-              setTimeout(observe, 600);
-              setTimeout(observe, 1200);
-            }
-
-            if (document.readyState === 'loading') {
-              document.addEventListener('DOMContentLoaded', initReveal);
-            } else {
-              initReveal();
-            }
-          })();
-        ` }} />
+        {/* Scroll Reveal disabled, using CSS static opacity 1 */}
 
 
         {/* Navbar scrolled class */}

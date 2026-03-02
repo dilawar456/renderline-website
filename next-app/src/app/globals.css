@@ -573,55 +573,19 @@ body.light-mode .navbar.scrolled {
 }
 
 /* ===== SCROLL REVEAL ANIMATIONS =====
-   Progressive enhancement approach:
-   - Elements are VISIBLE by default (no JS = fully visible)
-   - Once JS runs, body gets .js-ready class, THEN elements animate
-   This prevents sections from being stuck invisible
+   Disabled complex scroll reveal to prevent disappearing sections.
+   Using simple visible states.
 ===== */
 
-/* Only hide when JS is ready */
-.js-ready .reveal,
-html.js-ready .reveal {
-   opacity: 0;
-   transform: translateY(28px);
-}
-
-.js-ready .reveal.in-view,
-html.js-ready .reveal.in-view {
+.reveal,
+.reveal-left,
+.reveal-right {
    opacity: 1;
-   transform: translateY(0);
-   transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
+   transform: none;
+   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.js-ready .reveal-left,
-html.js-ready .reveal-left {
-   opacity: 0;
-   transform: translateX(-32px);
-}
-
-.js-ready .reveal-left.in-view,
-html.js-ready .reveal-left.in-view {
-   opacity: 1;
-   transform: translateX(0);
-   transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
-}
-
-.js-ready .reveal-right,
-html.js-ready .reveal-right {
-   opacity: 0;
-   transform: translateX(32px);
-}
-
-.js-ready .reveal-right.in-view,
-html.js-ready .reveal-right.in-view {
-   opacity: 1;
-   transform: translateX(0);
-   transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
-}
-
-
-
-/* Stagger siblings */
+/* Stagger siblings - simple fade in placeholder if needed later */
 .stagger-children>* {
    transition-delay: 0s;
 }
