@@ -196,13 +196,14 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
                 <section className="py-16 lg:py-24" id="portfolioSection">
                     <div className="container mx-auto px-6">
                         {displayItems.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
                                 {displayItems.slice(0, visibleCount).map((item, idx) => (
                                     <div
                                         key={item.id}
                                         className="relative group cursor-pointer aspect-[4/3] overflow-hidden bg-[#111] border border-[#ad9a69]/20 focus:outline-2 focus:outline-[var(--gold)]"
                                         onClick={() => openLightbox(idx)}
                                         role="button"
+                                        aria-label={`Open visualization ${idx + 1}`}
                                         tabIndex={0}
                                         onKeyDown={e => {
                                             if (e.key === 'Enter' || e.key === ' ') {
@@ -211,28 +212,14 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
                                             }
                                         }}
                                     >
-                                        {item.is_pinned && (
-                                            <div className="absolute top-3 right-3 z-20 bg-[var(--gold)] text-black text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                                                ★ Featured
-                                            </div>
-                                        )}
                                         <Image
                                             src={item.image_url}
                                             alt={item.title || 'Project'}
                                             fill
                                             className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                                            sizes="(max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                                             loading="lazy"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent z-10 flex items-end">
-                                            <div className="p-5 md:p-6 w-full">
-                                                <span className="block text-[var(--gold)] text-[10px] uppercase tracking-[0.2em] mb-2">{item.category || 'Project'} / {String(idx+1).padStart(2,'0')}</span>
-                                                <p className="text-white font-medium text-base truncate drop-shadow-md">
-                                                    {item.title || 'Untitled Project'}
-                                                </p>
-                                                <span className="text-[var(--gold)] text-xs uppercase tracking-[0.1em]">View render ↗</span>
-                                            </div>
-                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -378,7 +365,6 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
 
                     {/* Counter / Title */}
                     <div className="absolute bottom-6 left-0 right-0 text-center text-gray-400 text-sm">
-                        <span className="text-white font-medium mr-3">{displayItems[lightboxIndex].title}</span>
                         {lightboxIndex + 1} / {displayItems.length}
                     </div>
                 </div>
