@@ -20,6 +20,7 @@ async function api(path:string,body:unknown){
  const result = await response.json(); if(!response.ok) throw new Error(result.error || 'Request failed.'); return result;
 }
 export default function Portal(){
+ const [signedInEmail,setSignedInEmail]=useState('');
  const [profile,setProfile]=useState<Profile|null>(null),[signedIn,setSignedIn]=useState(false),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[recovering,setRecovering]=useState(false),[forgot,setForgot]=useState(false);
  const [notice,setNotice]=useState(''),[error,setError]=useState(''),[section,setSection]=useState<Section>('Projects');
  const [projects,setProjects]=useState<Project[]>([]),[people,setPeople]=useState<Profile[]>([]),[projectId,setProjectId]=useState(''),[members,setMembers]=useState<Membership[]>([]);
@@ -31,17 +32,17 @@ export default function Portal(){
  const owner=profile?.role==='owner',client=profile?.role==='client';
  const project=projects.find(p=>p.id===projectId);
  const clearWorkspace=useCallback(()=>{
-  generation.current++;setCapabilities(null);setProfile(null);setSignedIn(false);setProjects([]);setTasks([]);setUpdates([]);setInvoices([]);setIntake([]);setPeople([]);setMembers([]);setDraft(null);setPrintInvoice(null);setSourceId('');setProjectId('');setTracking(emptyTracking);setLines([{description:'',quantity:1,rate:0}]);setSection('Projects');setNotice('');
+  generation.current++;setCapabilities(null);setProfile(null);setSignedInEmail('');setSignedIn(false);setProjects([]);setTasks([]);setUpdates([]);setInvoices([]);setIntake([]);setPeople([]);setMembers([]);setDraft(null);setPrintInvoice(null);setSourceId('');setProjectId('');setTracking(emptyTracking);setLines([{description:'',quantity:1,rate:0}]);setSection('Projects');setNotice('');
  },[]);
  const load = useCallback(async()=>{
   const current=++generation.current;
   const {data:{user},error:authError}=await supabase.auth.getUser();
   if(current!==generation.current)return;
   if(!user){clearWorkspace();setLoading(false);if(authError&&!/session missing/i.test(authError.message))setError('Your session is unavailable. Please sign in again.');return;}
-  setSignedIn(true);
+  setSignedIn(true);setSignedInEmail(user.email||'');
   const p=await supabase.from('studio_profiles').select('*').eq('id',user.id).single();
   if(current!==generation.current)return;
-  if(p.error){setProfile(null);setError('Your account has no workspace access yet. Ask RenderLine to finish your invitation.');setLoading(false);return;}
+  if(p.error){console.error('Workspace profile lookup failed',{code:p.error.code,message:p.error.message});setProfile(null);setError(p.error.code==='PGRST116'?'This email has no workspace invitation yet. Sign out and use the email on your RenderLine invitation.':'Your workspace connection could not be opened. Please retry or contact RenderLine.');setLoading(false);return;}
   const isOwner=p.data.role==='owner';
   const results=await Promise.all([
    supabase.from('studio_projects').select('*').order('created_at',{ascending:false}),
@@ -93,7 +94,7 @@ export default function Portal(){
  const organize=async(source:Intake)=>{setDraft(null);setSourceId(source.id);const result=await api('/api/studio/organize',{intake_id:source.id});setDraft(result.brief);};
 
  if(loading)return <div className="studio studio-login"><p role="status">Opening your workspace…</p></div>;
- if(!profile)return <div className="studio studio-login"><div className="studio-login-story"><a className="studio-brand" href="/">RenderLine<span>CLIENT & STUDIO PORTAL</span></a><h1>Your project.<br/>One clear workspace.</h1><p>Review progress, share drawings, ask for changes and receive your final files—all in your private project space.</p><div className="studio-feature">01 &nbsp; Follow the latest approved progress</div><div className="studio-feature">02 &nbsp; Share references and give clear feedback</div><div className="studio-feature">03 &nbsp; Download and approve your deliverables</div><a href="/" className="studio-back-link">← Back to website</a></div><div className="studio-card"><span className="studio-eyebrow">INVITED CLIENTS & TEAM</span><h2>{forgot?'Reset your password':'Welcome to your workspace'}</h2>{error&&<p className="studio-error" role="alert">{error}</p>}{notice&&<p className="studio-notice" role="status">{notice}</p>}{signedIn?<><p>Your sign-in is active, but project access could not be loaded.</p><button disabled={busy} onClick={()=>void run(load,'Workspace refreshed.')}>Retry workspace</button><button disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());clearWorkspace();setError('');},'')}>Sign out</button></>:<form onSubmit={e=>{
+ if(!profile)return <div className="studio studio-login"><div className="studio-login-story"><a className="studio-brand" href="/">RenderLine<span>CLIENT & STUDIO PORTAL</span></a><h1>Your project.<br/>One clear workspace.</h1><p>Review progress, share drawings, ask for changes and receive your final files—all in your private project space.</p><div className="studio-feature">01 &nbsp; Follow the latest approved progress</div><div className="studio-feature">02 &nbsp; Share references and give clear feedback</div><div className="studio-feature">03 &nbsp; Download and approve your deliverables</div><a href="/" className="studio-back-link">← Back to website</a></div><div className="studio-card"><span className="studio-eyebrow">INVITED CLIENTS & TEAM</span><h2>{forgot?'Reset your password':'Welcome to your workspace'}</h2>{error&&<p className="studio-error" role="alert">{error}</p>}{notice&&<p className="studio-notice" role="status">{notice}</p>}{signedIn?<><p>Signed in as <strong>{signedInEmail}</strong>.</p><p>Your sign-in is active, but project access could not be loaded.</p><button disabled={busy} onClick={()=>void run(load,'Workspace refreshed.')}>Retry workspace</button><button disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());clearWorkspace();setError('');},'')}>Sign out</button></>:<form onSubmit={e=>{
   e.preventDefault();const f=new FormData(e.currentTarget);
   void run(async()=>{
    const email=val(f,'email');
