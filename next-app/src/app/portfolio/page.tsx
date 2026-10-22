@@ -7,8 +7,8 @@ export const metadata: Metadata = {
     description: 'View our portfolio of 70+ photorealistic architectural renders including exterior, interior, and 3D walkthrough animations.',
 };
 
-// Reduced to 5s so order/pin changes show up almost instantly after revalidation
-export const revalidate = 5;
+// Admin saves invalidate cached content; retain a 60-second fallback.
+export const revalidate = 60;
 
 export default async function PortfolioPage() {
     const [contentRes, portfolioRes, videosRes] = await Promise.all([

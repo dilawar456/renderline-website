@@ -1,1 +1,9 @@
 .vercel
+
+# Private studio state and recovery archives must stay local.
+studio-portal/data/
+studio-portal/backups/
+studio-portal/.env
+studio-portal/.env.*
+!studio-portal/.env.example
+studio-portal/node_modules/

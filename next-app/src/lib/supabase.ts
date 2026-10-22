@@ -9,7 +9,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export async function getPortfolioItems(category = 'all') {
     let query = supabase
         .from('portfolio_items')
-        .select('*')
+        .select('id,title,image_url,category')
         .order('created_at', { ascending: false });
 
     if (category !== 'all') {
@@ -31,7 +31,7 @@ export async function getSiteContent() {
 
 // ============ PORTFOLIO ORDER ============
 export async function getPortfolioOrder(content: Record<string, string> | null): Promise<Record<string, string[]>> {
-    const rawOrder = content?.portfolio_order || content?.contact_phone_display;
+    const rawOrder = content?.portfolio_order;
     if (!rawOrder) return { all: [] };
     try {
         const parsed = JSON.parse(rawOrder);
@@ -81,15 +81,8 @@ export async function submitContactForm(formData: {
             message: formData.message,
             status: 'new',
             created_at: new Date().toISOString(),
-        }])
-        .select();
+        }]);
     return { data, error };
 }
 
-// ============ CLOUDINARY HELPER ============
-export function optimizeCloudinaryUrl(url: string, width = 800): string {
-    if (!url || !url.includes('res.cloudinary.com')) return url;
-    // Only add transforms if not already present
-    if (url.includes('/upload/q_')) return url;
-    return url.replace('/upload/', `/upload/q_auto,f_auto,w_${width},c_limit/`);
-}
+export { optimizeCloudinaryUrl } from './media';

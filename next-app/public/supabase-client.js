@@ -4,13 +4,13 @@
 // =============================================
 
 // Supabase credentials
-const SUPABASE_URL = 'https://ywqtjgtqwbylkgofogxe.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl3cXRqZ3Rxd2J5bGtnb2ZvZ3hlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU0OTg5NzksImV4cCI6MjA4MTA3NDk3OX0.H3UvyEVXcLIaqWFPRfsVlFYvJvaA2VeD44aVcDJdDjM';
+const SUPABASE_URL = window.RENDERLINE_CONFIG?.url || '';
+const SUPABASE_ANON_KEY = window.RENDERLINE_CONFIG?.anonKey || '';
 
 // Initialize Supabase Client - use var to allow redeclaration if needed
 var supabaseDb = null;
 
-if (typeof window !== 'undefined' && window.supabase && window.supabase.createClient) {
+if (SUPABASE_URL && SUPABASE_ANON_KEY && typeof window !== 'undefined' && window.supabase && window.supabase.createClient) {
     supabaseDb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log('✅ Supabase client initialized');
 } else {
@@ -104,6 +104,8 @@ async function addPortfolioItem(item) {
         .insert([item])
         .select();
 
+    if(error) throw new Error(error.message);
+    if(typeof revalidateWebsite==='function') await revalidateWebsite();
     return { data, error };
 }
 
@@ -117,6 +119,8 @@ async function updatePortfolioItem(id, updates) {
         .eq('id', id)
         .select();
 
+    if(error) throw new Error(error.message);
+    if(typeof revalidateWebsite==='function') await revalidateWebsite();
     return { data, error };
 }
 
@@ -129,6 +133,8 @@ async function deletePortfolioItem(id) {
         .delete()
         .eq('id', id);
 
+    if(error) throw new Error(error.message);
+    if(typeof revalidateWebsite==='function') await revalidateWebsite();
     return { error };
 }
 
@@ -297,7 +303,7 @@ function formatDate(dateString) {
 function showNotification(message, type = 'success') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
-    notification.innerHTML = message;
+    notification.textContent = message;
     notification.style.cssText = `
         position: fixed;
         top: 20px;

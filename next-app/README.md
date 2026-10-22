@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is the RenderLine Next.js website. Its **Portal** entry opens the supplied Renderline studio workspace. Double-click **Start RenderLine Website.cmd** in the parent folder to open both together. See [PORTAL_ATTACHMENT.md](PORTAL_ATTACHMENT.md) for local addresses, the previous workspace and live-hosting configuration.
 
 ## Getting Started
 

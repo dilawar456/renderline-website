@@ -14,7 +14,7 @@
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <!-- SortableJS for Drag & Drop -->
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
     <!-- Premium Styles -->
     <link rel="stylesheet" href="admin-style.css">
     <style>
@@ -140,6 +140,9 @@
                 <div class="nav-item" onclick="switchSection('settings')">
                     <span class="nav-icon">⚙️</span> Settings
                 </div>
+                <a class="nav-item" href="/portal" style="text-decoration: none;">
+                    <span class="nav-icon">↗</span> Studio Portal
+                </a>
             </nav>
 
             <div class="sidebar-footer">
@@ -183,52 +186,17 @@
 
                 <div class="card" style="margin-top: 2rem;">
                     <h3>📊 Site Analytics & Tracking</h3>
-                    <p style="margin-bottom: 1.5rem; color: var(--text-muted);">Monitor your Facebook Pixel, Google Tag
-                        Manager, and SEO performance directly.</p>
-
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                        <!-- Facebook Pixel -->
-                        <div
-                            style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                            <div style="color: #4267B2; font-size: 1.5rem; margin-bottom: 0.5rem;">f</div>
-                            <h4 style="margin: 0; margin-bottom: 0.5rem; color: #fff;">Facebook Pixel</h4>
-                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">ID:
-                                2141726459960922</p>
-                            <a href="https://business.facebook.com/events_manager2" target="_blank"
-                                class="btn btn-primary" style="font-size: 0.8rem; width: 100%; text-align: center;">View
-                                Events</a>
-                        </div>
-
-                        <!-- Google Search Console -->
-                        <div
-                            style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                            <div style="color: #F4B400; font-size: 1.5rem; margin-bottom: 0.5rem;">G</div>
-                            <h4 style="margin: 0; margin-bottom: 0.5rem; color: #fff;">Google Performance</h4>
-                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">Search Console
-                                & SEO</p>
-                            <a href="https://search.google.com/search-console" target="_blank" class="btn btn-primary"
-                                style="font-size: 0.8rem; width: 100%; text-align: center;">Check Rankings</a>
-                        </div>
-
-                        <!-- Google Tag Manager -->
-                        <div
-                            style="background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                            <div style="color: #4285F4; font-size: 1.5rem; margin-bottom: 0.5rem;">🏷️</div>
-                            <h4 style="margin: 0; margin-bottom: 0.5rem; color: #fff;">Tag Manager</h4>
-                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1rem;">ID:
-                                GTM-KGJ2VTGV</p>
-                            <a href="https://tagmanager.google.com/" target="_blank" class="btn btn-primary"
-                                style="font-size: 0.8rem; width: 100%; text-align: center;">Manage Tags</a>
-                        </div>
-                    </div>
+                    <p id="trackingSummary" style="margin: 0 0 1rem; color: var(--text-muted);">Loading saved tracking settings…</p>
+                    <button class="btn btn-primary" onclick="switchSection('settings')">Configure Meta & Google</button>
                 </div>
 
                 <div class="card" style="margin-top: 2rem;">
                     <h3>🚀 Quick Actions</h3>
                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                         <button class="btn btn-primary" onclick="switchSection('portfolio')">📤 Upload Projects</button>
+                        <a class="btn btn-primary" href="/portal" style="text-decoration: none;">↗ Open Studio Portal</a>
                         <button class="btn btn-primary"
-                            onclick="window.open('https://next-app-mauve-beta.vercel.app', '_blank')"
+                            onclick="window.open('/', '_blank')"
                             style="background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--border-light);">🌐
                             View Live Site</button>
                         <button class="btn btn-primary" onclick="switchSection('messages')"
@@ -655,6 +623,21 @@
                     <h1>System Settings</h1>
                 </div>
                 <div class="card">
+                    <h3>Meta Pixel & Google tracking</h3>
+                    <p style="margin-bottom:1rem; color:var(--text-muted);">Enter your IDs here. Tracking runs on public pages after a visitor allows analytics.</p>
+                    <p style="margin-bottom:1rem; color:var(--text-muted);">WhatsApp buttons and contact-form handoffs record Contact intent with Meta and a contact event with Google. They do not confirm message delivery or trigger Lead / Ads conversions. Names, email addresses, phone numbers and message text are excluded from these events.</p>
+                    <div class="form-group"><label><input type="checkbox" id="trackingEnabled" style="width:auto; margin-right:8px;"> Enable website tracking</label></div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Meta Pixel ID</label><input id="trackingMeta" inputmode="numeric" placeholder="123456789012345"></div>
+                        <div class="form-group"><label>Google Analytics ID</label><input id="trackingGoogle" placeholder="G-XXXXXXXXXX"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group"><label>Google Ads ID (optional)</label><input id="trackingAds" placeholder="AW-123456789"></div>
+                        <div class="form-group"><label>Google Ads lead conversion (optional)</label><input id="trackingConversion" placeholder="AW-123456789/label"></div>
+                    </div>
+                    <button class="btn btn-primary" onclick="saveTrackingSettings()">Save tracking settings</button>
+                </div>
+                <div class="card">
                     <h3>Connection Status</h3>
                     <div class="form-group"><label>Cloud Name</label><input type="text" id="cloudName" readonly
                             value="dzp70azv3" style="color:var(--text-muted);"></div>
@@ -691,7 +674,8 @@
 
     <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabase-client.js?v=3.0"></script>
+    <script src="/api/site-config"></script>
+    <script src="supabase-client.js?v=4.0"></script>
     <script src="cloudinary-config.js?v=2.0"></script>
 
     <!-- LOGIC -->
@@ -700,7 +684,7 @@
         function showToast(msg, type = 'success') {
             const toast = document.getElementById('adminToast');
             const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : '⏳';
-            toast.innerHTML = icon + ' <span>' + msg + '</span>';
+            toast.textContent = icon + ' ' + msg;
             toast.className = 'show ' + type;
             clearTimeout(window._toastTimer);
             window._toastTimer = setTimeout(() => { toast.className = ''; }, 3000);
@@ -719,6 +703,43 @@
             }
         }
 
+        function escapeHtml(value) { const el = document.createElement('span'); el.textContent=String(value ?? ''); return el.innerHTML.replaceAll('"', '&quot;').replaceAll("'", '&#39;'); }
+        async function loadTrackingSettings() {
+            const summary = document.getElementById('trackingSummary');
+            const {data, error} = await supabaseDb.from('studio_tracking').select('*').eq('id', 1).single();
+            if (error) {
+                summary.textContent = 'Tracking settings could not be loaded. Please retry from Settings.';
+                return;
+            }
+            document.getElementById('trackingEnabled').checked = Boolean(data.enabled);
+            document.getElementById('trackingMeta').value = data.meta_pixel || '';
+            document.getElementById('trackingGoogle').value = data.google_tag || '';
+            document.getElementById('trackingAds').value = data.google_ads || '';
+            document.getElementById('trackingConversion').value = data.google_conversion || '';
+            summary.textContent = data.enabled
+                ? `Enabled · Meta: ${data.meta_pixel || 'off'} · Google: ${data.google_tag || 'off'} · Ads: ${data.google_ads || 'off'}`
+                : 'Tracking is off. Add your IDs in Settings when ready.';
+        }
+        async function saveTrackingSettings() {
+            const value = id => document.getElementById(id).value.trim();
+            const settings = {
+                id: 1, enabled: document.getElementById('trackingEnabled').checked,
+                meta_pixel: value('trackingMeta'), google_tag: value('trackingGoogle').toUpperCase(),
+                google_ads: value('trackingAds').toUpperCase(), google_conversion: value('trackingConversion')
+            };
+            if ((settings.meta_pixel && !/^[0-9]{5,25}$/.test(settings.meta_pixel)) ||
+                (settings.google_tag && !/^(G-[A-Z0-9]{4,20}|AW-[0-9]{4,20})$/.test(settings.google_tag)) ||
+                (settings.google_ads && !/^AW-[0-9]{4,20}$/.test(settings.google_ads)) ||
+                (settings.google_conversion && !/^AW-[0-9]{4,20}\/[A-Za-z0-9_-]{1,100}$/.test(settings.google_conversion))) {
+                showToast('Check the Meta and Google ID formats.', 'error');
+                return;
+            }
+            const {error} = await supabaseDb.from('studio_tracking').upsert(settings);
+            if (error) { showToast(error.message, 'error'); return; }
+            await loadTrackingSettings();
+            showToast('Tracking settings saved.');
+        }
+        window.addEventListener('unhandledrejection', e => { showToast(e.reason?.message || 'Save failed. Please retry.', 'error'); });
         // --- CORE NAVIGATION & LOGIC ---
 
         let currentUser = null;
@@ -729,7 +750,9 @@
         // --- REVALIDATE NEXT.JS CACHE ---
         async function revalidateWebsite() {
             try {
-                const res = await fetch('https://next-app-mauve-beta.vercel.app/api/revalidate?secret=renderline_revalidate_2024');
+                const {data:{session}} = await supabaseDb.auth.getSession();
+                const res = await fetch('/api/revalidate', {method:'POST', headers:{Authorization:'Bearer '+session.access_token}});
+                if(!res.ok) throw new Error('Website cache refresh failed');
                 const json = await res.json();
                 console.log('✅ Revalidated:', json);
             } catch (e) {
@@ -758,20 +781,29 @@
                     enterAdmin(data.user);
                 }
             } else {
-                setTimeout(() => enterAdmin({ email: email }), 800);
+                errorDiv.innerText = 'Authentication is unavailable. Please retry.'; errorDiv.style.display='block'; btnText.innerText='Enter Dashboard';
             }
         });
 
-        function enterAdmin(user) {
+        async function enterAdmin(user) {
+            const {data: profile, error} = await supabaseDb.from('studio_profiles').select('role').eq('id',user.id).single();
+            if(error || profile?.role !== 'owner') {
+                const errorDiv = document.getElementById('loginError');
+                errorDiv.textContent = 'Only the website owner can open this dashboard.';
+                errorDiv.style.display = 'block';
+                await adminLogout();
+                return;
+            }
             currentUser = user;
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
             if (document.getElementById('userEmail')) document.getElementById('userEmail').innerText = user.email;
             loadDashboard();
+            loadTrackingSettings();
         }
 
-        function logout() {
-            if (typeof adminLogout === 'function') adminLogout();
+        async function logout() {
+            if (typeof adminLogout === 'function') await adminLogout();
             location.reload();
         }
 
@@ -796,7 +828,7 @@
                 const { data: content } = await getSiteContent();
                 if (content) {
                     // LOAD PORTFOLIO ORDER & PINNED
-                    const rawOrder = content.portfolio_order || content.contact_phone_display;
+                    const rawOrder = content.portfolio_order;
                     if (rawOrder) {
                         try {
                             const parsed = JSON.parse(rawOrder);
@@ -902,7 +934,7 @@
                     // Contact/Footer
                     setVal('contactHeading', content.contact_heading);
                     setVal('contactSubheading', content.contact_subheading);
-                    setVal('contactEmail', content.contact_email);
+                    setVal('contactEmail', String(content.contact_email || '').toLowerCase() === 'hafizz.dil@gmail.com' ? 'inforenderline@gmail.com' : content.contact_email);
                     setVal('contactWhatsapp', content.contact_whatsapp);
                     setVal('contactLocation', content.contact_location);
                     setVal('contactPhoneDisplay', content.contact_phone_display);
@@ -928,16 +960,16 @@
                     msgs.forEach(m => {
                         const tr = document.createElement('tr');
                         const msgPreview = (m.message || '').slice(0, 60) + ((m.message || '').length > 60 ? '…' : '');
-                        const wa = m.whatsapp ? `<br><small style="color:#25d366">📱 ${m.whatsapp}</small>` : '';
+                        const wa = (m.phone || m.whatsapp) ? `<br><small style="color:#25d366">📱 ${escapeHtml(m.phone || m.whatsapp)}</small>` : '';
                         tr.innerHTML = `
-                            <td style="font-weight:500; color:#fff">${m.name || '—'}</td>
-                            <td style="font-size:0.82rem">${m.email || '—'}${wa}</td>
-                            <td><span style="font-size:0.78rem; color:var(--primary); background:rgba(212,175,55,0.08); padding:2px 8px; border-radius:4px">${m.project_type || '—'}</span></td>
-                            <td style="font-size:0.82rem; color:var(--text-muted); max-width:200px">${msgPreview || '—'}</td>
-                            <td><span style="color:${m.status === 'new' ? 'var(--primary)' : '#888'}; font-size:0.8rem">${m.status || 'new'}</span></td>
+                            <td style="font-weight:500; color:#fff">${escapeHtml(m.name || '—')}</td>
+                            <td style="font-size:0.82rem">${escapeHtml(m.email || '—')}${wa}</td>
+                            <td><span style="font-size:0.78rem; color:var(--primary); background:rgba(212,175,55,0.08); padding:2px 8px; border-radius:4px">${escapeHtml(m.project_type || '—')}</span></td>
+                            <td style="font-size:0.82rem; color:var(--text-muted); max-width:200px">${escapeHtml(msgPreview || '—')}</td>
+                            <td><span style="color:${m.status === 'new' ? 'var(--primary)' : '#888'}; font-size:0.8rem">${escapeHtml(m.status || 'new')}</span></td>
                             <td>
-                                <a href="mailto:${m.email}" style="color:var(--primary); text-decoration:none; font-size:0.8rem; margin-right:8px">Reply</a>
-                                ${m.whatsapp ? `<a href="https://wa.me/${m.whatsapp.replace(/\D/g, '')}" target="_blank" style="color:#25d366; font-size:0.8rem">WA</a>` : ''}
+                                <a href="mailto:${encodeURIComponent(m.email || '')}" style="color:var(--primary); text-decoration:none; font-size:0.8rem; margin-right:8px">Reply</a>
+                                ${(m.phone || m.whatsapp) ? `<a href="https://wa.me/${(m.phone || m.whatsapp).replace(/\D/g, '')}" target="_blank" style="color:#25d366; font-size:0.8rem">WA</a>` : ''}
                             </td>
                         `;
                         tbody.appendChild(tr);
@@ -951,7 +983,7 @@
         }
 
         // --- HELPERS ---
-        function setVal(id, val) { if (document.getElementById(id) && val) document.getElementById(id).value = val; }
+        function setVal(id, val) { if (document.getElementById(id) && val !== null && val !== undefined) document.getElementById(id).value = val; }
         function setSrc(id, val) { if (document.getElementById(id) && val) document.getElementById(id).src = val; }
 
         // --- 4. PORTFOLIO LOGIC ---
@@ -1004,7 +1036,7 @@
                 div.className = 'portfolio-item' + (isPinned ? ' pinned-admin' : '');
                 div.setAttribute('data-id', item.id);
                 div.innerHTML = `
-                    <img src="${item.image_url}" loading="lazy">
+                    <img src="${escapeHtml(item.image_url)}" loading="lazy">
                     ${isPinned ? '<div style="position:absolute;top:6px;left:6px;background:rgba(212,175,55,0.9);border-radius:4px;padding:2px 7px;font-size:0.7rem;color:#000;font-weight:600;z-index:2">📌 PINNED</div>' : ''}
                     <div class="portfolio-actions">
                         <button class="btn" style="background:${isPinned ? 'rgba(212,175,55,0.2);border-color:var(--primary);color:var(--primary)' : 'rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#aaa'}; font-size:0.72rem; padding:0.25rem 0.6rem;" 
@@ -1254,7 +1286,8 @@
                 contact_subheading: document.getElementById('contactSubheading').value,
                 contact_email: document.getElementById('contactEmail').value,
                 contact_whatsapp: document.getElementById('contactWhatsapp').value,
-                contact_location: document.getElementById('contactLocation').value
+                contact_location: document.getElementById('contactLocation').value,
+                contact_phone_display: document.getElementById('contactPhoneDisplay').value
             };
             await updateSiteContent(data);
             showToast('Contact info updated!');
@@ -1264,7 +1297,9 @@
             const data = {
                 footer_brand: document.getElementById('footerBrand').value,
                 footer_tagline: document.getElementById('footerTagline').value,
-                footer_copyright: document.getElementById('footerCopyright').value
+                footer_copyright: document.getElementById('footerCopyright').value,
+                contact_location: document.getElementById('footerAddress').value,
+                contact_phone_display: document.getElementById('footerPhone').value
             };
             await updateSiteContent(data);
             showToast('Footer updated!');
@@ -1286,9 +1321,9 @@
                     div.style.border = '1px solid var(--border-light)';
                     div.style.borderRadius = '8px';
                     div.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="font-weight:500;">${vid.title || 'Video'}</span>
+                        <span style="font-weight:500;">${escapeHtml(vid.title || 'Video')}</span>
                         <div style="display:flex; align-items:center; gap:10px;">
-                            <a href="${vid.video_url}" target="_blank" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none;">View</a>
+                            <a href="${escapeHtml(String(vid.video_url).startsWith('https://') ? vid.video_url : '#')}" rel="noopener noreferrer" target="_blank" style="color:var(--text-muted); font-size:0.8rem; text-decoration:none;">View</a>
                             <button class="btn btn-danger" onclick="deleteVideo('${vid.id}')" style="padding:0.25rem 0.5rem; font-size:0.8rem;">Delete</button>
                         </div>
                      </div>`;
@@ -1301,14 +1336,19 @@
             const url = document.getElementById('newVideoUrl').value;
             const title = document.getElementById('newVideoTitle').value;
             if (!url) return;
-            await supabaseDb.from('site_videos').insert([{ video_url: url, title: title }]);
+            if(!url.startsWith('https://')) throw new Error('Enter a valid HTTPS video URL.');
+            const {error} = await supabaseDb.from('site_videos').insert([{ video_url: url, title: title }]);
+            if(error) throw new Error(error.message);
+            await revalidateWebsite();
             loadVideoGallery();
             document.getElementById('newVideoUrl').value = '';
         }
 
         async function deleteVideo(id) {
             if (!confirm("Delete?")) return;
-            await supabaseDb.from('site_videos').delete().eq('id', id);
+            const {error} = await supabaseDb.from('site_videos').delete().eq('id', id);
+            if(error) throw new Error(error.message);
+            await revalidateWebsite();
             loadVideoGallery();
         }
 

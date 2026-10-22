@@ -1,24 +1,12 @@
 import type { Metadata } from "next";
-import { Cinzel, Outfit } from "next/font/google";
+import '@fontsource-variable/cinzel';
+import '@fontsource-variable/outfit';
+import SiteFrame from '@/components/SiteFrame';
+import Tracking from '@/components/Tracking';
+import WhatsAppLink from '@/components/WhatsAppLink';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
-
-const cinzel = Cinzel({
-  variable: "--font-cinzel",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-  preload: true,
-});
-
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600"],
-  display: "swap",
-  preload: true,
-});
 
 export const metadata: Metadata = {
   title: {
@@ -39,49 +27,34 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${cinzel.variable} ${outfit.variable}`}>
-        <Navbar />
+      <body>
+        <SiteFrame><Navbar /></SiteFrame>
         <main>{children}</main>
-        <Footer />
+        <SiteFrame><Footer /></SiteFrame>
 
-        {/* WhatsApp Floating Button with Wave Rings */}
-        <div className="wa-float">
-          <span className="wa-wave" />
-          <span className="wa-wave" />
-          <span className="wa-wave" />
-          <a
-            href="https://wa.me/923114544040"
-            className="wa-btn"
+        {/* WhatsApp Floating Button */}
+        <SiteFrame><div className="fixed bottom-6 right-6 z-[999] flex items-center justify-center group">
+          {/* Pulse Effect */}
+          <div className="absolute w-12 h-12 bg-[#25d366] rounded-full animate-ping opacity-40 group-hover:animate-none transition-all duration-300" />
+          
+          <WhatsAppLink
+            source="floating_button"
+            className="relative z-10 w-14 h-14 bg-black/40 backdrop-blur-md border border-[#25d366]/50 text-[#25d366] rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.25)] hover:bg-[#25d366] hover:text-black hover:scale-110 transition-all duration-300"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chat on WhatsApp"
           >
-            <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28">
-              <path d="M12 2C6.48 2 2 6.48 2 12c0 1.88.52 3.65 1.44 5.18L2 22l4.95-1.43A9.94 9.94 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm4.92 13.52c-.2.57-.99 1.04-1.64 1.18-.44.09-.99.17-5.2-2.23C7.2 12.4 6.04 10.2 5.93 10c-.1-.16-.8-1.12-.8-2.12 0-1 .53-1.48.72-1.68.18-.2.38-.25.5-.25h.37c.12 0 .28-.04.44.36.17.4.56 1.43.61 1.53.05.1.08.22.02.36-.07.13-.1.22-.2.34-.1.12-.22.27-.31.36-.1.1-.2.2-.09.4.12.2.52.88 1.12 1.43.77.72 1.42.94 1.62 1.05.2.1.31.09.43-.05.12-.14.5-.58.63-.78.13-.2.26-.17.44-.1l1.44.72c.2.1.33.14.38.23.04.09.04.53-.16 1.1z" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+              <path d="M3 21l1.65-3.8a9 9 0 1 1 3.4 2.9L3 21" />
+              <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
             </svg>
-          </a>
+          </WhatsAppLink>
         </div>
 
+        </SiteFrame><Tracking />
         {/* Scroll Reveal disabled, using CSS static opacity 1 */}
 
 
-        {/* Navbar scrolled class */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
-          (function() {
-            function updateNav() {
-              var nav = document.querySelector('.navbar');
-              if (!nav) return;
-              if (window.scrollY > 60) {
-                nav.classList.add('scrolled');
-              } else {
-                nav.classList.remove('scrolled');
-              }
-            }
-            window.addEventListener('scroll', updateNav, { passive: true });
-            updateNav();
-          })();
-        ` }} />
       </body>
     </html>
   );

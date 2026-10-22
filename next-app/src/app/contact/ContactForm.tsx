@@ -1,104 +1,38 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { submitContactForm } from '@/lib/supabase';
+import { useState } from 'react';
+import { projectWhatsAppUrl } from '@/lib/whatsapp';
+import { recordWhatsAppContact } from '@/lib/contact-tracking';
 
-const services = [
-    'Exterior Visualization',
-    'Interior Visualization',
-    '3D Animation / Walkthrough',
-    'Floor Plan Visualization',
-    'AutoCAD Architecture Drawings',
-    'Design & Construction Consultation',
-    'Other',
-];
+const inputStyle = 'w-full rounded-md bg-[#0d120e] border border-[#465045] text-white px-4 py-3 text-sm focus:outline-none focus:border-[var(--gold)] transition-colors';
+const labelStyle = 'block text-[#e8e5d9] text-sm mb-2';
 
-export default function ContactForm() {
-    const [submitting, setSubmitting] = useState(false);
-    const [success, setSuccess] = useState(false);
-
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        setSubmitting(true);
-        const fd = new FormData(e.currentTarget);
-        const data = {
-            name: fd.get('name') as string,
-            email: fd.get('email') as string,
-            phone: fd.get('phone') as string,
-            project_type: fd.get('project_type') as string,
-            message: fd.get('message') as string,
-        };
-
-        try {
-            const { error } = await submitContactForm(data);
-            if (!error) {
-                setSuccess(true);
-            } else {
-                const msg = `*New Project Inquiry*%0A%0A*Name:* ${data.name}%0A*Email:* ${data.email}%0A*Phone:* ${data.phone || 'N/A'}%0A*Project:* ${data.project_type || 'Not specified'}%0A%0A*Message:*%0A${data.message}`;
-                window.open(`https://wa.me/923114544040?text=${msg}`, '_blank');
-                setSuccess(true);
-            }
-        } catch {
-            alert('Something went wrong. Please try WhatsApp.');
-        } finally {
-            setSubmitting(false);
-        }
-    }
-
-    if (success) {
-        return (
-            <div className="form-card">
-                <div className="success-state">
-                    <div className="check-circle">✓</div>
-                    <h3>Message Sent!</h3>
-                    <p>Thank you for reaching out. Dilawar Ali will review your project and get back to you within 24 hours.</p>
-                    <a href="/" className="btn btn-outline">Back to Home</a>
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className="form-card">
-            <form onSubmit={handleSubmit}>
-                <div className="form-row">
-                    <div className="form-group">
-                        <label htmlFor="name">Full Name *</label>
-                        <input type="text" id="name" name="name" required placeholder="Your full name" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="email">Email Address *</label>
-                        <input type="email" id="email" name="email" required placeholder="your@email.com" />
-                    </div>
-                </div>
-
-                <div className="form-row">
-                    <div className="form-group">
-                        <label htmlFor="phone">WhatsApp / Phone</label>
-                        <input type="tel" id="phone" name="phone" placeholder="+92 3XX XXXXXXX" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="project_type">Project Type</label>
-                        <select id="project_type" name="project_type">
-                            <option value="">Select a service...</option>
-                            {services.map(s => <option key={s} value={s}>{s}</option>)}
-                        </select>
-                    </div>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="message">Project Details *</label>
-                    <textarea
-                        id="message" name="message" rows={5} required
-                        placeholder="Tell us about your project: type, style, timeline, budget..."
-                    />
-                </div>
-
-                <button type="submit" className="btn btn-primary form-submit" disabled={submitting}>
-                    {submitting ? 'Sending...' : 'Send Message →'}
-                </button>
-                <p className="form-note">By submitting, you agree to be contacted about your project.</p>
-            </form>
-        </div>
-    );
+export default function ContactForm({ whatsappNumber }: { whatsappNumber: string }) {
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', projectType: '', message: '' });
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData((previous) => ({ ...previous, [event.target.name]: event.target.value }));
+  };
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    recordWhatsAppContact('contact_form');
+    window.location.assign(projectWhatsAppUrl(whatsappNumber, formData));
+  };
+  return <div className="bg-[#171d17] border border-[#b7a06b]/25 p-6 md:p-9 rounded-lg">
+    <h2 className="text-white text-2xl font-serif mb-2">Tell us about your project.</h2>
+    <p className="text-[#aeb9ac] text-sm leading-relaxed mb-8">Share a few details, then continue the conversation on WhatsApp.</p>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div><label htmlFor="name" className={labelStyle}>Your name *</label><input id="name" name="name" autoComplete="name" required value={formData.name} onChange={handleChange} placeholder="Your full name" className={inputStyle} /></div>
+        <div><label htmlFor="email" className={labelStyle}>Email address *</label><input id="email" name="email" type="email" autoComplete="email" required value={formData.email} onChange={handleChange} placeholder="your@email.com" className={inputStyle} /></div>
+        <div><label htmlFor="phone" className={labelStyle}>Phone / WhatsApp</label><input id="phone" name="phone" type="tel" autoComplete="tel" value={formData.phone} onChange={handleChange} placeholder="+92 …" className={inputStyle} /></div>
+        <div><label htmlFor="projectType" className={labelStyle}>Service</label><select id="projectType" name="projectType" value={formData.projectType} onChange={handleChange} className={inputStyle}>
+          <option value="">Select a service</option>
+          {['Exterior Visualization', 'Interior Design', '3D Walkthrough', 'Floor Plan Visuals', 'Architectural Drawings', 'Design Consultation', 'Other'].map((service) => <option key={service} value={service}>{service}</option>)}
+        </select></div>
+      </div>
+      <div><label htmlFor="message" className={labelStyle}>Project details *</label><textarea id="message" name="message" required rows={5} value={formData.message} onChange={handleChange} placeholder="What are you designing? Share the scope, references and timeline." className={`${inputStyle} resize-y`} /></div>
+      <button type="submit" className="w-full rounded-md bg-[var(--gold)] text-black font-semibold text-sm py-4 hover:bg-white transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--gold)]">Continue on WhatsApp ↗</button>
+      <p className="text-center text-[#aeb9ac] text-xs leading-relaxed">Your details open in WhatsApp. Tap Send there to deliver your message.</p>
+    </form>
+  </div>;
 }

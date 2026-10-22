@@ -1,37 +1,9 @@
-# RenderLine - 3D Architectural Visualization Website
+# RenderLine website and client portal
 
-A professional portfolio website for RenderLine, featuring dynamic 3D walkthroughs, image galleries, and contact management.
+The maintained website is the Next.js application in **next-app/**. Double-click **Start RenderLine Website.cmd** for local use, or run `npm install` then `npm run dev` inside next-app.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/dilawar456/renderline-website)
+The public navigation contains Home, Services, Portfolio, Contact and Portal. The retired /projects page redirects to /portfolio. Private client projects remain inside /portal.
 
-## 🚀 Features
+The production portal uses the existing Supabase project with invited owner/team/client identities, database row-level permissions and private file storage. It does not redirect clients to a PC's localhost. The separate **studio-portal/** application retains its existing local records and integrations; it remains a local tool and is not deployed by the Next.js app.
 
-*   **Dynamic Portfolio**: Upload and manage high-quality 3D renders via Cloudinary.
-*   **YouTube Integration**: Embed 3D walkthrough videos directly from the Admin Panel.
-*   **CMS Admin Panel**: Manage all website text, images, and videos without coding.
-*   **Contact Form**: Messages are saved to Supabase Database with a WhatsApp fallback.
-*   **Responsive Design**: Fully optimized for mobile, tablet, and desktop.
-
-## 🛠️ Tech Stack
-
-*   **Frontend**: HTML5, CSS3, JavaScript (Vanilla)
-*   **Backend**: Supabase (Database & Auth)
-*   **Media**: Cloudinary (Images), YouTube (Videos)
-*   **Deployment**: Vercel
-
-## 📦 How to Deploy
-
-The easiest way to deploy this website is using Vercel.
-
-1.  Click the **Deploy with Vercel** button above.
-2.  Log in with GitHub.
-3.  Click **Create**.
-4.  Your site will be live in seconds!
-
-## 🔧 Local Setup
-
-1.  Clone the repository:
-    ```bash
-    git clone https://github.com/dilawar456/renderline-website.git
-    ```
-2.  Open `index.html` in your browser.
+See **next-app/PORTAL_ATTACHMENT.md** for configuration, verification and limitations. Keep all .env files, studio private data and recovery archives out of Git.
