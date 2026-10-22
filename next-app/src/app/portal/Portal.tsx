@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { emptyTracking, invoiceSubtotal, safeLink, validTracking, type Brief, type Intake, type Invoice, type LineItem, type Profile, type Project, type Task, type Tracking, type Update } from '@/lib/studio';
 import './portal.css';
 import ProjectFiles from './ProjectFiles';
+import {temporaryAuthFailure} from '@/lib/auth-failure';
 import ProjectConversation from './ProjectConversation';
 
 type Section = 'Projects'|'Inbox'|'Tasks'|'Updates'|'Conversation'|'Invoices'|'People'|'Tracking'|'Account';
@@ -38,7 +39,13 @@ export default function Portal(){
   const current=++generation.current;
   const {data:{user},error:authError}=await supabase.auth.getUser();
   if(current!==generation.current)return;
-  if(!user){clearWorkspace();setLoading(false);if(authError&&!/session missing/i.test(authError.message))setError('Your session is unavailable. Please sign in again.');return;}
+  if(!user&&temporaryAuthFailure(authError)){
+   const {data:{session}}=await supabase.auth.getSession();
+   if(current!==generation.current)return;
+   if(session){setSignedIn(true);setSignedInEmail(session.user.email||'');}
+   setLoading(false);throw Error('The connection was interrupted. Your sign-in is retained; please retry.');
+  }
+  if(!user){if(authError)console.error('Workspace authentication failed '+JSON.stringify({name:authError.name,status:authError.status,code:authError.code}));clearWorkspace();setLoading(false);if(authError&&!/session missing/i.test(authError.message))setError('Your session is unavailable. Please sign in again.');return;}
   setSignedIn(true);setSignedInEmail(user.email||'');
   const p=await supabase.from('studio_profiles').select('*').eq('id',user.id).single();
   if(current!==generation.current)return;
