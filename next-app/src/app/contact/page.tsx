@@ -5,6 +5,7 @@ import WhatsAppLink from '@/components/WhatsAppLink';
 import { publicContactEmail, publicPhoneDisplay, publicWhatsAppNumber } from '@/lib/public-contact';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/contact" },
     title: 'Contact',
     description: 'Get in touch with RenderLine to discuss your next architectural visualization project.',
 };

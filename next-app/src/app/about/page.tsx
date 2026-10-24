@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getSiteContent, optimizeCloudinaryUrl } from '@/lib/supabase';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/about" },
     title: 'About',
     description: 'Learn about Dilawar Ali and RenderLine — a premium architectural visualization and 3D rendering studio.',
 };

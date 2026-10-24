@@ -3,6 +3,7 @@ import { getPortfolioItems, getPortfolioOrder, getPinnedItems, getSiteContent, g
 import PortfolioClient from './PortfolioClient';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/portfolio" },
     title: 'Portfolio',
     description: 'View our portfolio of 70+ photorealistic architectural renders including exterior, interior, and 3D walkthrough animations.',
 };

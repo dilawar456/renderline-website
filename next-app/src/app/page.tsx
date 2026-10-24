@@ -6,6 +6,7 @@ import ServicesPreviewSection from '@/components/home/ServicesPreviewSection';
 import CTASection from '@/components/home/CTASection';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/" },
   title: 'RenderLine | Premium Architectural Visualization',
   description: 'RenderLine is a premium architectural visualization studio in Lahore, Pakistan, specializing in photorealistic 3D rendering, interior design, and walkthrough animations.',
 };

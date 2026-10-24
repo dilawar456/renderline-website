@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site-url";
 import '@fontsource-variable/cinzel';
 import '@fontsource-variable/outfit';
 import SiteFrame from '@/components/SiteFrame';
@@ -9,6 +10,7 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "RenderLine | Premium Architectural Visualization",
     template: "%s | RenderLine",

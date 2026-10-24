@@ -5,6 +5,7 @@ import ServicesGridClient from './ServicesGridClient';
 import { getWorkflowPictures } from '@/lib/workflow-pictures';
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/services" },
     title: 'Services',
     description: 'RenderLine offers professional architectural visualization services including exterior & interior 3D rendering, walkthroughs, floor plans, and AutoCAD drawings.',
 };

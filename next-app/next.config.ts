@@ -20,6 +20,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'dilawarali.com' }],
+        destination: 'https://renderline.pk/:path*',
+        permanent: true,
+      },
+      {
         source: '/admin',
         destination: '/admin.html',
         permanent: false,
