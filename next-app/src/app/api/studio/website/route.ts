@@ -58,13 +58,15 @@ export async function PATCH(request: Request) {
       .single();
     if (readError || !row)
       throw new Error("503:Website content record is unavailable.");
-    const { error } = await db
+    const { data: savedRow, error } = await db
       .from("site_content")
       .update({ pricing_config: body.pricing, drawing_samples: body.samples })
-      .eq("id", row.id);
-    if (error)
+      .eq("id", row.id)
+      .select("id")
+      .single();
+    if (error || !savedRow)
       throw new Error(
-        "503:Settings could not be saved. Check the website pricing/sample migration.",
+        "503:Website settings could not be saved. Please retry; your changes have not been confirmed.",
       );
     revalidatePath("/", "layout");
     return Response.json({ saved: true });

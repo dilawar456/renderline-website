@@ -14,7 +14,7 @@ The finalized 1-kanal rule is a PKR 30,000 booklet base plus PKR 3,500 for each 
 
 The public library is `/drawing-samples`. It supports architectural working, structural and submission disciplines; standard plot sizes; ground/first-floor or apartment options; readable PNG/JPEG page previews and the complete sample PDF.
 
-No real PDF samples were supplied during this implementation. The library is intentionally empty and offers a contextual sample-request action rather than invented drawings. Never publish private client documents or personal/ownership information without permission. When the owner provides files, inspect the actual PDFs, prepare legible page previews and add approved public file URLs using the sample editor.
+No real PDF samples were supplied during this implementation. The library is intentionally empty and offers a contextual sample-request action rather than invented drawings. Never publish private client documents or personal/ownership information without permission. When the owner provides files, inspect the actual PDFs, prepare legible page previews and add approved public file URLs using the structured sample form. Choose Add sample document, then complete the title, drawing type, plot size, floor/layout option, description, complete PDF link and one preview image link per line. No JSON editing is required.
 
 Sample object:
 
@@ -31,7 +31,7 @@ Sample object:
 }
 ```
 
-Only HTTPS files on the existing studio Cloudinary account, Supabase project or renderline.pk are accepted. Preview links are required. These are public files; keep private project uploads in the existing portal.
+Only HTTPS files on the existing studio Cloudinary account, Supabase public storage or renderline.pk are accepted. Private signed storage links and files from other Cloudinary accounts are rejected. Preview links are required. These are public files; keep private project uploads in the existing portal.
 
 ## Portfolio categories
 

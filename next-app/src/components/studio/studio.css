@@ -1262,3 +1262,31 @@
   width: 23px;
   height: 23px;
 }
+
+.rl-sample-editor {
+  margin-top: 45px;
+  padding-top: 30px;
+  border-top: 1px solid #c6d1c0;
+}
+.rl-sample-editor h2 {
+  font-size: 1.8rem;
+}
+.rl-sample-fields {
+  border: 1px solid #c6d1c0;
+  padding: 24px;
+  border-radius: 8px;
+  margin: 25px 0;
+}
+.rl-sample-fields legend {
+  padding-inline: 8px;
+  font-weight: 500;
+}
+.rl-sample-fields .rl-form-grid {
+  margin-top: 10px;
+}
+.rl-sample-editor .rl-actions {
+  margin-top: 20px;
+}
+fieldset:disabled {
+  opacity: 0.65;
+}

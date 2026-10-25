@@ -2,7 +2,9 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import type { Pricing } from "@/lib/pricing";
+import { validatePricing, type Pricing } from "@/lib/pricing";
+import { validSamples, type DrawingSample } from "@/lib/drawing-samples";
+import SampleLibraryEditor from "@/components/studio/SampleLibraryEditor";
 const labels: Record<string, string> = {
   floorPlan: "Standalone plans · up to 2 storeys",
   residentialBooklet: "Residential booklet + 3D elevation",
@@ -30,12 +32,24 @@ const labels: Record<string, string> = {
 };
 export default function WebsiteEditor() {
   const [pricing, setPricing] = useState<Pricing | null>(null),
-    [samples, setSamples] = useState("[]"),
+    [samples, setSamples] = useState<DrawingSample[]>([]),
     [status, setStatus] = useState("Checking owner access…"),
-    [busy, setBusy] = useState(false),
-    [token, setToken] = useState("");
+    [busy, setBusy] = useState(false);
   useEffect(() => {
     let alive = true;
+    let revision = 0;
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_OUT") {
+        revision++;
+        setPricing(null);
+        setSamples([]);
+        setStatus(
+          "Your session ended. Sign in to the client portal with your owner account to edit website settings.",
+        );
+      }
+    });
     supabase.auth
       .getSession()
       .then(async ({ data: { session } }) => {
@@ -46,18 +60,18 @@ export default function WebsiteEditor() {
             );
           return;
         }
+        const requestRevision = revision;
         const r = await fetch("/api/studio/website", {
             headers: { Authorization: `Bearer ${session.access_token}` },
           }),
           body = await r.json();
-        if (!alive) return;
+        if (!alive || requestRevision !== revision) return;
         if (!r.ok) {
           setStatus(body.error || "Owner access required.");
           return;
         }
         setPricing(body.pricing);
-        setSamples(JSON.stringify(body.samples, null, 2));
-        setToken(session.access_token);
+        setSamples(body.samples);
         setStatus(
           "Edit rates in PKR. Save publishes the updated guide prices across the website.",
         );
@@ -67,31 +81,61 @@ export default function WebsiteEditor() {
       });
     return () => {
       alive = false;
+      subscription.unsubscribe();
     };
   }, []);
   async function save() {
     setBusy(true);
     try {
-      const parsed = JSON.parse(samples);
+      if (!validatePricing(pricing)) {
+        setStatus(
+          "Enter a positive rate in every pricing field before saving.",
+        );
+        return;
+      }
+      const preparedSamples = samples.map((sample) => ({
+        ...sample,
+        title: sample.title.trim(),
+        level: sample.level.trim(),
+        pdf: sample.pdf.trim(),
+        previews: sample.previews.map((url) => url.trim()).filter(Boolean),
+      }));
+      if (!validSamples(preparedSamples)) {
+        setStatus(
+          "Complete each sample’s title, floor/option, public PDF link and at least one valid preview image link. Remove unfinished entries before saving.",
+        );
+        return;
+      }
       const {
         data: { session },
       } = await supabase.auth.getSession();
+      if (!session) {
+        setPricing(null);
+        setStatus(
+          "Your session ended. Sign in to the client portal before saving.",
+        );
+        return;
+      }
       const r = await fetch("/api/studio/website", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session?.access_token || token}`,
+          Authorization: `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({ pricing, samples: parsed }),
+        body: JSON.stringify({ pricing, samples: preparedSamples }),
       });
       const body = await r.json();
+      if (r.ok) setSamples(preparedSamples);
+      if (r.status === 401 || r.status === 403) setPricing(null);
       setStatus(
         r.ok
           ? "Saved. Public pages will use these rates and samples."
           : body.error || "Save failed.",
       );
     } catch {
-      setStatus("Check the sample JSON and connection, then try again.");
+      setStatus(
+        "Could not connect to the website. Your changes have not been confirmed saved; please try again.",
+      );
     } finally {
       setBusy(false);
     }
@@ -114,7 +158,7 @@ export default function WebsiteEditor() {
           <>
             <div className="rl-admin-grid">
               {Object.entries(pricing).map(([group, values]) => (
-                <fieldset key={group}>
+                <fieldset key={group} disabled={busy}>
                   <legend>{labels[group] || group}</legend>
                   {Object.entries(values).map(([key, value]) => (
                     <label key={key}>
@@ -125,7 +169,10 @@ export default function WebsiteEditor() {
                         min="1"
                         max="10000000"
                         value={value}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                          setStatus(
+                            "Unsaved changes. Choose Save below to publish them.",
+                          );
                           setPricing((previous) =>
                             previous
                               ? {
@@ -136,32 +183,24 @@ export default function WebsiteEditor() {
                                   },
                                 }
                               : previous,
-                          )
-                        }
+                          );
+                        }}
                       />
                     </label>
                   ))}
                 </fieldset>
               ))}
             </div>
-            <details className="rl-details">
-              <summary>Manage published PDF samples & page previews</summary>
-              <p>
-                Add real approved files only. Each sample has an id, title,
-                discipline (working, structure or submission), marla, level,
-                description, pdf HTTPS URL and previews array of HTTPS image
-                URLs. Use the studio Cloudinary account, existing Supabase
-                storage or renderline.pk. Empty list means no documents are
-                published.
-              </p>
-              <textarea
-                aria-label="Drawing sample library JSON"
-                rows={14}
-                value={samples}
-                onChange={(e) => setSamples(e.target.value)}
-                spellCheck={false}
-              />
-            </details>
+            <SampleLibraryEditor
+              samples={samples}
+              disabled={busy}
+              onChange={(next) => {
+                setSamples(next);
+                setStatus(
+                  "Unsaved changes. Choose Save below to publish them.",
+                );
+              }}
+            />
             <div className="rl-actions">
               <button
                 type="button"
