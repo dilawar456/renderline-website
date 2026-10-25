@@ -5,13 +5,14 @@ import PortfolioClient from './PortfolioClient';
 export const metadata: Metadata = {
   alternates: { canonical: "/portfolio" },
     title: 'Portfolio',
-    description: 'View our portfolio of 70+ photorealistic architectural renders including exterior, interior, and 3D walkthrough animations.',
+    description: 'Explore genuine RenderLine floor-plan studies, front elevations, interiors, exteriors and pre-rendered walkthrough videos.',
 };
 
 // Admin saves invalidate cached content; retain a 60-second fallback.
 export const revalidate = 60;
 
-export default async function PortfolioPage() {
+export default async function PortfolioPage({searchParams}:{searchParams:Promise<{category?:string}>}) {
+    const query=await searchParams;
     const [contentRes, portfolioRes, videosRes] = await Promise.all([
         getSiteContent(),
         getPortfolioItems(),
@@ -32,5 +33,5 @@ export default async function PortfolioPage() {
         full_url: item.image_url,
     }));
 
-    return <PortfolioClient items={optimizedItems} videos={videos} order={order} pinned={pinned} />;
+    return <PortfolioClient items={optimizedItems} videos={videos} order={order} pinned={pinned} initialFilter={query.category} />;
 }

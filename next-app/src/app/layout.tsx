@@ -8,6 +8,7 @@ import WhatsAppLink from '@/components/WhatsAppLink';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import "./globals.css";
+import "@/components/studio/studio.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,10 +36,10 @@ export default function RootLayout({
         <SiteFrame><Footer /></SiteFrame>
 
         {/* WhatsApp Floating Button */}
-        <SiteFrame><div className="fixed bottom-6 right-6 z-[999] flex items-center justify-center group">
-          {/* Pulse Effect */}
-          <div className="absolute w-12 h-12 bg-[#25d366] rounded-full animate-ping opacity-40 group-hover:animate-none transition-all duration-300" />
+        <SiteFrame><div className="rl-floating-contact">
+          {/* Direct contact */}
           
+
           <WhatsAppLink
             source="floating_button"
             className="relative z-10 w-14 h-14 bg-black/40 backdrop-blur-md border border-[#25d366]/50 text-[#25d366] rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(37,211,102,0.25)] hover:bg-[#25d366] hover:text-black hover:scale-110 transition-all duration-300"

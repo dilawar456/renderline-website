@@ -1,0 +1,42 @@
+{
+  "floorPlan": { "upTo10": 10000, "upTo20": 20000 },
+  "residentialBooklet": {
+    "3": 10000,
+    "4": 12000,
+    "5": 15000,
+    "6": 16000,
+    "7": 18000,
+    "8": 20000,
+    "9": 22000,
+    "10": 25000,
+    "upTo20": 30000,
+    "extraMarla": 3500
+  },
+  "elevation": { "visualization": 10000, "working": 10000, "combined": 15000 },
+  "interior": { "perSqFt": 40, "minimumPerSpace": 10000 },
+  "commercialInteriorPerStorey": {
+    "2": 10000,
+    "3": 12000,
+    "4": 15000,
+    "5": 15000,
+    "6": 16000,
+    "7": 18000,
+    "8": 20000,
+    "9": 22000,
+    "10": 25000
+  },
+  "commercialExterior": { "upTo5": 10000, "upTo10": 15000 },
+  "commercialPackage": {
+    "2": 35000,
+    "3": 45000,
+    "4": 50000,
+    "5": 75000,
+    "6": 80000,
+    "7": 85000,
+    "8": 90000,
+    "9": 95000,
+    "10": 100000
+  },
+  "structure": { "residentialPerSqFt": 6, "commercialPerSqFt": 7 },
+  "submission": { "below10": 10000, "at10": 15000, "upTo20": 20000 }
+}

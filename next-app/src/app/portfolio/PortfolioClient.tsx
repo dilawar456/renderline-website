@@ -2,6 +2,9 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import VideoPreview from '@/components/studio/VideoPreview';
+import {PORTFOLIO_CATEGORIES,workMatches} from '@/lib/services';
 
 interface PortfolioItem {
     id: string | number;
@@ -23,24 +26,13 @@ interface Props {
     videos: Video[];
     order: Record<string, string[]>;
     pinned: Record<string, string[]>;
+    initialFilter?: string;
 }
 
-const FILTERS = [
-    { key: 'all', label: 'All' },
-    { key: 'exterior', label: 'Exterior' },
-    { key: 'interior', label: 'Interior' },
-    { key: 'commercial', label: 'Commercial' },
-    { key: 'floorplan', label: '3D Floorplan' },
-    { key: 'animation', label: 'Animation' },
-];
+const FILTERS = PORTFOLIO_CATEGORIES;
 
-function getYouTubeId(url: string) {
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\s?]+)/);
-    return match ? match[1] : null;
-}
-
-export default function PortfolioClient({ items, videos, order, pinned }: Props) {
-    const [filter, setFilter] = useState('all');
+export default function PortfolioClient({ items, videos, order, pinned, initialFilter }: Props) {
+    const [filter, setFilter] = useState(PORTFOLIO_CATEGORIES.some(c=>c.key===initialFilter)?initialFilter!:'all');
     const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
     const [visibleCount, setVisibleCount] = useState(24);
     const lightboxRef = useRef<HTMLDivElement>(null);
@@ -58,7 +50,7 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
         ? items
         : filter === 'animation'
             ? []
-            : items.filter(i => i.category === filter);
+            : items.filter(i => workMatches(i,filter));
 
     // Apply sorting based on current category order
     if (!showVideos && displayItems.length > 0) {
@@ -88,6 +80,7 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
 
     const handleFilter = useCallback((key: string) => {
         setFilter(key);
+        const url=new URL(window.location.href);url.searchParams.set('category',key);window.history.replaceState(null,'',url);
         setLightboxIndex(null);
         setVisibleCount(24);
     }, []);
@@ -123,7 +116,7 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
                 e.preventDefault();
                 nextImage();
             } else if (e.key === 'Tab') {
-                const buttons = lightboxRef.current?.querySelectorAll<HTMLButtonElement>('button');
+                const buttons = lightboxRef.current?.querySelectorAll<HTMLElement>('button,a[href]');
                 if (!buttons?.length) return;
                 const first = buttons[0];
                 const last = buttons[buttons.length - 1];
@@ -146,17 +139,17 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
     }, [lightboxOpen, closeLightbox, prevImage, nextImage]);
 
     return (
-        <div className="bg-[#050505] min-h-screen text-gray-300">
+        <div className="rl-site">
             {/* Header Section */}
-            <section className="relative pt-36 pb-20 lg:pt-44 lg:pb-24 border-b border-[#ad8d58]/20 bg-[#11120f]">
+            <section className="relative pt-12 pb-8 lg:pt-16 lg:pb-12 border-b border-[#dce2db] bg-[#eef3eb]">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(212,175,55,0.08),_transparent_60%)] pointer-events-none" />
                 <div className="container mx-auto px-6 relative z-10 text-center">
                     <span className="block text-[var(--gold)] text-xs tracking-[0.3em] uppercase font-semibold mb-6">RENDERLINE / SELECTED WORK</span>
-                    <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
-                        Architectural <span className="text-[var(--gold)]">work</span>
+                    <h1 className="text-4xl md:text-6xl font-medium mb-5">
+                        Explore our work.
                     </h1>
-                    <p className="text-base md:text-lg text-[#b9b8b0] max-w-2xl mx-auto mb-12 leading-relaxed">
-                        A selection of renders, spatial studies and walkthroughs made to communicate each design with clarity.
+                    <p className="text-base md:text-lg text-[#56645d] max-w-2xl mx-auto mb-8 leading-relaxed">
+                        Real RenderLine visualizations, 3D floor-plan studies and pre-rendered walkthroughs. Choose a category to see relevant work.
                     </p>
 
                     {/* Filter Pills */}
@@ -167,7 +160,7 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
                                 ? videos.length 
                                 : f.key === 'all' 
                                     ? items.length 
-                                    : items.filter(i => i.category === f.key).length;
+                                    : items.filter(i => workMatches(i,f.key)).length;
                             
                             return (
                                 <button
@@ -175,13 +168,13 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
                                     onClick={() => handleFilter(f.key)}
                                     className={`px-5 py-2.5 rounded-sm text-xs uppercase tracking-[0.12em] font-semibold transition-colors duration-300 border ${
                                         isActive 
-                                            ? 'bg-[var(--gold)] border-[var(--gold)] text-black shadow-[0_0_15px_rgba(212,175,55,0.4)]' 
-                                            : 'bg-[#111] border-[#333] text-gray-400 hover:border-[var(--gold)]/50 hover:text-white'
+                                            ? 'bg-[#194c3d] border-[#194c3d] text-white'
+                                            : 'bg-white border-[#bac8b8] text-[#355340] hover:border-[#194c3d]'
                                     }`}
                                     type="button"
                                 >
                                     {f.label}
-                                    <span className={`ml-2 text-xs ${isActive ? 'text-black/70' : 'text-gray-500'}`}>
+                                    <span className={`ml-2 text-xs ${isActive ? 'text-white/80' : 'text-[#56645d]'}`}>
                                         ({count})
                                     </span>
                                 </button>
@@ -193,7 +186,7 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
 
             {/* Images Grid */}
             {!showVideos && (
-                <section className="py-16 lg:py-24" id="portfolioSection">
+                <section className="py-9 lg:py-12" id="portfolioSection">
                     <div className="container mx-auto px-6">
                         {displayItems.length > 0 ? (
                             <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
@@ -214,7 +207,7 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
                                     >
                                         <Image
                                             src={item.image_url}
-                                            alt={item.title || 'Project'}
+                                            alt={`RenderLine ${item.category||'architectural'} visualization`}
                                             fill
                                             className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                                             sizes="(max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
@@ -226,10 +219,10 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
                         ) : (
                             <div className="text-center py-24 text-gray-500 border border-[#222] rounded-2xl bg-[#0a0a0a]">
                                 <span className="text-4xl block mb-4">📭</span>
-                                <p className="text-lg">No items found in this category.</p>
+                                <p className="text-lg">No public drawing samples are published in this category yet.</p><Link className="rl-text-link" href="/drawing-samples">Request a relevant drawing sample</Link>
                             </div>
                         )}
-                        {displayItems.length > visibleCount && (
+                        <p className="rl-note mt-6">Open an image for a closer look. <Link className="rl-text-link" href={displayItems[0]?`/portfolio/${displayItems[0].id}`:'/drawing-samples'}>Explore project scope & related work</Link></p>{displayItems.length > visibleCount && (
                             <div className="mt-12 text-center">
                                 <button type="button" className="btn-primary" onClick={() => setVisibleCount(count => count + 24)}>
                                     Show more projects ({displayItems.length - visibleCount} remaining)
@@ -241,73 +234,8 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
             )}
 
             {/* Animation / Video Section */}
-            {showVideos && (
-                <section className="py-16 lg:py-24">
-                    <div className="container mx-auto px-6">
-                        <div className="text-center mb-16">
-                            <span className="text-[var(--gold)] text-sm tracking-widest uppercase font-semibold">Cinematic Work</span>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white mt-4 mb-4">
-                                3D Walkthroughs &amp; <span className="text-[var(--gold)]">Animations</span>
-                            </h2>
-                            <div className="w-16 h-1 bg-[var(--gold)] mx-auto mb-6" />
-                            <p className="text-gray-400">Cinematic architectural animations for real estate marketing.</p>
-                        </div>
+            {showVideos && <section className="rl-section rl-shell"><h2>Pre-rendered walkthrough videos.</h2><p>Real RenderLine animations. Choose Play to load a video.</p><div className="rl-work-grid" style={{marginTop:25}}>{videos.map(vid=><VideoPreview key={vid.id} url={vid.video_url} title={vid.title}/>)}</div></section>}
 
-                        {videos.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {videos.map(vid => {
-                                    const ytId = getYouTubeId(vid.video_url);
-                                    return (
-                                        <a
-                                            key={vid.id}
-                                            href={vid.video_url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="group block rounded-2xl overflow-hidden bg-[#111] border border-[#222] hover:border-[var(--gold)]/50 transition-colors"
-                                        >
-                                            <div className="relative aspect-video w-full bg-black">
-                                                {ytId && (
-                                                    <img
-                                                        src={`https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`}
-                                                        onError={(e) => {
-                                                            // Fallback to hqdefault if maxresdefault doesn't exist
-                                                            const fallback = `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
-                                                            if (e.currentTarget.src !== fallback) e.currentTarget.src = fallback;
-                                                        }}
-                                                        alt={vid.title || 'Video Thumbnail'}
-                                                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
-                                                        loading="lazy"
-                                                    />
-                                                )}
-                                                <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors duration-500">
-                                                    <div className="w-16 h-16 bg-[#ff0000] text-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
-                                                        <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                                                            <path d="M8 5v14l11-7z" />
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="p-6">
-                                                <h4 className="text-lg font-bold text-white group-hover:text-[var(--gold)] transition-colors line-clamp-2">
-                                                    {vid.title || 'Walkthrough Animation'}
-                                                </h4>
-                                                <p className="text-sm text-gray-500 mt-2">Watch on YouTube ↗</p>
-                                            </div>
-                                        </a>
-                                    );
-                                })}
-                            </div>
-                        ) : (
-                            <div className="text-center py-24 text-gray-500 border border-[#222] rounded-2xl bg-[#0a0a0a]">
-                                <span className="text-4xl block mb-4">🎬</span>
-                                <p className="text-lg">No videos added yet. Add videos from the admin panel.</p>
-                            </div>
-                        )}
-                    </div>
-                </section>
-            )}
-
-            {/* Lightbox Overlay */}
             {lightboxIndex !== null && displayItems[lightboxIndex] && (
                 <div
                     ref={lightboxRef}
@@ -365,7 +293,7 @@ export default function PortfolioClient({ items, videos, order, pinned }: Props)
 
                     {/* Counter / Title */}
                     <div className="absolute bottom-6 left-0 right-0 text-center text-gray-400 text-sm">
-                        {lightboxIndex + 1} / {displayItems.length}
+                        {lightboxIndex + 1} / {displayItems.length}<Link href={`/portfolio/${displayItems[lightboxIndex].id}`} onClick={e=>e.stopPropagation()} className="block mt-2 text-white underline underline-offset-4">Project details & quote</Link>
                     </div>
                 </div>
             )}
