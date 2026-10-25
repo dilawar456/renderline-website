@@ -8,11 +8,8 @@ import {
 } from "@/lib/supabase";
 import { getPricing } from "@/lib/pricing-server";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
-import {
-  ServiceCards,
-  PlanningRoadmap,
-  StudioFaq,
-} from "@/components/studio/StudioSections";
+import { PlanningRoadmap, StudioFaq } from "@/components/studio/StudioSections";
+import PremiumServices from "@/components/studio/PremiumServices";
 import PricingExplorer from "@/components/studio/PricingExplorer";
 import WorkHighlights from "@/components/studio/WorkHighlights";
 import EnquiryLink from "@/components/studio/EnquiryLink";
@@ -25,144 +22,114 @@ export const metadata: Metadata = {
 };
 export const revalidate = 60;
 export default async function HomePage() {
-  const [contentRes, workRes, pricing] = await Promise.all([
+  const [{ data: c }, { data: work }, pricing] = await Promise.all([
     getSiteContent(),
     getPortfolioItems(),
     getPricing(),
   ]);
-  const c = contentRes.data || {},
-    items = workRes.data || [],
-    number = publicWhatsAppNumber(c.contact_whatsapp);
+  const items = work || [],
+    number = publicWhatsAppNumber(c?.contact_whatsapp);
   const hero =
-    items.find((i) => Number(i.id) === 186) ||
+    items.find((i) => Number(i.id) === 187) ||
     items.find((i) => i.category === "exterior");
-  const interior =
-    items.find((i) => Number(i.id) === 188) ||
-    items.find((i) => i.category === "interior");
   const selected = [...items].sort((a, b) => {
-    const ids = [186, 188, 150, 164, 187, 183];
+    const ids = [187, 188, 186, 150, 164, 183];
     const x = ids.indexOf(Number(a.id)),
       y = ids.indexOf(Number(b.id));
     return (x < 0 ? 99 : x) - (y < 0 ? 99 : y);
   });
   return (
-    <div className="rl-site">
-      <section className="rl-hero rl-shell">
-        <div className="rl-hero-copy">
-          <p className="rl-location">RenderLine Studio · Lahore, Pakistan</p>
-          <h1>From floor plans to beautiful 3D designs.</h1>
-          <p className="rl-lead">
-            Professional house plans, working drawings, 3D elevations and
-            interiors. Clear pricing. A simple process. A design you can
-            understand.
+    <div className="rl-site premium-home">
+      <section className="premium-hero rl-shell">
+        <div className="premium-hero-copy">
+          <p className="premium-intro-label">
+            Architectural design & visualization
+          </p>
+          <h1>
+            From floor plans
+            <br />
+            to beautiful spaces.
+          </h1>
+          <p className="premium-hero-description">
+            House plans, detailed drawings and considered 3D visuals. One studio
+            to help you plan, see and present your next project.
           </p>
           <div className="rl-actions">
             <Link
               className="rl-button"
               href="/start-project?service=house-plans"
             >
-              Start my house plan
+              Start your project
             </Link>
-            <Link className="rl-button rl-button-quiet" href="/portfolio">
-              Explore our portfolio
+            <Link className="rl-text-link" href="/portfolio">
+              View our work
             </Link>
           </div>
-          <Link className="rl-professional-link" href="#professionals">
-            Already an architect? Find your visualization partner.
-          </Link>
-          <div className="rl-hero-price">
-            <span>House plans, up to 10 marla / 2 storeys</span>
-            <strong>{money(pricing.floorPlan.upTo10)}</strong>
-            <Link href="/pricing">See scope & all prices</Link>
-          </div>
+          <p className="premium-hero-budget">
+            House plans from <strong>{money(pricing.floorPlan.upTo10)}</strong>
+            <span>Up to 10 marla · 2 storeys</span>
+          </p>
         </div>
-        <div className="rl-hero-composition">
+        <figure className="premium-hero-figure">
           {hero && (
-            <div className="rl-hero-image">
+            <div className="premium-hero-photo">
               <Image
-                src={optimizeCloudinaryUrl(hero.image_url, 1500)}
-                alt="RenderLine neoclassical house elevation visualization"
+                src={optimizeCloudinaryUrl(hero.image_url, 1600)}
+                alt="RenderLine residential exterior visualization with lawn and garage"
                 fill
                 priority
-                sizes="(max-width: 800px) 100vw, 56vw"
+                sizes="(max-width:800px) 100vw, 56vw"
               />
             </div>
           )}
-          {interior && (
-            <Link href="/services/interior-design" className="rl-hero-inset">
-              <Image
-                src={optimizeCloudinaryUrl(interior.image_url, 500)}
-                alt="Interior visualization from the RenderLine portfolio"
-                fill
-                sizes="230px"
-              />
-              <span>Spaces, thoughtfully considered.</span>
-            </Link>
-          )}
-          <div className="rl-image-caption">
-            <span>Real RenderLine work</span>
-            <Link href="/portfolio?category=elevation">
-              Explore front elevations
-            </Link>
-          </div>
-        </div>
+          <figcaption>
+            <span>Residential architecture, visualized by RenderLine.</span>
+            <Link href="/portfolio?category=exterior">Explore exteriors</Link>
+          </figcaption>
+        </figure>
       </section>
-      <div className="rl-audiences rl-shell">
-        <Link href="/start-project?service=house-plans">
-          <strong>I have a plot.</strong>
-          <span>Help me plan my home.</span>
+      <div className="premium-quick-paths rl-shell">
+        <Link href="/services/house-plans">
+          <span>I have a plot.</span>
+          <strong>Plan a home</strong>
         </Link>
         <Link href="/services/front-elevation">
-          <strong>I already have drawings.</strong>
-          <span>Bring my design to life.</span>
+          <span>I already have drawings.</span>
+          <strong>See it in 3D</strong>
         </Link>
         <Link href="#professionals">
-          <strong>I am an architect or developer.</strong>
-          <span>Find a reliable studio partner.</span>
+          <span>I am an architect or developer.</span>
+          <strong>Work with the studio</strong>
         </Link>
       </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Organization",
-            name: "RenderLine Studio",
-            url: "https://renderline.pk",
-            logo: "https://renderline.pk/assets/logo.png",
-            telephone: "+" + number,
-            sameAs: ["https://instagram.com/renderline.arch"],
-          }).replace(/</g, "\\u003c"),
-        }}
-      />
       <section className="rl-section rl-shell" id="services">
         <div className="rl-section-head">
           <div>
-            <h2>What do you need help with?</h2>
-            <p>
-              One service or a coordinated package. Start where your project is.
+            <p className="premium-intro-label">
+              The right service, at the right stage
             </p>
+            <h2>What are you planning?</h2>
           </div>
           <Link className="rl-text-link" href="/services">
-            All services
+            Explore all services
           </Link>
         </div>
-        <ServiceCards
-          items={selected}
-          pricing={pricing}
-          number={number}
-          compact
-        />
+        <PremiumServices items={selected} pricing={pricing} compact />
       </section>
-      <section className="rl-section rl-work-section" id="work">
+      <section className="rl-section premium-work" id="work">
         <div className="rl-shell">
           <div className="rl-section-head">
             <div>
-              <h2>Explore our work by category.</h2>
+              <p className="premium-intro-label">Selected work</p>
+              <h2>Design, made visible.</h2>
               <p>
-                Actual plans, visualizations and walkthroughs from the studio.
+                A closer look at the studio’s real projects and visualization
+                work.
               </p>
             </div>
+            <Link className="rl-text-link" href="/portfolio?category=animation">
+              Watch walkthroughs
+            </Link>
           </div>
           <WorkHighlights items={selected} />
         </div>
@@ -170,43 +137,42 @@ export default async function HomePage() {
       <section className="rl-section rl-shell" id="pricing">
         <PricingExplorer pricing={pricing} number={number} compact />
       </section>
-      <section className="rl-section rl-process-section" id="how-it-works">
+      <section className="rl-section premium-process" id="how-it-works">
         <div className="rl-shell">
           <div className="rl-section-head">
             <div>
-              <h2>Have a plot but don’t know where to start?</h2>
-              <p>
-                A clear route from your requirements to the drawings and visuals
-                you need.
-              </p>
+              <p className="premium-intro-label">A considered process</p>
+              <h2>
+                From your first idea
+                <br />
+                to a clear next step.
+              </h2>
             </div>
-            <Link className="rl-button" href="/start-project">
-              Let’s plan your project
-            </Link>
+            <p>
+              New to house planning? We make the stages easy to understand.
+              Start with only the service you need.
+            </p>
           </div>
           <PlanningRoadmap />
-          <p className="rl-note">
-            This is a typical planning journey, not a required bundle. You can
-            start with only the service you need. The drawing index, specialist
-            disciplines and file formats are agreed for your project.
-          </p>
+          <Link className="rl-text-link" href="/start-project">
+            Build a short project brief
+          </Link>
         </div>
       </section>
       <section className="rl-section rl-shell rl-partner" id="professionals">
         <div>
-          <p className="rl-location">
-            For architects, designers, developers & firms
+          <p className="premium-intro-label">
+            For architects, designers & developers
           </p>
-          <h2>Your architectural visualization partner.</h2>
+          <h2>
+            Your design.
+            <br />
+            Our visualization expertise.
+          </h2>
           <p>
-            Send your drawings or model. We agree the views, level of detail,
-            references and review stages, then build the visuals around your
-            design intent.
-          </p>
-          <p>
-            Interior and exterior renders, architectural modeling and
-            pre-rendered walkthrough videos—with project feedback kept in one
-            invited workspace.
+            Bring your plans, model and references. We agree the scope, views
+            and review stages, then turn your design intent into images and
+            films you can present with confidence.
           </p>
           <div className="rl-actions">
             <Link
@@ -218,7 +184,7 @@ export default async function HomePage() {
             <EnquiryLink
               className="rl-text-link"
               number={number}
-              message="Hello RenderLine Studio, I am an architect / developer and would like a quotation for recurring visualization work. I can share my project scope and workload."
+              message="Hello RenderLine Studio, I am an architect / developer and would like to discuss a recurring visualization workload and a tailored volume package."
             >
               Discuss a volume package
             </EnquiryLink>
@@ -226,49 +192,64 @@ export default async function HomePage() {
         </div>
         <div className="rl-partner-notes">
           <div>
-            <h3>Your design stays yours.</h3>
+            <h3>A scope you can review.</h3>
             <p>
-              Agree confidentiality and sharing requirements before work starts.
+              Views, modeling, drawings and source files are agreed before work
+              starts.
             </p>
           </div>
           <div>
-            <h3>A reviewable process.</h3>
+            <h3>A clear place for feedback.</h3>
             <p>
-              References, feedback and deliverables stay tied to the project.
+              Your invited project workspace keeps discussions and deliverables
+              together.
             </p>
           </div>
           <div>
-            <h3>A scope you can price.</h3>
+            <h3>Professional collaboration.</h3>
             <p>
-              Separate views, modeling, source files and extra disciplines are
-              agreed upfront. International work receives a project-specific
-              currency quotation.
+              Agree confidentiality, revision rounds and delivery around the
+              needs of your project.
             </p>
           </div>
         </div>
       </section>
       <section className="rl-section rl-shell rl-faq-section">
-        <h2>A few things worth knowing.</h2>
+        <div>
+          <p className="premium-intro-label">Before you begin</p>
+          <h2>The useful details.</h2>
+        </div>
         <StudioFaq />
       </section>
       <section className="rl-final">
         <div className="rl-shell">
           <div>
-            <h2>Start with what you have.</h2>
-            <p>
-              A plot size, a drawing, a reference—or simply a room you want to
-              rethink.
-            </p>
+            <p className="premium-intro-label">Let’s make a start</p>
+            <h2>Tell us what you have in mind.</h2>
+            <p>A plot, a plan, a reference—or simply the next question.</p>
           </div>
           <EnquiryLink
             className="rl-button"
             number={number}
-            message="Hello RenderLine Studio, I would like to discuss a project and confirm the right service and scope."
+            message="Hello RenderLine Studio, I would like to discuss my project and confirm the right service, scope and quotation."
           >
-            Discuss my project on WhatsApp
+            Discuss your project
           </EnquiryLink>
         </div>
       </section>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "RenderLine Studio",
+            url: "https://renderline.pk",
+            logo: "https://renderline.pk/assets/logo.png",
+            telephone: "+" + number,
+          }).replace(/</g, "\\u003c"),
+        }}
+      />
     </div>
   );
 }

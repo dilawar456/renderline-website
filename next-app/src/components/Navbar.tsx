@@ -10,6 +10,7 @@ const links = [
   ["/drawing-samples", "Drawing samples"],
   ["/#how-it-works", "How it works"],
   ["/about", "About"],
+  ["/contact", "Contact"],
 ];
 export default function Navbar() {
   const path = usePathname();

@@ -13,7 +13,7 @@ export default async function Footer() {
   return (
     <footer
       className="rl-site"
-      style={{ minHeight: 0, borderTop: "1px solid #dce2db" }}
+      style={{ minHeight: 0, borderTop: "1px solid #dce1e5" }}
     >
       <div className="rl-shell" style={{ paddingBlock: 40 }}>
         <div className="rl-section-head">
@@ -23,7 +23,7 @@ export default async function Footer() {
               style={{
                 fontFamily: "var(--font-cinzel)",
                 fontSize: 24,
-                color: "#234432",
+                color: "#17232d",
               }}
             >
               RenderLine Studio

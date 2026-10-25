@@ -2,7 +2,6 @@
 
 @theme {
   --color-gold: var(--gold);
-
 }
 
 /* =============================================
@@ -10,125 +9,143 @@
    ============================================= */
 
 :root {
-   --font-cinzel: 'Cinzel Variable';
-   --font-outfit: 'Outfit Variable';
-   --gold: #d4af37;
-   --gold-light: #f0cc60;
-   --gold-dim: #b8962e;
-   --gold-glow: rgba(212, 175, 55, 0.18);
-   --gold-border: rgba(212, 175, 55, 0.2);
+  --font-cinzel: "Cinzel Variable";
+  --font-outfit: "Outfit Variable";
+  --gold: #d4af37;
+  --gold-light: #f0cc60;
+  --gold-dim: #b8962e;
+  --gold-glow: rgba(212, 175, 55, 0.18);
+  --gold-border: rgba(212, 175, 55, 0.2);
 
-   --bg: #050505;
-   --bg-card: #0a0a0a;
-   --bg-card2: #111111;
-   --bg-glass: rgba(8, 8, 8, 0.85);
+  --bg: #050505;
+  --bg-card: #0a0a0a;
+  --bg-card2: #111111;
+  --bg-glass: rgba(8, 8, 8, 0.85);
 
-   --text: #f0ede8;
-   --text-sub: #8a8580;
-   --text-muted: #4a4846;
+  --text: #f0ede8;
+  --text-sub: #8a8580;
+  --text-muted: #4a4846;
 
-   --border: rgba(255, 255, 255, 0.07);
+  --border: rgba(255, 255, 255, 0.07);
 
-   --font-heading: var(--font-cinzel), serif;
-   --font-body: var(--font-outfit), sans-serif;
+  --font-heading: var(--font-cinzel), serif;
+  --font-body: var(--font-outfit), sans-serif;
 }
 
 body.light-mode {
-   --bg: #eeebe6;
-   --bg-card: #f8f5f0;
-   --bg-card2: #f2efe9;
-   --bg-glass: rgba(240, 237, 232, 0.9);
-   --text: #14110c;
-   --text-sub: #524e49;
-   --text-muted: #9a9590;
-   --border: rgba(0, 0, 0, 0.09);
-   --gold-glow: rgba(180, 140, 28, 0.1);
-   --gold-border: rgba(180, 140, 28, 0.25);
+  --bg: #eeebe6;
+  --bg-card: #f8f5f0;
+  --bg-card2: #f2efe9;
+  --bg-glass: rgba(240, 237, 232, 0.9);
+  --text: #14110c;
+  --text-sub: #524e49;
+  --text-muted: #9a9590;
+  --border: rgba(0, 0, 0, 0.09);
+  --gold-glow: rgba(180, 140, 28, 0.1);
+  --gold-border: rgba(180, 140, 28, 0.25);
 }
 
 html {
-   scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 body {
-   font-family: var(--font-body);
-   background: var(--bg);
-   color: var(--text-sub);
-   overflow-x: hidden;
-   -webkit-font-smoothing: antialiased;
-   -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-sub);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5 {
-   font-family: var(--font-heading);
-   color: var(--text);
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: var(--font-heading);
+  color: var(--text);
 }
 
 /* Custom Premium Scrollbar */
 ::-webkit-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-    background: var(--bg);
+  background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-    background: #2a2a2a;
-    border-radius: 5px;
+  background: #2a2a2a;
+  border-radius: 5px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--gold-dim);
+  background: var(--gold-dim);
 }
 
 /* Global Premium Button */
 .btn-primary {
-    display: inline-block;
-    padding: 12px 32px;
-    background-color: var(--gold);
-    color: #000;
-    font-weight: 700;
-    font-family: var(--font-body);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 14px;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    border: 1px solid var(--gold);
+  display: inline-block;
+  padding: 12px 32px;
+  background-color: #17232d;
+  color: #fff;
+  font-weight: 700;
+  font-family: var(--font-body);
+  text-transform: none;
+  letter-spacing: 1px;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  border: 1px solid #17232d;
 }
 .btn-primary:hover {
-    background-color: transparent;
-    color: var(--gold);
-    box-shadow: 0 0 15px var(--gold-glow);
+  background-color: transparent;
+  color: #17232d;
+  box-shadow: none;
 }
 
-/* Scroll Animations */
 .reveal-up {
-    opacity: 0;
-    transform: translateY(40px);
-    animation: revealUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 1;
+  transform: none;
+  animation: none;
 }
-
-@keyframes revealUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.analytics-consent {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  max-width: 400px;
+  background: #18241c;
+  border: 1px solid #6e7854;
+  padding: 20px;
+  border-radius: 12px;
+  z-index: 1500;
+  font-size: 13px;
+  color: #eef0e5;
 }
-
-.stagger-1 { animation-delay: 100ms; }
-.stagger-2 { animation-delay: 200ms; }
-.stagger-3 { animation-delay: 300ms; }
-.stagger-4 { animation-delay: 400ms; }
-
-/* 3D Hover Effects */
-.card-3d-wrapper {
-    perspective: 1000px;
+.analytics-consent p {
+  margin: 0 0 12px;
 }
-.card-3d {
-    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease;
-    transform-style: preserve-3d;
+.analytics-consent button {
+  padding: 8px 12px;
+  border: 1px solid #a6a47a;
+  border-radius: 6px;
+  margin-right: 8px;
+  cursor: pointer;
 }
-.card-3d:hover {
-    transform: translateY(-10px) rotateX(5deg) rotateY(-5deg);
-    box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.5), -10px -10px 30px rgba(212, 175, 55, 0.05);
+.analytics-preferences {
+  position: fixed;
+  bottom: 6px;
+  left: 10px;
+  color: #9caaa0;
+  font-size: 10px;
+  z-index: 1000;
+  cursor: pointer;
 }
-.analytics-consent{position:fixed;bottom:20px;left:20px;max-width:400px;background:#18241c;border:1px solid #6e7854;padding:20px;border-radius:12px;z-index:1500;font-size:13px;color:#eef0e5}.analytics-consent p{margin:0 0 12px}.analytics-consent button{padding:8px 12px;border:1px solid #a6a47a;border-radius:6px;margin-right:8px;cursor:pointer}.analytics-preferences{position:fixed;bottom:6px;left:10px;color:#9caaa0;font-size:10px;z-index:1000;cursor:pointer}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

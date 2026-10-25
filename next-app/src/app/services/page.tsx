@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getSiteContent, getPortfolioItems } from "@/lib/supabase";
+import { getPortfolioItems } from "@/lib/supabase";
 import { getPricing } from "@/lib/pricing-server";
-import { publicWhatsAppNumber } from "@/lib/public-contact";
-import {
-  ServiceCards,
-  PlanningRoadmap,
-} from "@/components/studio/StudioSections";
+import PremiumServices from "@/components/studio/PremiumServices";
+import { PlanningRoadmap } from "@/components/studio/StudioSections";
 const legacy: Record<string, string> = {
   plans: "house-plans",
   drawings: "drawing-booklets",
@@ -26,9 +23,8 @@ export default async function ServicesPage({
 }: {
   searchParams: Promise<{ service?: string }>;
 }) {
-  const [query, { data: c }, { data: items }, pricing] = await Promise.all([
+  const [query, { data: items }, pricing] = await Promise.all([
     searchParams,
-    getSiteContent(),
     getPortfolioItems(),
     getPricing(),
   ]);
@@ -59,11 +55,7 @@ export default async function ServicesPage({
         id="services-list"
         style={{ paddingTop: 15 }}
       >
-        <ServiceCards
-          items={items || []}
-          pricing={pricing}
-          number={publicWhatsAppNumber(c?.contact_whatsapp)}
-        />
+        <PremiumServices items={items || []} pricing={pricing} />
       </section>
       <section className="rl-process-section rl-section">
         <div className="rl-shell">

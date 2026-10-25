@@ -19,8 +19,9 @@ export default async function PricingPage() {
     <div className="rl-site">
       <section className="rl-page-intro rl-shell">
         <h1>
-          The right scope.
-          <br />A price you can understand.
+          Clear packages.
+          <br />
+          Considered pricing.
         </h1>
         <p>
           Compare complete packages with individual services. These studio
