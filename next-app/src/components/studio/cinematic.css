@@ -192,65 +192,12 @@ body {
 .rl-brand > span {
   font-size: 21px;
 }
-.rl-site .spatial-hero h1,
-.rl-site .spatial-hero-content p {
-  color: #fff;
-}
-.spatial-hero {
-  border: 1px solid #ffffff19;
-}
-.spatial-hero-content h1 {
-  animation: hero-rise 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.spatial-hero-content > p {
-  animation: hero-rise 0.9s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.spatial-hero-content .rl-actions {
-  animation: hero-rise 0.95s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-.spatial-hero .rl-button {
-  background: #f4f1e9;
-  color: #201c15 !important;
-  border-color: #f4f1e9;
-}
-.spatial-hero-picker {
-  padding: 12px;
-  border: 1px solid #ffffff2b;
-  background: rgba(22, 22, 24, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-radius: 12px;
-}
-.spatial-hero-picker button {
-  transition:
-    opacity 0.2s,
-    transform 0.2s;
-  min-height: 44px;
-}
-.spatial-hero-picker button:hover {
-  transform: translateY(-3px);
-}
-.spatial-hero-picker button[aria-pressed="true"] .spatial-hero-thumb {
-  border-color: var(--ui-gold);
-}
-.spatial-entry-bar {
-  border-color: var(--ui-line);
-}
 .spatial-price-hint > strong {
   color: var(--ui-gold);
 }
 .spatial-price-hint > span,
 .spatial-price-hint > small {
   color: var(--ui-muted);
-}
-.spatial-entry-bar .premium-quick-paths > a {
-  border-color: var(--ui-line);
-}
-.spatial-entry-bar .premium-quick-paths > a span {
-  color: var(--ui-muted);
-}
-.spatial-entry-bar .premium-quick-paths > a strong {
-  color: var(--ui-text);
 }
 .premium-work {
   background: var(--ui-bg);
@@ -717,11 +664,6 @@ body {
     animation: reading-progress linear both;
     animation-timeline: scroll(root);
   }
-  .spatial-hero-image {
-    animation: hero-camera linear both;
-    animation-timeline: view();
-    animation-range: exit 0% exit 100%;
-  }
 }
 @keyframes reading-progress {
   from {
@@ -729,24 +671,6 @@ body {
   }
   to {
     transform: scaleX(1);
-  }
-}
-@keyframes hero-camera {
-  from {
-    transform: scale(1.025) translateY(0);
-  }
-  to {
-    transform: scale(1.13) translateY(7%);
-  }
-}
-@keyframes hero-rise {
-  from {
-    opacity: 0.1;
-    transform: translate3d(0, 28px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
   }
 }
 @media (max-width: 1179px) {
@@ -795,17 +719,6 @@ body {
   }
   .rl-menu-toggle > span {
     display: none;
-  }
-  .spatial-hero-picker {
-    padding: 0;
-    background: transparent;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    border: 0;
-    border-radius: 0;
-  }
-  .spatial-hero-picker button {
-    border-radius: 0;
   }
   .cinema-section {
     margin-top: 40px;
@@ -898,10 +811,6 @@ body {
     height: 85svh;
     min-height: 520px;
   }
-  .spatial-hero-image,
-  .spatial-hero-content h1,
-  .spatial-hero-content > p,
-  .spatial-hero-content .rl-actions,
   .rl-reading-progress {
     animation: none !important;
     transform: none !important;
@@ -917,8 +826,7 @@ body {
   .cinema-frame {
     transform: none !important;
   }
-  .rl-button:hover,
-  .spatial-hero-picker button:hover {
+  .rl-button:hover {
     transform: none;
     box-shadow: none;
   }
@@ -928,8 +836,7 @@ body {
   .premium-pricing-toolbar {
     background: var(--ui-bg);
   }
-  .cinema-controls,
-  .spatial-hero-picker {
+  .cinema-controls {
     background: #18181bf5;
   }
 }

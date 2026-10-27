@@ -9,7 +9,6 @@ const links = [
   ["/portfolio", "Portfolio"],
   ["/pricing", "Pricing"],
   ["/drawing-samples", "Drawing samples"],
-  ["/#how-it-works", "How it works"],
   ["/about", "About"],
   ["/contact", "Contact"],
 ];

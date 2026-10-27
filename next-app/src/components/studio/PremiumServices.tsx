@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ServiceIcon } from "./HomeSections";
 import Image from "next/image";
 import { SERVICES, workMatches, type PublicWork } from "@/lib/services";
 import type { Pricing } from "@/lib/pricing";
@@ -64,6 +65,7 @@ export default function PremiumServices({
             <div className="premium-service-information">
               <div>
                 <h3>
+                  <ServiceIcon slug={s.slug} size={23} />
                   <Link href={"/services/" + s.slug}>{s.title}</Link>
                 </h3>
                 <p>{s.short}</p>

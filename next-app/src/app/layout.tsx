@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site-url";
 import "@fontsource-variable/cinzel";
 import "@fontsource-variable/outfit";
+import "@fontsource-variable/manrope";
 import SiteFrame from "@/components/SiteFrame";
 import Tracking from "@/components/Tracking";
 import WhatsAppLink from "@/components/WhatsAppLink";
@@ -12,6 +13,7 @@ import "./globals.css";
 import "@/components/studio/studio.css";
 import "@/components/studio/premium.css";
 import "@/components/studio/cinematic.css";
+import "@/components/studio/mission.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

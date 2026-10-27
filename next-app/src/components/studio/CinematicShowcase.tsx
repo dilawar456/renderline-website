@@ -1,14 +1,29 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-type Scene = { id: string; image: string; label: string; category: string };
+import { ArrowUpRight, ArrowDown } from "lucide-react";
+type Scene = {
+  id: string;
+  image: string;
+  label: string;
+  category: string;
+  mobileImage?: string;
+};
 export default function CinematicShowcase({ scenes }: { scenes: Scene[] }) {
   const root = useRef<HTMLElement>(null),
     [near, setNear] = useState(false);
+  const mediaRequested = useRef(false);
+  const requestMedia = useCallback(() => {
+    if (!mediaRequested.current) {
+      mediaRequested.current = true;
+      setNear(true);
+    }
+  }, []);
   useEffect(() => {
     const el = root.current;
     if (!el || scenes.length < 2) return;
+    const stage = el.querySelector<HTMLElement>(".cinema-stage")!;
     const media = matchMedia("(prefers-reduced-motion: reduce)");
     let raf = 0;
     let observing = false;
@@ -24,10 +39,15 @@ export default function CinematicShowcase({ scenes }: { scenes: Scene[] }) {
       raf = 0;
       if (!visible || media.matches || document.hidden) return;
       const rect = el!.getBoundingClientRect();
+      const inset = window.innerHeight - stage.clientHeight;
       const p = Math.max(
         0,
-        Math.min(1, -rect.top / Math.max(1, rect.height - window.innerHeight)),
+        Math.min(
+          1,
+          (inset - rect.top) / Math.max(1, rect.height - stage.clientHeight),
+        ),
       );
+      if (p > 0.01) requestMedia();
       let position = p * (frames.length - 1);
       const ready = frames.map((frame) => {
         const image = frame.querySelector("img");
@@ -103,8 +123,8 @@ export default function CinematicShowcase({ scenes }: { scenes: Scene[] }) {
     const observer = new IntersectionObserver(
       (entries) => {
         visible = entries[0].isIntersecting;
+        document.documentElement.dataset.cinemaVisible = String(visible);
         if (visible) {
-          setNear(true);
           if (!media.matches) attach();
         } else detach();
       },
@@ -116,41 +136,67 @@ export default function CinematicShowcase({ scenes }: { scenes: Scene[] }) {
     media.addEventListener("change", configure);
     return () => {
       observer.disconnect();
+      delete document.documentElement.dataset.cinemaVisible;
       el.removeEventListener("cinema-ready", schedule);
       detach();
       media.removeEventListener("change", configure);
     };
-  }, [scenes.length]);
+  }, [scenes.length, requestMedia]);
   return (
     <section
-      className="cinema-section"
+      className="cinema-section mission-signature"
+      id="home"
+      data-hero="signature"
       ref={root}
-      aria-label="Scroll through RenderLine design work"
+      aria-label="RenderLine architectural design and visualization"
     >
       <div className="cinema-stage">
         <div className="cinema-frames">
           {scenes.map((s, i) => (
             <div className="cinema-frame" key={s.id}>
               {(i === 0 || near) && (
-                <Image
-                  src={s.image}
-                  unoptimized
-                  fill
-                  sizes="100vw"
-                  alt={`RenderLine ${s.label.toLowerCase()} visualization`}
-                  loading="lazy"
-                  onLoad={() =>
-                    root.current?.dispatchEvent(new Event("cinema-ready"))
-                  }
-                />
+                <picture>
+                  {s.mobileImage && (
+                    <source media="(max-width: 700px)" srcSet={s.mobileImage} />
+                  )}
+                  <Image
+                    src={s.image}
+                    unoptimized
+                    fill
+                    sizes="100vw"
+                    alt={`RenderLine ${s.label.toLowerCase()} visualization`}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    fetchPriority={i === 0 ? "high" : "auto"}
+                    onLoad={() =>
+                      root.current?.dispatchEvent(new Event("cinema-ready"))
+                    }
+                  />
+                </picture>
               )}
             </div>
           ))}
         </div>
         <div className="cinema-scrim" />
         <div className="cinema-intro">
-          <h2>Step into the design.</h2>
-          <p>Scroll to explore the studio’s work.</p>
+          <h1>
+            Your space.
+            <br />
+            Brought to life.
+          </h1>
+          <p>
+            House plans, 3D front elevations and interior/exterior
+            visualization.
+          </p>
+          <div className="rl-actions">
+            <Link className="rl-button" href="/portfolio">
+              View our work{" "}
+              <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" />
+            </Link>
+            <Link className="mission-hero-quote" href="/start-project">
+              Get a quote{" "}
+              <ArrowUpRight size={17} strokeWidth={1.5} aria-hidden="true" />
+            </Link>
+          </div>
         </div>
         <div className="cinema-captions">
           {scenes.map((s, i) => (
@@ -162,13 +208,9 @@ export default function CinematicShowcase({ scenes }: { scenes: Scene[] }) {
             >
               <span>{s.label}</span>
               <Link href={"/portfolio?category=" + s.category}>
-                Explore this work <span aria-hidden="true">↗</span>
+                Explore this work{" "}
+                <ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" />
               </Link>
-              {i === 0 && (
-                <span className="cinema-static-note">
-                  Exterior, interiors and commercial design.
-                </span>
-              )}
             </div>
           ))}
         </div>
@@ -179,15 +221,21 @@ export default function CinematicShowcase({ scenes }: { scenes: Scene[] }) {
               className="cinema-step"
               key={s.id}
               aria-current={i === 0 ? "step" : "false"}
+              aria-label={'Show ' + s.label.toLowerCase()}
               onClick={() => {
                 const el = root.current;
                 if (!el) return;
+                requestMedia();
                 if (el.dataset.enhanced) {
+                  const height =
+                    el.querySelector<HTMLElement>(
+                      ".cinema-stage",
+                    )!.clientHeight;
                   const top =
                     el.getBoundingClientRect().top +
-                    window.scrollY +
-                    (el.offsetHeight - window.innerHeight) *
-                      (i / (scenes.length - 1));
+                    window.scrollY -
+                    (window.innerHeight - height) +
+                    (el.offsetHeight - height) * (i / (scenes.length - 1));
                   window.scrollTo({ top, behavior: "auto" });
                 } else {
                   el.querySelectorAll<HTMLElement>(".cinema-frame").forEach(
@@ -211,6 +259,10 @@ export default function CinematicShowcase({ scenes }: { scenes: Scene[] }) {
             </button>
           ))}
         </nav>
+        <div className="mission-scroll-cue">
+          <ArrowDown size={17} strokeWidth={1.5} aria-hidden="true" />
+          <span>Scroll to explore</span>
+        </div>
         <div className="cinema-progress" aria-hidden="true" />
       </div>
     </section>
