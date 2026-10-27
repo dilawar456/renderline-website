@@ -57,7 +57,7 @@ export default async function HomePage() {
         </picture>}
         <div className="studio-hero-copy rl-shell">
           <h1>Architecture,<br />made visible.</h1>
-          <p>House plans, detailed drawings and 3D visuals.<br />From your first idea to the space you imagined.</p>
+          <p>Thoughtful house plans. Detailed drawings. Realistic 3D visuals. From your first idea to the space you imagined.</p>
           <div className="rl-actions">
             <Link href="/start-project" className="rl-button">Start your project ↗</Link>
             <Link href="/portfolio" className="studio-hero-link">Explore our work ↗</Link>

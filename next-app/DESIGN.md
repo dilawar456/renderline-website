@@ -13,3 +13,6 @@ Layout: hero / three client pathways / selected work (actual images with categor
 Frame: max 1400px, desktop margins 48–64px, mobile 22–24px; clean geometry. Photography is the visual weight. Same semantic tokens across public pages. Review 360,390,768,1440,1920 widths with actual DOM and screenshots. Two critique/fix passes minimum. Preserve two-column mobile portfolio.
 
 Performance: no animation framework, server-render icons, hero priority image responsive to viewport, only nearby secondary frames, no autoplay video. Never hide essential text while scroll animations load. Scene failure retains a loaded image.
+
+## Current direction — supersedes cinematic notes above
+The user's subsequent correction keeps the upper Architecture, made visible hero and removes the lower scroll showcase entirely. One natural-flow hero remains: quiet text column beside an inset render on desktop, full-image legible composition on mobile. No scroll-controlled image sequences or new animation packages. Portfolio uses aligned equal columns, landscape frames on desktop and two square columns on mobile. Audience pathways are compact text/icon links without repeated preview imagery. Footer contains only the small studio brand and WhatsApp, 77px desktop / 73px mobile.

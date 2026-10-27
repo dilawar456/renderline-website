@@ -1216,3 +1216,76 @@ html:has(.mission-signature):not([data-cinema-visible="false"])
 }
 /* The homepage already has contact actions; keep its compact footer unobstructed. */
 body:has(.mission-home) .rl-floating-contact { display:none; }
+
+/* Editorial refinement: quiet copy column, architectural image field, precise gallery. */
+.studio-single-hero { height: min(780px,calc(100svh - var(--nav-height))); min-height:620px; background:var(--ui-bg); color:var(--ui-text); }
+.studio-single-hero picture { position:absolute; inset:24px 32px 24px 47%; overflow:hidden; }
+.studio-single-hero picture img { object-position:54% 50%; }
+.studio-single-hero::after { display:none; }
+.studio-hero-copy { pointer-events:none; }
+.studio-hero-copy h1,.studio-hero-copy p,.studio-hero-copy .rl-actions { max-width:43%; pointer-events:auto; }
+.rl-site .studio-hero-copy h1 { color:var(--ui-text); font-size:clamp(54px,5.6vw,82px); margin-bottom:28px; }
+.studio-hero-copy p { color:var(--ui-muted); font-size:15px; line-height:1.85; max-width:360px; margin-bottom:34px; }
+.studio-hero-copy .rl-actions { gap:26px; }
+.studio-hero-link { color:var(--ui-text); font-size:13px; border-color:var(--ui-line); }
+.mission-home .mission-paths { padding-top:48px; padding-bottom:48px; border-bottom:1px solid var(--ui-line); }
+.mission-home .mission-paths > h2 { font-size:26px; margin-bottom:28px; }
+.mission-home .mission-path-grid { gap:0; }
+.mission-home .mission-path { display:block; padding:0 30px; border-left:1px solid var(--ui-line); }
+.mission-home .mission-path:first-child { padding-left:0; border-left:0; }
+.mission-home .mission-path:last-child { padding-right:0; }
+.mission-home .mission-path-photo { display:none; }
+.mission-home .mission-path-title { font-size:19px; }
+.mission-home .mission-path-copy > p:not(.mission-path-title) { font-size:14px; }
+.mission-home .mission-path-copy > span { font-size:13px; margin-top:16px; }
+.mission-home .mission-work { padding-top:80px; }
+.mission-home .mission-work-grid { gap:38px 28px; }
+.mission-home .mission-project:nth-child(n) .mission-project-image { aspect-ratio:1.5; background:var(--ui-panel); }
+.mission-home .mission-project-caption { align-items:center; padding-top:18px; font-size:17px; }
+.mission-project-caption span { display:flex; flex-direction:column; gap:6px; }
+.mission-project-caption small { color:var(--ui-muted); font-size:11px; font-weight:450; letter-spacing:.02em; }
+.mission-home .mission-project-caption > svg { width:36px; height:36px; padding:8px; border:1px solid var(--ui-line); border-radius:50%; }
+.mission-home .mission-project:hover .mission-project-caption > svg { background:var(--ui-gold); color:var(--ui-bg); transform:none; }
+.mission-home .mission-services { padding-top:72px; padding-bottom:64px; }
+.mission-home .mission-service-row { min-height:108px; }
+.mission-home .mission-service-row p { font-size:13px; color:var(--ui-gold); }
+.mission-home .mission-process { padding-bottom:80px; }
+.mission-home .mission-process h3 { font-size:21px; }
+.mission-home .mission-process li p { font-size:14px; }
+.mission-home .mission-studio-copy > p { font-size:16px; }
+.mission-home .mission-enquiry { padding-block:48px; }
+@media(min-width:701px) and (max-width:1100px) {
+ .studio-single-hero picture { left:49%; right:22px; }
+ .rl-site .studio-hero-copy h1 { font-size:54px; }
+ .studio-hero-copy p { max-width:38%; }
+ .studio-hero-copy .rl-actions { flex-direction:column; align-items:start; gap:10px; }
+}
+@media(max-width:700px) {
+ .studio-single-hero { height:calc(100svh - var(--nav-height)); min-height:580px; max-height:780px; color:#fff; }
+ .studio-single-hero picture { inset:0; }
+ .studio-single-hero::after { display:block; background:linear-gradient(0deg,rgba(0,0,0,.76),rgba(0,0,0,.13) 95%); }
+ .studio-hero-copy { align-self:end; padding-bottom:70px; }
+ .studio-hero-copy h1,.studio-hero-copy p,.studio-hero-copy .rl-actions { max-width:100%; }
+ .rl-site .studio-hero-copy h1 { font-size:clamp(44px,10vw,66px); color:#fff; margin-bottom:22px; }
+ .studio-hero-copy p { color:#eeece6; font-size:14px; max-width:340px; margin-bottom:26px; }
+ .studio-hero-link { color:#fff; border-color:#ffffff70; }
+ .studio-hero-copy .rl-actions { gap:20px; }
+ .mission-home .mission-paths { padding-block:36px; }
+ .mission-home .mission-paths > h2 { font-size:27px; margin-bottom:24px; }
+ .mission-home .mission-path-grid { display:block; }
+ .mission-home .mission-path:nth-child(n) { padding:20px 0; border-left:0; border-top:1px solid var(--ui-line); }
+ .mission-home .mission-path-copy > p:not(.mission-path-title) { font-size:13px; margin-block:10px; }
+ .mission-home .mission-path-copy > span { margin-top:0; min-height:36px; }
+ .mission-home .mission-path-title { font-size:18px; }
+ .mission-home .mission-work { padding-block:48px; }
+ .mission-home .mission-work-grid { gap:26px 14px; }
+ .mission-home .mission-project:nth-child(n) .mission-project-image { aspect-ratio:1; }
+ .mission-home .mission-project-caption { font-size:12px; gap:5px; padding-top:12px; align-items:start; }
+ .mission-project-caption small { font-size:10px; }
+ .mission-home .mission-project-caption > svg { width:24px; height:24px; padding:4px; flex-shrink:0; }
+ .mission-home .mission-section-heading p { font-size:13px; max-width:320px; }
+ .mission-home .mission-services { padding-block:48px; }
+ .mission-home .mission-process { padding-block:48px; }
+}
+/* Prevent scrolling page copy from showing through the sticky header. */
+.rl-nav, :root[data-theme="light"] .rl-nav { background:var(--ui-bg); }

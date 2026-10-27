@@ -124,7 +124,10 @@ export function SelectedWork({ items }: { items: PublicWork[] }) {
   return (
     <section className="mission-work rl-section rl-shell" id="work">
       <div className="mission-section-heading">
-        <h2>Selected work.</h2>
+        <div>
+          <h2>Spaces, brought to life.</h2>
+          <p>A selection of our residential, interior and commercial visualizations.</p>
+        </div>
         <Link className="rl-text-link" href="/portfolio">
           Explore full portfolio{" "}
           <ArrowUpRight size={17} strokeWidth={1.5} aria-hidden="true" />
@@ -150,7 +153,7 @@ export function SelectedWork({ items }: { items: PublicWork[] }) {
                     />
                   </div>
                   <div className="mission-project-caption">
-                    <span>{p.label}</span>
+                    <span><small>RenderLine Studio</small>{p.label}</span>
                     <ArrowUpRight
                       size={20}
                       strokeWidth={1.5}
