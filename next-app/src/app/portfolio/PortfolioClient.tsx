@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useEffect, useRef } from "react";
-import Image from "next/image";
+import Image from "@/components/studio/RenderImage";
 import Link from "next/link";
 import VideoPreview from "@/components/studio/VideoPreview";
 import { PORTFOLIO_CATEGORIES, workMatches } from "@/lib/services";
@@ -173,15 +173,10 @@ export default function PortfolioClient({
   }, [lightboxOpen, closeLightbox, prevImage, nextImage]);
 
   return (
-    <div className="rl-site">
+    <div className="rl-site edition-portfolio">
       <section className="premium-portfolio-header">
         <div className="rl-shell">
-          <p className="premium-intro-label">Selected work</p>
-          <h1>The work speaks.</h1>
-          <p>
-            Real RenderLine visualizations, floor-plan studies and walkthrough
-            films. Explore the work by discipline.
-          </p>
+          <div className="edition-archive-title"><div><Link className="edition-back" href="/">RenderLine Studio / Portfolio</Link><h1>An archive of<br />imagined spaces.</h1></div><aside><p>Floor plans, front elevations, interiors and commercial spaces. Explore real work from the studio.</p><div><span><strong>{items.length}</strong>visualizations</span><span><strong>{videos.length}</strong>walkthrough films</span></div></aside></div>
           <div className="rl-filter-row">
             {FILTERS.map((f) => {
               const count =
@@ -226,14 +221,14 @@ export default function PortfolioClient({
                       }
                     }}
                   >
-                    <Image
+                    <div className="edition-portfolio-media"><Image
                       src={item.image_url}
                       alt={`RenderLine ${item.category || "architectural"} visualization`}
                       fill
                       className="object-cover  "
                       sizes="(max-width:700px) 45vw, (max-width:1100px) 45vw, 30vw"
                       loading={idx < 2 ? "eager" : "lazy"}
-                    />
+                    /></div><div className="edition-portfolio-caption"><span>{FILTERS.find(f=>f.key !== "all" && workMatches(item,f.key))?.label || "Visualization"}</span><span aria-hidden="true">↗</span></div>
                   </div>
                 ))}
               </div>

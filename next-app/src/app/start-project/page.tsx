@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { FileText, MessageCircle, ShieldCheck } from "lucide-react";
 import ProjectStarter from "@/components/studio/ProjectStarter";
 import { getPricing } from "@/lib/public-data";
 import { getSiteContent } from "@/lib/public-data";
@@ -24,21 +26,9 @@ export default async function StartPage({
     ? query.service
     : "house-plans";
   return (
-    <div className="rl-site">
-      <section className="rl-page-intro rl-shell">
-        <h1>Let’s plan your project.</h1>
-        <p>
-          A short, optional guide to the right service. Your details stay in
-          this page until you choose to open WhatsApp.
-        </p>
-      </section>
-      <div className="rl-shell rl-start-page">
-        <ProjectStarter
-          pricing={p}
-          number={publicWhatsAppNumber(data?.contact_whatsapp)}
-          initial={initial}
-        />
-      </div>
+    <div className="rl-site edition-start rl-shell edition-page">
+      <div className="edition-brief-layout"><aside className="edition-brief-intro"><Link href="/" className="edition-back">RenderLine Studio / Project guide</Link><h1>A clear brief.<br />A better start.</h1><p>Choose your service, share the essentials and review your project brief before opening WhatsApp.</p><ol><li><FileText size={21} aria-hidden="true" /><span><strong>Choose your service</strong>Start with only the work you need.</span></li><li><MessageCircle size={21} aria-hidden="true" /><span><strong>Tell us about it</strong>Dimensions, references and your priorities.</span></li><li><ShieldCheck size={21} aria-hidden="true" /><span><strong>Review before sharing</strong>Your details stay here until you open WhatsApp.</span></li></ol><Link href="/pricing" className="rl-text-link">Compare guide prices ↗</Link></aside>
+      <div className="edition-brief-form"><ProjectStarter pricing={p} number={publicWhatsAppNumber(data?.contact_whatsapp)} initial={initial} /></div></div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { emptyTracking, invoiceSubtotal, safeLink, validTracking, type Brief, type Intake, type Invoice, type LineItem, type Profile, type Project, type Task, type Tracking, type Update } from '@/lib/studio';
 import './portal.css';
+import PortalWelcome from './PortalWelcome';
 import ProjectFiles from './ProjectFiles';
 import {temporaryAuthFailure} from '@/lib/auth-failure';
 import ProjectConversation from './ProjectConversation';
@@ -101,7 +102,7 @@ export default function Portal(){
  const organize=async(source:Intake)=>{setDraft(null);setSourceId(source.id);const result=await api('/api/studio/organize',{intake_id:source.id});setDraft(result.brief);};
 
  if(loading)return <div className="studio studio-login"><p role="status">Opening your workspace…</p></div>;
- if(!profile)return <div className="studio studio-login"><div className="studio-login-story"><a className="studio-brand" href="/">RenderLine<span>CLIENT & STUDIO PORTAL</span></a><h1>Your project.<br/>One clear workspace.</h1><p>Review progress, share drawings, ask for changes and receive your final files—all in your private project space.</p><div className="studio-feature">01 &nbsp; Follow the latest approved progress</div><div className="studio-feature">02 &nbsp; Share references and give clear feedback</div><div className="studio-feature">03 &nbsp; Download and approve your deliverables</div><a href="/" className="studio-back-link">← Back to website</a></div><div className="studio-card"><span className="studio-eyebrow">INVITED CLIENTS & TEAM</span><h2>{forgot?'Reset your password':'Welcome to your workspace'}</h2>{error&&<p className="studio-error" role="alert">{error}</p>}{notice&&<p className="studio-notice" role="status">{notice}</p>}{signedIn?<><p>Signed in as <strong>{signedInEmail}</strong>.</p><p>Your sign-in is active, but project access could not be loaded.</p><button disabled={busy} onClick={()=>void run(load,'Workspace refreshed.')}>Retry workspace</button><button disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());clearWorkspace();setError('');},'')}>Sign out</button></>:<form onSubmit={e=>{
+ if(!profile)return <div className="studio studio-login"><PortalWelcome/><div className="studio-card"><span className="studio-eyebrow">INVITED CLIENTS & TEAM</span><h2>{forgot?'Reset your password':'Welcome to your workspace'}</h2>{error&&<p className="studio-error" role="alert">{error}</p>}{notice&&<p className="studio-notice" role="status">{notice}</p>}{signedIn?<><p>Signed in as <strong>{signedInEmail}</strong>.</p><p>Your sign-in is active, but project access could not be loaded.</p><button disabled={busy} onClick={()=>void run(load,'Workspace refreshed.')}>Retry workspace</button><button disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());clearWorkspace();setError('');},'')}>Sign out</button></>:<form onSubmit={e=>{
   e.preventDefault();const f=new FormData(e.currentTarget);
   void run(async()=>{
    const email=val(f,'email');

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
+import Image from "@/components/studio/RenderImage";
 import type { DrawingSample } from "@/lib/drawing-samples";
 import EnquiryLink from "./EnquiryLink";
 export default function DrawingSamples({
@@ -18,7 +18,8 @@ export default function DrawingSamples({
       (size === "all" || s.marla === Number(size)),
   );
   return (
-    <>
+    <div className="edition-library">
+      <aside className="edition-library-filter"><h2>Find your sample</h2><p>Select a discipline and plot size.</p>
       <div className="rl-filter-row" aria-label="Drawing discipline">
         {[
           ["working", "Architectural working"],
@@ -46,6 +47,7 @@ export default function DrawingSamples({
           ))}
         </select>
       </label>
+      </aside><div className="edition-library-results">
       {shown.length ? (
         shown.map((s) => (
           <article className="rl-sample-document" key={s.id}>
@@ -108,6 +110,6 @@ export default function DrawingSamples({
         conditions. A sample is not a site-ready construction or approval
         document for another plot.
       </p>
-    </>
+    </div></div>
   );
 }

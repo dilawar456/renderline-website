@@ -146,7 +146,7 @@ export default function WebsiteEditor() {
         <Link className="rl-text-link" href="/portal">
           Back to client portal
         </Link>
-        <h1 style={{ marginTop: 25 }}>Website rates & samples.</h1>
+        <header className="edition-owner-heading"><h1>Your studio.<br />Kept up to date.</h1><p>Manage published guide rates and approved drawing samples from one place.</p></header>
         <p>
           Owner settings. Prices update without changing the design. Public
           samples must be approved for sharing.
@@ -156,7 +156,8 @@ export default function WebsiteEditor() {
         </p>
         {pricing && (
           <>
-            <div className="rl-admin-grid">
+            <nav className="edition-detail-nav" aria-label="Website settings sections"><a href="#owner-rates">Guide rates</a><a href="#owner-samples">Drawing samples</a><Link href="/pricing">Preview public pricing ↗</Link></nav>
+            <div className="rl-admin-grid" id="owner-rates">
               {Object.entries(pricing).map(([group, values]) => (
                 <fieldset key={group} disabled={busy}>
                   <legend>{labels[group] || group}</legend>
@@ -191,7 +192,7 @@ export default function WebsiteEditor() {
                 </fieldset>
               ))}
             </div>
-            <SampleLibraryEditor
+            <div id="owner-samples"><SampleLibraryEditor
               samples={samples}
               disabled={busy}
               onChange={(next) => {
@@ -200,8 +201,8 @@ export default function WebsiteEditor() {
                   "Unsaved changes. Choose Save below to publish them.",
                 );
               }}
-            />
-            <div className="rl-actions">
+            /></div>
+            <div className="rl-actions edition-editor-save">
               <button
                 type="button"
                 className="rl-button"

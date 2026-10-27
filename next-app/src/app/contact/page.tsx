@@ -21,52 +21,21 @@ export default async function ContactPage() {
     number = publicWhatsAppNumber(c?.contact_whatsapp),
     email = publicContactEmail(c?.contact_email);
   return (
-    <div className="rl-site">
-      <section className="rl-page-intro rl-shell">
-        <h1>Tell us what you’re planning.</h1>
-        <p>
-          Send a drawing, describe your plot or share a design reference. We’ll
-          help define the right scope before quoting.
-        </p>
-      </section>
-      <section
-        className="rl-section rl-shell rl-deliverables"
-        style={{ paddingTop: 10 }}
-      >
-        <div>
-          <h2>Talk to the studio.</h2>
-          <p>Lahore, Pakistan · remote project collaboration</p>
-          <p>
-            <EnquiryLink
-              className="rl-text-link"
-              number={number}
-              message="Hello RenderLine Studio, I would like to discuss my project."
-            >
-              <MessageCircle size={19} strokeWidth={1.5} aria-hidden="true" />
-              {publicPhoneDisplay(c?.contact_phone_display, number)}
-            </EnquiryLink>
-          </p>
-          <p>
-            <a className="rl-text-link" href={"mailto:" + email}>
-              <Mail size={19} strokeWidth={1.5} aria-hidden="true" />
-              {email}
-            </a>
-          </p>
-          <p>
-            Have drawings? Attach them inside the WhatsApp conversation.
-            Existing invited clients can share files in their portal workspace.
-          </p>
-          <div className="rl-actions">
-            <Link className="rl-button rl-button-quiet" href="/start-project">
-              Use the project guide
-            </Link>
-            <Link className="rl-text-link" href="/portal">
-              Open client portal
-            </Link>
+    <div className="rl-site edition-page edition-contact rl-shell">
+      <div className="edition-contact-layout">
+        <section className="edition-contact-story">
+          <Link href="/" className="edition-back">RenderLine Studio / Contact</Link>
+          <h1>Every great space<br />starts with a conversation.</h1>
+          <p>Share your plot, drawings or design idea. We’ll help you choose the right service and agree a clear scope.</p>
+          <div className="edition-contact-methods">
+            <EnquiryLink number={number} message="Hello RenderLine Studio, I would like to discuss my project." className="edition-contact-method"><MessageCircle size={24} aria-hidden="true" /><span><small>Talk on WhatsApp</small><strong>{publicPhoneDisplay(c?.contact_phone_display, number)}</strong></span></EnquiryLink>
+            <a href={"mailto:" + email} className="edition-contact-method"><Mail size={24} aria-hidden="true" /><span><small>Send an email</small><strong>{email}</strong></span></a>
           </div>
-        </div>
+          <div className="edition-contact-note"><h2>Already working with us?</h2><p>Your invited portal keeps project conversations and deliverables together.</p><Link href="/portal" className="rl-text-link">Open your workspace ↗</Link></div>
+          <p className="edition-location">Lahore, Pakistan · Remote collaboration</p>
+        </section>
         <ContactForm whatsappNumber={number} />
-      </section>
+      </div>
     </div>
   );
 }

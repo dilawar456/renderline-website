@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
+import Image from "@/components/studio/RenderImage";
 import Link from "next/link";
 import {
   getPortfolioItems,
@@ -46,12 +46,12 @@ export default async function ProjectPage({
     .filter((i) => i.id !== item.id && workMatches(i, category))
     .slice(0, 3);
   return (
-    <div className="rl-site">
-      <section className="rl-page-intro rl-shell">
+    <div className="rl-site edition-project-detail">
+      <section className="edition-project-heading rl-shell">
         <Link className="rl-text-link" href={"/portfolio?category=" + category}>
           Back to {label.toLowerCase()}
         </Link>
-        <h1 style={{ marginTop: 20 }}>{label}.</h1>
+        <div className="edition-project-title"><h1>{label}.</h1><Link className="rl-button" href={"/start-project?service=" + (category === "interior" ? "interior-design" : "exterior-visualization")}>Plan a similar project ↗</Link></div>
         <p>
           A RenderLine portfolio example. Share the features you like so we can
           quote a project-specific scope.
@@ -75,8 +75,8 @@ export default async function ProjectPage({
               height: "auto",
               maxHeight: "85vh",
               objectFit: "contain",
-              background: "#e9eee4",
-              borderRadius: 8,
+              background: "var(--ui-panel)",
+              borderRadius: 0,
             }}
             priority
           />

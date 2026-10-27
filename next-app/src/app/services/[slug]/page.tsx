@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
+import Image from "@/components/studio/RenderImage";
 import Link from "next/link";
 import { SERVICES, workMatches } from "@/lib/services";
 import { servicePrice } from "@/lib/service-price";
@@ -54,7 +54,8 @@ export default async function ServicePage({
       .slice(0, 4),
     number = publicWhatsAppNumber(c?.contact_whatsapp);
   return (
-    <div className="rl-site">
+    <div className="rl-site edition-service-detail">
+      <div className="rl-shell edition-service-top"><Link href="/services" className="edition-back">Services / {s.title}</Link><a href="#service-scope">Explore the scope ↓</a></div>
       <section className="rl-shell rl-service-hero">
         <div>
           <Link className="rl-text-link" href="/services">
@@ -109,7 +110,7 @@ export default async function ServicePage({
           </div>
         )}
       </section>
-      <section className="rl-section rl-shell rl-deliverables">
+      <section className="rl-section rl-shell rl-deliverables" id="service-scope">
         <div>
           <h2>What you receive.</h2>
           <ul className="rl-list">
@@ -153,7 +154,8 @@ export default async function ServicePage({
           </Link>
         </div>
       </section>
-      <section className="rl-section rl-work-section">
+      <nav className="edition-detail-nav rl-shell" aria-label="Service page sections"><a href="#service-scope">Scope & deliverables</a><a href="#service-examples">Portfolio examples</a><a href="#service-questions">Common questions</a><Link href={"/start-project?service="+slug}>Start your project ↗</Link></nav>
+      <section className="rl-section rl-work-section" id="service-examples">
         <div className="rl-shell">
           <div className="rl-section-head">
             <h2>
@@ -233,7 +235,7 @@ export default async function ServicePage({
             </div>
           ))}
         </div>
-        <div className="rl-faq">
+        <div className="rl-faq" id="service-questions">
           <details>
             <summary>{s.faq}</summary>
             <p>{s.answer}</p>

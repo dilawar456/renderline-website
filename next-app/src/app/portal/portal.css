@@ -25,3 +25,27 @@
 .studio.studio-login .studio-card p,.studio.studio-login .studio-card label{color:var(--muted)}
 .studio.studio-login .studio-card input{background:#101012;color:var(--ink);border-color:var(--line)}
 .studio.studio-login .studio-card .studio-primary{background:var(--accent);color:#171513}
+/* Revised login composition: branded welcome panel beside the focused access form. */
+.studio.studio-login { padding:0; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); min-height:100svh; gap:0; align-items:stretch; }
+.studio.studio-login .edition-portal-welcome { display:flex; flex-direction:column; justify-content:space-between; gap:48px; padding:48px clamp(32px,6vw,96px); background:#171719; border-right:1px solid var(--line); }
+.edition-portal-brand { display:flex; gap:16px; align-items:center; color:var(--ink); font-size:26px; font-weight:600; }
+.edition-portal-brand small { display:block; font-size:11px; margin-top:5px; font-weight:400; letter-spacing:.02em; color:var(--muted); }
+.edition-portal-brand img { object-fit:contain; }
+.studio .edition-portal-welcome h1 { font-size:clamp(42px,4.5vw,68px); font-weight:450; letter-spacing:-.04em; }
+.studio .edition-portal-welcome p { font-size:16px; line-height:1.85; max-width:480px; }
+.edition-portal-features { display:grid; gap:20px; }
+.edition-portal-features span { display:flex; align-items:center; gap:14px; font-size:14px; color:var(--muted); }
+.edition-portal-features svg { color:var(--accent); }
+.studio.studio-login > .studio-card { align-self:center; width:calc(100% - 96px); max-width:470px; margin:48px auto; border:0; border-top:0; background:transparent; padding:0; }
+.studio.studio-login > .studio-card h2 { font-size:34px; margin-top:15px; }
+.studio.studio-login .studio-eyebrow { color:var(--accent); font-size:12px; text-transform:none; letter-spacing:0; }
+@media(max-width:700px) {
+ .studio.studio-login { display:block; }
+ .studio.studio-login .edition-portal-welcome { padding:28px 24px 32px; gap:28px; border-right:0; border-bottom:1px solid var(--line); }
+ .studio .edition-portal-welcome h1 { font-size:42px; margin:0 0 18px; }
+ .studio .edition-portal-welcome p { font-size:14px; margin-bottom:0; }
+ .edition-portal-features { display:none; }
+ .edition-portal-brand { font-size:22px; }
+ .studio.studio-login > .studio-card { width:calc(100% - 48px); margin:36px auto; }
+ .studio.studio-login > .studio-card h2 { font-size:28px; }
+}

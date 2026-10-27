@@ -14,6 +14,7 @@ import "@/components/studio/studio.css";
 import "@/components/studio/premium.css";
 import "@/components/studio/cinematic.css";
 import "@/components/studio/mission.css";
+import "@/components/studio/editions.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -41,6 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://res.cloudinary.com" />
         <script
           dangerouslySetInnerHTML={{
             __html:

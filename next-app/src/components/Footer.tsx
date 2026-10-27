@@ -5,7 +5,8 @@ import { getSiteContent } from "@/lib/public-data";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 import EnquiryLink from "./studio/EnquiryLink";
 export default async function Footer() {
-  const { data: content } = await getSiteContent();
+  // A public-content outage must not prevent the entire layout from rendering.
+  const { data: content } = await getSiteContent().catch(() => ({ data: null }));
   return (
     <footer className="rl-site studio-footer">
       <div className="studio-footer-inner">

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ServiceIcon } from "./HomeSections";
-import Image from "next/image";
+import Image from "@/components/studio/RenderImage";
 import { SERVICES, workMatches, type PublicWork } from "@/lib/services";
 import type { Pricing } from "@/lib/pricing";
 import { servicePrice } from "@/lib/service-price";
@@ -30,7 +30,7 @@ export default function PremiumServices({
         compact ? "premium-service-index" : "premium-service-directory"
       }
     >
-      {services.map((s) => {
+      {services.map((s, index) => {
         const item = items.find((i) => workMatches(i, s.category));
         return (
           <article key={s.slug}>
@@ -64,12 +64,14 @@ export default function PremiumServices({
             }
             <div className="premium-service-information">
               <div>
+                {!compact && <span className="edition-service-number">{String(index+1).padStart(2,"0")}</span>}
                 <h3>
                   <ServiceIcon slug={s.slug} size={23} />
                   <Link href={"/services/" + s.slug}>{s.title}</Link>
                 </h3>
-                <p>{s.short}</p>
+                <p>{compact ? s.short : s.description}</p>
                 <span>{servicePrice(s.slug, pricing)}</span>
+                {!compact && <ul className="edition-service-includes">{s.includes.slice(0,2).map(text=><li key={text}>{text}</li>)}</ul>}
               </div>
               <Link
                 href={"/services/" + s.slug}

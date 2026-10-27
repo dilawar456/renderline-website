@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getPortfolioItems } from "@/lib/public-data";
 import { getPricing } from "@/lib/public-data";
+import { PageHeading } from "@/components/studio/InnerPage";
 import PremiumServices from "@/components/studio/PremiumServices";
 import { PlanningRoadmap } from "@/components/studio/StudioSections";
 const legacy: Record<string, string> = {
@@ -29,18 +30,12 @@ export default async function ServicesPage({
     getPricing(),
   ]);
   return (
-    <div className="rl-site">
-      <section className="rl-page-intro rl-shell">
-        <h1>
-          From the first layout
-          <br />
-          to the final visual.
-        </h1>
-        <p>
-          Choose a single service or coordinate your project with the studio.
-          Every quotation states its drawings, views, revision scope and
-          deliverables.
-        </p>
+    <div className="rl-site edition-services">
+      <div className="rl-shell edition-page">
+        <PageHeading title="The right expertise. At every stage." description="Start with a floor plan, develop a complete drawing package, or bring an existing design to life in 3D.">
+          <a href="#services-list" className="rl-text-link">Explore the services ↓</a>
+        </PageHeading>
+        <nav className="edition-discipline-nav" aria-label="Service disciplines"><Link href="/services/house-plans">Plan your space ↗</Link><Link href="/services/drawing-booklets">Detail your design ↗</Link><Link href="/services/exterior-visualization">Visualize your project ↗</Link></nav>
         {query.service && (
           <Link
             className="rl-text-link"
@@ -49,7 +44,7 @@ export default async function ServicesPage({
             Open the service you selected
           </Link>
         )}
-      </section>
+      </div>
       <section
         className="rl-section rl-shell"
         id="services-list"
