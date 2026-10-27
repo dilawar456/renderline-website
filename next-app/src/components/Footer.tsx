@@ -1,77 +1,21 @@
 import Link from "next/link";
+import Image from "next/image";
+import { MessageCircle } from "lucide-react";
 import { getSiteContent } from "@/lib/supabase";
-import {
-  publicContactEmail,
-  publicWhatsAppNumber,
-  publicPhoneDisplay,
-} from "@/lib/public-contact";
+import { publicWhatsAppNumber } from "@/lib/public-contact";
 import EnquiryLink from "./studio/EnquiryLink";
 export default async function Footer() {
-  const { data: c } = await getSiteContent(),
-    number = publicWhatsAppNumber(c?.contact_whatsapp),
-    email = publicContactEmail(c?.contact_email);
+  const { data: content } = await getSiteContent();
   return (
-    <footer
-      className="rl-site spatial-footer"
-      style={{ minHeight: 0, borderTop: "1px solid #dce1e5" }}
-    >
-      <div className="rl-shell" style={{ paddingBlock: 40 }}>
-        <div className="rl-section-head">
-          <div>
-            <Link
-              href="/"
-              style={{
-                fontFamily: "var(--font-outfit)",
-                fontSize: 32,
-                color: "#17232d",
-              }}
-            >
-              RenderLine Studio
-            </Link>
-            <p>House plans. Drawing booklets. Design in 3D.</p>
-          </div>
-          <div className="rl-actions">
-            <EnquiryLink
-              className="rl-text-link"
-              number={number}
-              message="Hello RenderLine Studio, I would like to discuss a project."
-            >
-              {publicPhoneDisplay(c?.contact_phone_display, number)}
-            </EnquiryLink>
-            <a className="rl-text-link" href={"mailto:" + email}>
-              {email}
-            </a>
-          </div>
-        </div>
-        <nav
-          aria-label="Footer navigation"
-          className="rl-actions"
-          style={{ fontSize: 14, gap: "15px 25px" }}
-        >
-          {[
-            ["/services", "Services"],
-            ["/portfolio", "Portfolio"],
-            ["/pricing", "Pricing"],
-            ["/drawing-samples", "Drawing samples"],
-            ["/about", "About"],
-            ["/contact", "Contact"],
-            ["/portal", "Client portal"],
-          ].map(([url, title]) => (
-            <Link href={url} key={url}>
-              {title}
-            </Link>
-          ))}
-          <a
-            href="https://instagram.com/renderline.arch"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Instagram
-          </a>
-        </nav>
-        <p className="rl-note" style={{ marginTop: 28, marginBottom: 0 }}>
-          © {new Date().getFullYear()} RenderLine Studio. All rights reserved.
-        </p>
+    <footer className="rl-site studio-footer">
+      <div className="studio-footer-inner">
+        <Link href="/" className="studio-footer-brand" aria-label="RenderLine Studio home">
+          <Image src="/assets/logo.png" alt="" width={32} height={38} />
+          <span>RenderLine <small>Studio</small></span>
+        </Link>
+        <EnquiryLink className="studio-footer-contact" number={publicWhatsAppNumber(content?.contact_whatsapp)} message="Hello RenderLine Studio, I would like to discuss a project.">
+          <MessageCircle size={18} strokeWidth={1.5} aria-hidden="true" /> WhatsApp
+        </EnquiryLink>
       </div>
     </footer>
   );

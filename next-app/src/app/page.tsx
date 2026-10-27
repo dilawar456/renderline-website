@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CinematicShowcase from "@/components/studio/CinematicShowcase";
+import Image from "next/image";
+import Link from "next/link";
 import {
   ClientPathways,
   SelectedWork,
@@ -49,7 +50,20 @@ export default async function HomePage() {
   });
   return (
     <div className="rl-site mission-home">
-      <CinematicShowcase scenes={scenes} />
+      <section className="studio-single-hero" id="home" data-hero="single" aria-label="RenderLine architectural design and visualization">
+        {scenes[0] && <picture>
+          <source media="(max-width:700px)" srcSet={scenes[0].mobileImage} />
+          <Image src={scenes[0].image} alt="Residential front elevation by RenderLine Studio" fill unoptimized loading="eager" fetchPriority="high" sizes="100vw" />
+        </picture>}
+        <div className="studio-hero-copy rl-shell">
+          <h1>Architecture,<br />made visible.</h1>
+          <p>House plans, detailed drawings and 3D visuals.<br />From your first idea to the space you imagined.</p>
+          <div className="rl-actions">
+            <Link href="/start-project" className="rl-button">Start your project ↗</Link>
+            <Link href="/portfolio" className="studio-hero-link">Explore our work ↗</Link>
+          </div>
+        </div>
+      </section>
       <ClientPathways items={items} />
       <SelectedWork items={items} />
       <HomeServiceIndex pricing={pricing} />
