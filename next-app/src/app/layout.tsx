@@ -15,6 +15,7 @@ import "@/components/studio/premium.css";
 import "@/components/studio/cinematic.css";
 import "@/components/studio/mission.css";
 import "@/components/studio/editions.css";
+import "@/components/studio/apple.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
