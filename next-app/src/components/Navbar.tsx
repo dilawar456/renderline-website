@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import ThemeToggle from "./studio/ThemeToggle";
 import { usePathname } from "next/navigation";
 const links = [
   ["/services", "Services"],
@@ -85,6 +86,7 @@ function Navigation({ path }: { path: string }) {
             </Link>
           ))}
         </nav>
+        <ThemeToggle />
         <div className="rl-nav-actions">
           <Link href="/portal">Client portal</Link>
           <Link className="rl-button" href="/start-project">
@@ -123,21 +125,18 @@ function Navigation({ path }: { path: string }) {
         inert={!open}
       >
         <nav aria-label="Mobile navigation">
-          {[
-            ["/", "Home"],
-            ...links,
-            ["/contact", "Contact"],
-            ["/portal", "Client portal"],
-          ].map(([href, label]) => (
-            <Link
-              key={href}
-              href={href}
-              onClick={() => setOpen(false)}
-              aria-current={path === href ? "page" : undefined}
-            >
-              {label}
-            </Link>
-          ))}
+          {[["/", "Home"], ...links, ["/portal", "Client portal"]].map(
+            ([href, label]) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                aria-current={path === href ? "page" : undefined}
+              >
+                {label}
+              </Link>
+            ),
+          )}
           <Link
             className="rl-button"
             href="/start-project"

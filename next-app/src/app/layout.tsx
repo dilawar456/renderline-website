@@ -6,10 +6,12 @@ import SiteFrame from "@/components/SiteFrame";
 import Tracking from "@/components/Tracking";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Navbar from "@/components/Navbar";
+import MotionRuntime from "@/components/studio/MotionRuntime";
 import Footer from "@/components/Footer";
 import "./globals.css";
 import "@/components/studio/studio.css";
 import "@/components/studio/premium.css";
+import "@/components/studio/cinematic.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,9 +37,18 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="dark" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{var t=localStorage.getItem('renderline-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}",
+          }}
+        />
+      </head>
       <body>
         <SiteFrame>
+          <MotionRuntime />
           <Navbar />
         </SiteFrame>
         <main>{children}</main>

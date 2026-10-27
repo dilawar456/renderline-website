@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CinematicShowcase from "@/components/studio/CinematicShowcase";
 import StudioHero from "@/components/studio/StudioHero";
 import {
   getSiteContent,
@@ -34,6 +35,22 @@ export default async function HomePage() {
     const x = ids.indexOf(Number(a.id)),
       y = ids.indexOf(Number(b.id));
     return (x < 0 ? 99 : x) - (y < 0 ? 99 : y);
+  });
+  const scenes = [
+    { id: 187, label: "Residential exterior", category: "exterior" },
+    { id: 188, label: "Interior design", category: "interior" },
+    { id: 164, label: "Commercial design", category: "commercial" },
+  ].flatMap((p) => {
+    const item = items.find((i) => Number(i.id) === p.id);
+    return item
+      ? [
+          {
+            ...p,
+            id: String(p.id),
+            image: optimizeCloudinaryUrl(item.image_url, 1600),
+          },
+        ]
+      : [];
   });
   return (
     <div className="rl-site premium-home">
@@ -77,6 +94,7 @@ export default async function HomePage() {
           </Link>
         </div>
       </div>
+      <CinematicShowcase scenes={scenes} />
       <section className="rl-section premium-work" id="work">
         <div className="rl-shell">
           <div className="rl-section-head">
