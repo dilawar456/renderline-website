@@ -76,3 +76,23 @@
 @supports not (backdrop-filter:blur(1px)){.rl-nav .rl-nav-inner,.edition-pricing .premium-pricing-toolbar{background:var(--ui-panel)}}
 /* Keep primary actions readable in both appearances. */
 .rl-site .rl-button:not(.rl-button-quiet),.rl-nav .rl-button{background:var(--ui-button);color:var(--ui-button-ink);border-color:transparent}
+/* Usability polish: specific guidance, precise focus and generous hit areas. */
+.rl-skip-link{position:fixed;top:12px;left:24px;z-index:3000;padding:13px 20px;border-radius:999px;background:var(--ui-text);color:var(--ui-bg);font:600 14px var(--apple-font);transform:translateY(-180%)}
+.rl-skip-link:focus{transform:none;outline:2px solid var(--ui-gold);outline-offset:3px}
+#main-content{scroll-margin-top:calc(var(--nav-height) + 12px)}
+.rl-nav .rl-desktop-links a[aria-current="location"],.rl-mobile-menu nav>a[aria-current="location"]{background:var(--ui-panel-raised);color:var(--ui-text)}
+.rl-nav .rl-theme-switch::before{content:"";position:absolute;inset:-4px;border-radius:999px}
+.rl-site .rl-price-tabs button,.rl-site .rl-price-tabs button:first-child{min-height:44px}
+.studio-footer-contact{min-height:44px}
+.rl-site .rl-form-required-note{font-size:12px;margin:0;color:var(--ui-muted)}
+.rl-site .rl-field-guidance{font-size:13px;line-height:1.65;margin:10px 0 0;color:var(--ui-muted);min-height:2.8em}
+.rl-site textarea:focus-visible{outline-offset:3px}
+.rl-site :is(h1,h2){text-wrap:balance}.rl-site p{text-wrap:pretty}
+.rl-site .rl-button:disabled{opacity:.55;cursor:wait;transform:none}
+.edition-contact-method:focus-visible{border-radius:12px}
+@media(hover:hover) and (pointer:fine){
+ .edition-contact-method:hover strong{color:var(--ui-gold)}
+ .edition-portfolio-tile:hover .edition-portfolio-caption>span:last-child{color:var(--ui-text)}
+ .edition-price-summary>a:hover{background:var(--ui-panel-raised)}
+}
+@media(max-width:700px){.rl-site .rl-field-guidance{font-size:12px}.rl-site .edition-pricing .premium-pricing-toolbar{gap:10px}.rl-skip-link{left:16px}}

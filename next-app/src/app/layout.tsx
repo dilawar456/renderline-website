@@ -52,11 +52,12 @@ export default function RootLayout({
         />
       </head>
       <body>
+        <a className="rl-skip-link" href="#main-content">Skip to content</a>
         <SiteFrame>
 
           <Navbar />
         </SiteFrame>
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>{children}</main>
         <SiteFrame>
           <Footer />
         </SiteFrame>

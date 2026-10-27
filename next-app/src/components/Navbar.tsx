@@ -79,7 +79,7 @@ function Navigation({ path }: { path: string }) {
             <Link
               key={href}
               href={href}
-              aria-current={path === href ? "page" : undefined}
+              aria-current={path === href ? "page" : href !== "/" && path.startsWith(href + "/") ? "location" : undefined}
             >
               {label}
             </Link>
@@ -130,7 +130,7 @@ function Navigation({ path }: { path: string }) {
                 key={href}
                 href={href}
                 onClick={() => setOpen(false)}
-                aria-current={path === href ? "page" : undefined}
+                aria-current={path === href ? "page" : href !== "/" && path.startsWith(href + "/") ? "location" : undefined}
               >
                 {label}
               </Link>

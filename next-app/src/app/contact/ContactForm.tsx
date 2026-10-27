@@ -6,6 +6,15 @@ import { recordWhatsAppContact } from "@/lib/contact-tracking";
 
 const inputStyle = "w-full";
 const labelStyle = "block mb-2";
+const serviceGuidance: Record<string, string> = {
+  "Exterior Visualization": "Include your drawings or model, building type and required views.",
+  "3D Front Elevation": "Include plot width, number of floors and your preferred façade references.",
+  "Interior Design": "Include the room type, approximate area and any style references.",
+  "3D Walkthrough": "Include available drawings or a model, the camera route and preferred video length.",
+  "Dimensioned House Plans": "Include plot length and width, required floors and room requirements.",
+  "Architectural Booklet": "Include plot size, required floors and the drawing details you need.",
+  "Working Drawings": "Tell us the drawing discipline and whether an existing design is available.",
+};
 
 export default function ContactForm({
   whatsappNumber,
@@ -41,6 +50,7 @@ export default function ContactForm({
         Share a few details, then continue the conversation on WhatsApp.
       </p>
       <form onSubmit={handleSubmit} className="space-y-5">
+        <p className="rl-form-required-note">Fields marked * are required.</p>
         <div className="rl-form-grid">
           <div>
             <label htmlFor="name" className={labelStyle}>
@@ -102,6 +112,7 @@ export default function ContactForm({
               <option value="">Select a service</option>
               {[
                 "Exterior Visualization",
+                "3D Front Elevation",
                 "Interior Design",
                 "3D Walkthrough",
                 "Dimensioned House Plans",
@@ -125,11 +136,15 @@ export default function ContactForm({
             name="message"
             required
             rows={5}
+            aria-describedby="project-guidance"
             value={formData.message}
             onChange={handleChange}
             placeholder="What are you designing? Share the scope, references and timeline."
             className={`${inputStyle} resize-y`}
           />
+          <p id="project-guidance" className="rl-field-guidance" aria-live="polite">
+            {serviceGuidance[formData.projectType] || "A short description is enough to start. Include the space, scope and any available drawings."}
+          </p>
         </div>
         <button type="submit" className="rl-button w-full">
           Continue on WhatsApp ↗
