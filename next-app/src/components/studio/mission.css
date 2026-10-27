@@ -1214,3 +1214,5 @@ html:has(.mission-signature):not([data-cinema-visible="false"])
  .mission-home .mission-project:nth-child(n) .mission-project-image { aspect-ratio:4/3; }
  .mission-home .mission-project-caption { min-height:46px; }
 }
+/* The homepage already has contact actions; keep its compact footer unobstructed. */
+body:has(.mission-home) .rl-floating-contact { display:none; }
