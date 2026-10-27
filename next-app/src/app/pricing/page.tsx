@@ -16,12 +16,12 @@ export default async function PricingPage() {
     getSiteContent(),
   ]);
   return (
-    <div className="rl-site">
+    <div className="rl-site spatial-pricing-page">
       <section className="rl-page-intro rl-shell">
         <h1>
-          Clear packages.
+          Good design.
           <br />
-          Considered pricing.
+          Clear pricing.
         </h1>
         <p>
           Compare complete packages with individual services. These studio

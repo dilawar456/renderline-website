@@ -13,7 +13,16 @@ export default function PremiumServices({
   pricing: Pricing;
   compact?: boolean;
 }) {
-  const services = SERVICES.filter((s) => !compact || s.slug !== "3d-modeling");
+  const services = SERVICES.filter(
+    (s) =>
+      !compact ||
+      [
+        "house-plans",
+        "front-elevation",
+        "interior-design",
+        "drawing-booklets",
+      ].includes(s.slug),
+  );
   return (
     <div
       className={
@@ -24,7 +33,7 @@ export default function PremiumServices({
         const item = items.find((i) => workMatches(i, s.category));
         return (
           <article key={s.slug}>
-            {!compact && (
+            {
               <Link
                 className="premium-service-photo"
                 href={"/services/" + s.slug}
@@ -51,7 +60,7 @@ export default function PremiumServices({
                   </div>
                 )}
               </Link>
-            )}
+            }
             <div className="premium-service-information">
               <div>
                 <h3>

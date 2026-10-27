@@ -12,7 +12,7 @@ export default async function Footer() {
     email = publicContactEmail(c?.contact_email);
   return (
     <footer
-      className="rl-site"
+      className="rl-site spatial-footer"
       style={{ minHeight: 0, borderTop: "1px solid #dce1e5" }}
     >
       <div className="rl-shell" style={{ paddingBlock: 40 }}>
@@ -21,8 +21,8 @@ export default async function Footer() {
             <Link
               href="/"
               style={{
-                fontFamily: "var(--font-cinzel)",
-                fontSize: 24,
+                fontFamily: "var(--font-outfit)",
+                fontSize: 32,
                 color: "#17232d",
               }}
             >

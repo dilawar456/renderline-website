@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
+import StudioHero from "@/components/studio/StudioHero";
 import {
   getSiteContent,
   getPortfolioItems,
@@ -29,9 +29,6 @@ export default async function HomePage() {
   ]);
   const items = work || [],
     number = publicWhatsAppNumber(c?.contact_whatsapp);
-  const hero =
-    items.find((i) => Number(i.id) === 187) ||
-    items.find((i) => i.category === "exterior");
   const selected = [...items].sort((a, b) => {
     const ids = [187, 188, 186, 150, 164, 183];
     const x = ids.indexOf(Number(a.id)),
@@ -40,99 +37,73 @@ export default async function HomePage() {
   });
   return (
     <div className="rl-site premium-home">
-      <section className="premium-hero rl-shell">
-        <div className="premium-hero-copy">
-          <p className="premium-intro-label">
-            Architectural design & visualization
-          </p>
-          <h1>
-            From floor plans
-            <br />
-            to beautiful spaces.
-          </h1>
-          <p className="premium-hero-description">
-            House plans, detailed drawings and considered 3D visuals. One studio
-            to help you plan, see and present your next project.
-          </p>
-          <div className="rl-actions">
-            <Link
-              className="rl-button"
-              href="/start-project?service=house-plans"
-            >
-              Start your project
-            </Link>
-            <Link className="rl-text-link" href="/portfolio">
-              View our work
-            </Link>
-          </div>
-          <p className="premium-hero-budget">
-            House plans from <strong>{money(pricing.floorPlan.upTo10)}</strong>
-            <span>Up to 10 marla · 2 storeys</span>
-          </p>
+      <StudioHero
+        projects={[
+          { id: 187, label: "Residential exterior", category: "exterior" },
+          { id: 188, label: "Interior design", category: "interior" },
+          { id: 164, label: "Commercial design", category: "commercial" },
+        ].flatMap((project) => {
+          const item = items.find((i) => Number(i.id) === project.id);
+          return item
+            ? [
+                {
+                  ...project,
+                  id: String(project.id),
+                  image: optimizeCloudinaryUrl(item.image_url, 1600),
+                  thumbnail: optimizeCloudinaryUrl(item.image_url, 240),
+                },
+              ]
+            : [];
+        })}
+      />
+      <div className="spatial-entry-bar rl-shell">
+        <div className="spatial-price-hint">
+          <span>House plans from</span>
+          <strong>{money(pricing.floorPlan.upTo10)}</strong>
+          <small>Up to 10 marla / 2 storeys total</small>
         </div>
-        <figure className="premium-hero-figure">
-          {hero && (
-            <div className="premium-hero-photo">
-              <Image
-                src={optimizeCloudinaryUrl(hero.image_url, 1600)}
-                alt="RenderLine residential exterior visualization with lawn and garage"
-                fill
-                priority
-                sizes="(max-width:800px) 100vw, 56vw"
-              />
-            </div>
-          )}
-          <figcaption>
-            <span>Residential architecture, visualized by RenderLine.</span>
-            <Link href="/portfolio?category=exterior">Explore exteriors</Link>
-          </figcaption>
-        </figure>
-      </section>
-      <div className="premium-quick-paths rl-shell">
-        <Link href="/services/house-plans">
-          <span>I have a plot.</span>
-          <strong>Plan a home</strong>
-        </Link>
-        <Link href="/services/front-elevation">
-          <span>I already have drawings.</span>
-          <strong>See it in 3D</strong>
-        </Link>
-        <Link href="#professionals">
-          <span>I am an architect or developer.</span>
-          <strong>Work with the studio</strong>
-        </Link>
-      </div>
-      <section className="rl-section rl-shell" id="services">
-        <div className="rl-section-head">
-          <div>
-            <p className="premium-intro-label">
-              The right service, at the right stage
-            </p>
-            <h2>What are you planning?</h2>
-          </div>
-          <Link className="rl-text-link" href="/services">
-            Explore all services
+        <div className="premium-quick-paths">
+          <Link href="/services/house-plans">
+            <span>I have a plot.</span>
+            <strong>Plan a home</strong>
+          </Link>
+          <Link href="/services/front-elevation">
+            <span>I already have drawings.</span>
+            <strong>See it in 3D</strong>
+          </Link>
+          <Link href="#professionals">
+            <span>I am an architect or developer.</span>
+            <strong>Work with the studio</strong>
           </Link>
         </div>
-        <PremiumServices items={selected} pricing={pricing} compact />
-      </section>
+      </div>
       <section className="rl-section premium-work" id="work">
         <div className="rl-shell">
           <div className="rl-section-head">
             <div>
-              <p className="premium-intro-label">Selected work</p>
-              <h2>Design, made visible.</h2>
+              <h2>A closer look at our work.</h2>
               <p>
-                A closer look at the studio’s real projects and visualization
-                work.
+                Residential, interior and commercial visualizations from the
+                studio.
               </p>
             </div>
             <Link className="rl-text-link" href="/portfolio?category=animation">
               Watch walkthroughs
             </Link>
           </div>
-          <WorkHighlights items={selected} />
+          <WorkHighlights items={selected} limit={4} />
         </div>
+      </section>
+      <section className="rl-section rl-shell" id="services">
+        <div className="rl-section-head">
+          <div>
+            <h2>The expertise behind your space.</h2>
+          </div>
+          <Link className="rl-text-link" href="/services">
+            Explore all services
+          </Link>
+        </div>
+        <PremiumServices items={selected} pricing={pricing} compact />
       </section>
       <section className="rl-section rl-shell" id="pricing">
         <PricingExplorer pricing={pricing} number={number} compact />
@@ -141,7 +112,6 @@ export default async function HomePage() {
         <div className="rl-shell">
           <div className="rl-section-head">
             <div>
-              <p className="premium-intro-label">A considered process</p>
               <h2>
                 From your first idea
                 <br />
@@ -216,8 +186,7 @@ export default async function HomePage() {
       </section>
       <section className="rl-section rl-shell rl-faq-section">
         <div>
-          <p className="premium-intro-label">Before you begin</p>
-          <h2>The useful details.</h2>
+          <h2>Before we begin.</h2>
         </div>
         <StudioFaq />
       </section>

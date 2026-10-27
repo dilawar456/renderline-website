@@ -95,10 +95,9 @@ export default function PricingExplorer({
       <div className="premium-price-overview">
         <div className="rl-section-head">
           <div>
-            <p className="premium-intro-label">Pricing, made clear</p>
             <h2>
-              A clear scope.
-              <br />A considered package.
+              Your project. Your scope.
+              <br />A clear starting price.
             </h2>
             <p>Studio partner guide rates, available to direct clients too.</p>
           </div>
@@ -207,7 +206,7 @@ export default function PricingExplorer({
             <div>
               <h2>
                 {tab === "residential"
-                  ? "Plan your home. Choose your scope."
+                  ? "Choose the drawings you need."
                   : "A coordinated commercial package."}
               </h2>
               <p>

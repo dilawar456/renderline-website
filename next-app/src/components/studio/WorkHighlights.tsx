@@ -8,9 +8,15 @@ import {
   type PublicWork,
 } from "@/lib/services";
 import { optimizeCloudinaryUrl } from "@/lib/media";
-export default function WorkHighlights({ items }: { items: PublicWork[] }) {
+export default function WorkHighlights({
+  items,
+  limit = 6,
+}: {
+  items: PublicWork[];
+  limit?: number;
+}) {
   const [category, setCategory] = useState("all");
-  const visible = items.filter((i) => workMatches(i, category)).slice(0, 6);
+  const visible = items.filter((i) => workMatches(i, category)).slice(0, limit);
   return (
     <>
       <div className="rl-filter-row" aria-label="Portfolio categories">
