@@ -4,3 +4,24 @@
 @media print{body>*{visibility:hidden}body:has(.studio-modal) .studio-modal,body:has(.studio-modal) .studio-modal *{visibility:visible}.studio-modal{position:absolute;inset:0;padding:0;background:white;overflow:visible}.studio-paper{max-width:none;padding:12mm;margin:0;border:0}.studio-print-actions{display:none!important}.studio-paper table{break-inside:auto}.studio-paper tr{break-inside:avoid}.studio-paper footer{position:static}@page{size:A4;margin:12mm}}
 
 .studio-back-link{font-size:12px;color:var(--accent);display:inline-block}.studio-text-button{margin-top:12px;width:100%;background:transparent!important;border:0!important;font-size:13px!important}.studio-header-actions{display:flex;gap:8px}.studio-mobile-signout{display:none}.studio-conversation{max-height:480px;overflow:auto;overscroll-behavior:contain;margin:20px 0;display:flex;flex-direction:column;gap:14px}.studio-message{border:1px solid var(--line);border-radius:12px;padding:18px;background:#0f1813}.studio-message.own{border-color:#596e50;background:#1b2b21}.studio-message header{display:flex;align-items:center;flex-wrap:wrap;gap:10px}.studio-message time{font-size:11px;color:var(--muted)}.studio-message p{margin-bottom:0}.studio-person>div{min-width:0;overflow-wrap:anywhere}@media(max-width:700px){.studio-mobile-signout{display:inline-block}.studio-header-actions button{font-size:12px;padding:8px}.studio-message{padding:14px}}
+
+/* Portal uses the same neutral studio palette; workflows and permissions are unchanged. */
+.studio{--ink:#f2efe8;--muted:#b5b2ac;--panel:#171719;--line:#343436;--accent:#d6b883;background:#0c0c0e;font-family:"Manrope Variable",sans-serif}
+.studio .studio-card{border-radius:10px;background:var(--panel);box-shadow:none}
+.studio .studio-sidebar{background:#101012;padding-top:28px}
+.studio .studio-sidebar nav button.active{background:#27231d;color:var(--accent)}
+.studio input,.studio select,.studio textarea{background:#101012;border-color:var(--line);border-radius:6px;min-height:46px}
+.studio button,.studio-cms{background:#202023;border-color:var(--line);border-radius:6px;min-height:44px}
+.studio button:hover{background:#2d2d31}
+.studio .studio-primary{background:var(--accent);color:#171513;border-color:var(--accent)}
+.studio .studio-login .studio-card{border-top:2px solid var(--accent)}
+.studio .studio-message{background:#111113;border-color:var(--line)}
+.studio .studio-message.own{background:#24211b;border-color:#605139}
+.studio .studio-field>span{color:var(--muted);font-size:13px}
+.studio .studio-brand{color:var(--ink)}
+.studio.studio-login .studio-login-story{background:transparent;padding:0}
+.studio.studio-login .studio-card{background:var(--panel);color:var(--ink);border-color:var(--line);border-top-color:var(--accent)}
+.studio.studio-login .studio-card h2{font-size:30px;font-weight:500;color:var(--ink)}
+.studio.studio-login .studio-card p,.studio.studio-login .studio-card label{color:var(--muted)}
+.studio.studio-login .studio-card input{background:#101012;color:var(--ink);border-color:var(--line)}
+.studio.studio-login .studio-card .studio-primary{background:var(--accent);color:#171513}

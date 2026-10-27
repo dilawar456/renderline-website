@@ -13,8 +13,8 @@ import {
   getSiteContent,
   getPortfolioItems,
   optimizeCloudinaryUrl,
-} from "@/lib/supabase";
-import { getPricing } from "@/lib/pricing-server";
+} from "@/lib/public-data";
+import { getPricing } from "@/lib/public-data";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 export const metadata: Metadata = {
   title: "House Plans, 3D Elevations & Interior Design | RenderLine Studio",

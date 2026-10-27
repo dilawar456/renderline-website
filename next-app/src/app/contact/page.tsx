@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MessageCircle, Mail } from "lucide-react";
-import { getSiteContent } from "@/lib/supabase";
+import { getSiteContent } from "@/lib/public-data";
 import {
   publicContactEmail,
   publicPhoneDisplay,

@@ -7,7 +7,7 @@ import SiteFrame from "@/components/SiteFrame";
 import Tracking from "@/components/Tracking";
 import WhatsAppLink from "@/components/WhatsAppLink";
 import Navbar from "@/components/Navbar";
-import MotionRuntime from "@/components/studio/MotionRuntime";
+
 import Footer from "@/components/Footer";
 import "./globals.css";
 import "@/components/studio/studio.css";
@@ -50,7 +50,7 @@ export default function RootLayout({
       </head>
       <body>
         <SiteFrame>
-          <MotionRuntime />
+
           <Navbar />
         </SiteFrame>
         <main>{children}</main>

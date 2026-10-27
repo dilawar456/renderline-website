@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { studioSession, apiError } from "@/lib/studio-server";
 import { getPricing } from "@/lib/pricing-server";
 import { validatePricing } from "@/lib/pricing";
@@ -68,6 +68,7 @@ export async function PATCH(request: Request) {
       throw new Error(
         "503:Website settings could not be saved. Please retry; your changes have not been confirmed.",
       );
+    revalidateTag("public-website", { expire: 0 });
     revalidatePath("/", "layout");
     return Response.json({ saved: true });
   } catch (e) {

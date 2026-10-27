@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getPortfolioItems, getPortfolioOrder, getPinnedItems, getSiteContent, getVideos, optimizeCloudinaryUrl } from '@/lib/supabase';
+import { getPortfolioItems, getPortfolioOrder, getPinnedItems, getSiteContent, getVideos, optimizeCloudinaryUrl } from '@/lib/public-data';
 import PortfolioClient from './PortfolioClient';
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export default async function PortfolioPage({searchParams}:{searchParams:Promise
     const optimizedItems = allItems.map(item => ({
         ...item,
         image_url: optimizeCloudinaryUrl(item.image_url, 800),
-        full_url: item.image_url,
+        full_url: optimizeCloudinaryUrl(item.image_url, 1800),
     }));
 
     return <PortfolioClient items={optimizedItems} videos={videos} order={order} pinned={pinned} initialFilter={query.category} />;

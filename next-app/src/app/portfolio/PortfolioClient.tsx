@@ -210,11 +210,11 @@ export default function PortfolioClient({
         <section className="py-9 lg:py-12" id="portfolioSection">
           <div className="rl-shell">
             {displayItems.length > 0 ? (
-              <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
+              <div className="studio-portfolio-grid">
                 {displayItems.slice(0, visibleCount).map((item, idx) => (
                   <div
                     key={item.id}
-                    className="relative group cursor-pointer aspect-[4/3] overflow-hidden bg-[#111] border border-[#ad9a69]/20 focus:outline-2 focus:outline-[var(--gold)]"
+                    className="studio-portfolio-tile"
                     onClick={() => openLightbox(idx)}
                     role="button"
                     aria-label={`Open visualization ${idx + 1}`}
@@ -231,8 +231,8 @@ export default function PortfolioClient({
                       alt={`RenderLine ${item.category || "architectural"} visualization`}
                       fill
                       className="object-cover  "
-                      sizes="(max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-                      loading="lazy"
+                      sizes="(max-width:700px) 45vw, (max-width:1100px) 45vw, 30vw"
+                      loading={idx < 2 ? "eager" : "lazy"}
                     />
                   </div>
                 ))}
@@ -301,7 +301,7 @@ export default function PortfolioClient({
           onClick={closeLightbox}
           role="dialog"
           aria-modal="true"
-          aria-label={displayItems[lightboxIndex].title || "Project image"}
+          aria-label="Portfolio visualization"
         >
           {/* Close Button */}
           <button
@@ -358,7 +358,8 @@ export default function PortfolioClient({
           >
             <Image
               src={displayItems[lightboxIndex].full_url}
-              alt={displayItems[lightboxIndex].title || "Project"}
+              unoptimized={displayItems[lightboxIndex].full_url.startsWith("https://res.cloudinary.com/")}
+              alt={`RenderLine ${displayItems[lightboxIndex].category || "architectural"} visualization`}
               fill
               className="object-contain"
               priority

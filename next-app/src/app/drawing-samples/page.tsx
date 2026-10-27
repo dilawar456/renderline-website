@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { supabase, getSiteContent } from "@/lib/supabase";
+import { getSiteContent } from "@/lib/public-data";
 import { validSamples } from "@/lib/drawing-samples";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 import DrawingSamples from "@/components/studio/DrawingSamples";
@@ -11,17 +11,8 @@ export const metadata: Metadata = {
 };
 export const revalidate = 60;
 export default async function SamplesPage() {
-  const [{ data: c }, { data }] = await Promise.all([
-    getSiteContent(),
-    supabase
-      .from("site_content")
-      .select("drawing_samples")
-      .limit(1)
-      .maybeSingle(),
-  ]);
-  const samples = validSamples(data?.drawing_samples)
-    ? data.drawing_samples
-    : [];
+  const { data: c } = await getSiteContent();
+  const samples = validSamples(c?.drawing_samples) ? c.drawing_samples : [];
   return (
     <div className="rl-site">
       <section className="rl-page-intro rl-shell">

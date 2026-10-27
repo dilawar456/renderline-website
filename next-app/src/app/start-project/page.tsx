@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ProjectStarter from "@/components/studio/ProjectStarter";
-import { getPricing } from "@/lib/pricing-server";
-import { getSiteContent } from "@/lib/supabase";
+import { getPricing } from "@/lib/public-data";
+import { getSiteContent } from "@/lib/public-data";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 import { SERVICES } from "@/lib/services";
 export const metadata: Metadata = {

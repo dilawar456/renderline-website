@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MessageCircle } from "lucide-react";
-import { getSiteContent } from "@/lib/supabase";
+import { getSiteContent } from "@/lib/public-data";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 import EnquiryLink from "./studio/EnquiryLink";
 export default async function Footer() {

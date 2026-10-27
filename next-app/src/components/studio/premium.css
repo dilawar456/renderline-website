@@ -950,81 +950,6 @@
   box-shadow: none;
 }
 /* Portal styling remains scoped: permissions, navigation and project workflows are unchanged. */
-.studio.studio {
-  --panel: #1c2935;
-  --line: #344451;
-  --muted: #a2aeb8;
-  background: #111c26;
-}
-.studio.studio h1,
-.studio.studio h2,
-.studio.studio h3 {
-  color: var(--ink);
-}
-.studio.studio button,
-.studio.studio .studio-cms {
-  background: #253746;
-  border-color: #485d6e;
-  border-radius: 4px;
-}
-.studio.studio button:hover {
-  background: #344c60;
-}
-.studio.studio input,
-.studio.studio textarea,
-.studio.studio select {
-  border-radius: 4px;
-}
-.studio.studio .studio-primary {
-  background: #d5b570;
-  color: #252724;
-  border-color: #d5b570;
-}
-.studio.studio-login .studio-login-story {
-  background: #252724;
-}
-.studio.studio-login .studio-login-story h1 {
-  font:
-    400 clamp(42px, 5vw, 68px)/1.07 var(--font-outfit),
-    sans-serif;
-  letter-spacing: -0.04em;
-  color: #fff;
-}
-.studio.studio-login .studio-card {
-  background: #fff;
-  color: #252724;
-  border-color: #dce1e5;
-  box-shadow: none;
-  border-radius: 4px;
-}
-.studio.studio-login .studio-card h2 {
-  color: #252724;
-  font:
-    400 34px/1.15 var(--font-outfit),
-    sans-serif;
-}
-.studio.studio-login .studio-card p,
-.studio.studio-login .studio-card label {
-  color: #6a6d67;
-}
-.studio.studio-login .studio-card input {
-  background: #fff;
-  border-color: #cbd4dc;
-  color: #252724;
-}
-.studio.studio-login .studio-card button {
-  background: #252724;
-  border-color: #252724;
-  color: #fff;
-}
-.studio.studio-login .studio-error {
-  background: #fff1f1;
-  color: #9a3535 !important;
-}
-.studio.studio-login .studio-notice {
-  background: #edf3f6;
-  color: #34566e !important;
-}
 @media (max-width: 1179px) {
   .rl-nav-inner {
     min-height: 75px;
@@ -1465,12 +1390,6 @@
   .rl-editor-page > h1 {
     font-size: 38px;
   }
-  .studio.studio-login .studio-card {
-    padding: 25px;
-  }
-  .studio.studio-login .studio-card h2 {
-    font-size: 30px;
-  }
 }
 @media (prefers-reduced-motion: reduce) {
   .rl-site *,
@@ -1479,17 +1398,6 @@
     animation: none !important;
     scroll-behavior: auto !important;
   }
-}
-.studio.studio-login .studio-card .studio-field > span {
-  color: #53616c;
-}
-.studio.studio-login .studio-card .studio-eyebrow {
-  color: #7b6544;
-}
-.studio.studio-login .studio-card .studio-text-button {
-  color: #252724;
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }
 /* Spatial portfolio composition. Public pages share the same material palette. */
 .rl-site {

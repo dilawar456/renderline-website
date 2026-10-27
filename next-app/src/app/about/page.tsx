@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { getSiteContent, optimizeCloudinaryUrl } from "@/lib/supabase";
+import { getSiteContent, optimizeCloudinaryUrl } from "@/lib/public-data";
 export const metadata: Metadata = {
   title: "About RenderLine Studio",
   description:

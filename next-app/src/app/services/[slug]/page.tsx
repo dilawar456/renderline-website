@@ -4,13 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { SERVICES, workMatches } from "@/lib/services";
 import { servicePrice } from "@/lib/service-price";
-import { getPricing } from "@/lib/pricing-server";
+import { getPricing } from "@/lib/public-data";
 import {
   getPortfolioItems,
   getSiteContent,
   getVideos,
   optimizeCloudinaryUrl,
-} from "@/lib/supabase";
+} from "@/lib/public-data";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 import EnquiryLink from "@/components/studio/EnquiryLink";
 import { money } from "@/lib/pricing";

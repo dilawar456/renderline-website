@@ -6,7 +6,7 @@ import {
   getPortfolioItems,
   getSiteContent,
   optimizeCloudinaryUrl,
-} from "@/lib/supabase";
+} from "@/lib/public-data";
 import { PORTFOLIO_CATEGORIES, serviceHref, workMatches } from "@/lib/services";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 import EnquiryLink from "@/components/studio/EnquiryLink";

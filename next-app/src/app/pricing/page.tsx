@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { getPricing } from "@/lib/pricing-server";
-import { getSiteContent } from "@/lib/supabase";
+import { getPricing } from "@/lib/public-data";
+import { getSiteContent } from "@/lib/public-data";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 import PricingExplorer from "@/components/studio/PricingExplorer";
 export const metadata: Metadata = {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPortfolioItems } from "@/lib/supabase";
-import { getPricing } from "@/lib/pricing-server";
+import { getPortfolioItems } from "@/lib/public-data";
+import { getPricing } from "@/lib/public-data";
 import PremiumServices from "@/components/studio/PremiumServices";
 import { PlanningRoadmap } from "@/components/studio/StudioSections";
 const legacy: Record<string, string> = {
