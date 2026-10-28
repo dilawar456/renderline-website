@@ -44,7 +44,7 @@ export default async function HomePage() {
           <Image src={hero.image} alt="Residential front elevation by RenderLine Studio" fill unoptimized loading="eager" fetchPriority="high" sizes="100vw" />
         </picture>}
         <div className="studio-hero-copy rl-shell">
-          <h1>Architecture,<br />made visible.</h1>
+          <h1>Architecture,<br /><em>made visible.</em></h1>
           <p>Thoughtful house plans. Detailed drawings. Realistic 3D visuals. From your first idea to the space you imagined.</p>
           <div className="rl-actions">
             <Link href="/start-project" className="rl-button">Start your project ↗</Link>

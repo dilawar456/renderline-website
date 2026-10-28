@@ -2,7 +2,8 @@ import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MessageCircle, Mail } from "lucide-react";
-import { getSiteContent } from "@/lib/public-data";
+import PortfolioArtwork from "@/components/studio/PortfolioArtwork";
+import { getPortfolioItems, getSiteContent } from "@/lib/public-data";
 import {
   publicContactEmail,
   publicPhoneDisplay,
@@ -18,7 +19,8 @@ export const metadata: Metadata = publicMetadata({
 });
 export const revalidate = 60;
 export default async function ContactPage() {
-  const { data: c } = await getSiteContent(),
+  const [{ data: c }, { data: work }] = await Promise.all([getSiteContent(), getPortfolioItems()]);
+  const
     number = publicWhatsAppNumber(c?.contact_whatsapp),
     email = publicContactEmail(c?.contact_email);
   return (
@@ -26,8 +28,9 @@ export default async function ContactPage() {
       <div className="edition-contact-layout">
         <section className="edition-contact-story">
           <Link href="/" className="edition-back">RenderLine Studio / Contact</Link>
-          <h1>Every great space<br />starts with a conversation.</h1>
+          <h1>Your next space.<br /><em>Let’s talk.</em></h1>
           <p>Share your plot, drawings or design idea. We’ll help you choose the right service and agree a clear scope.</p>
+          <PortfolioArtwork items={work || []} preferred={183} category="interior" caption="Make room for your next idea" className="atelier-contact-art" priority />
           <div className="edition-contact-methods">
             <EnquiryLink number={number} message="Hello RenderLine Studio, I would like to discuss my project." className="edition-contact-method"><MessageCircle size={24} aria-hidden="true" /><span><small>Talk on WhatsApp</small><strong>{publicPhoneDisplay(c?.contact_phone_display, number)}</strong></span></EnquiryLink>
             <a href={"mailto:" + email} className="edition-contact-method"><Mail size={24} aria-hidden="true" /><span><small>Send an email</small><strong>{email}</strong></span></a>

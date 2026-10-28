@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { SERVICES } from "@/lib/services";
 import type { Pricing } from "@/lib/pricing";
 import { money, residentialBookletPrice, interiorPrice } from "@/lib/pricing";
+import { ServiceIcon } from "./HomeSections";
 import EnquiryLink from "./EnquiryLink";
 export default function ProjectStarter({
   number,
@@ -129,6 +130,7 @@ export default function ProjectStarter({
                 key={s.slug}
                 onClick={() => setService(s.slug)}
               >
+                <ServiceIcon slug={s.slug} size={24} />
                 <strong>{s.title}</strong>
                 <span>{s.short}</span>
               </button>

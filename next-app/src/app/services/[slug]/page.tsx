@@ -56,6 +56,16 @@ export default async function ServicePage({
       .filter((i) => workMatches(i, s.category))
       .slice(0, 4),
     number = publicWhatsAppNumber(c?.contact_whatsapp);
+  const displayTitle: Record<string, [string, string]> = {
+    "house-plans": ["A home,", "well planned."],
+    "front-elevation": ["Your home.", "In a new light."],
+    "interior-design": ["A space that", "feels like yours."],
+    "drawing-booklets": ["Every line.", "Every detail."],
+    "exterior-visualization": ["Architecture,", "in perspective."],
+    "3d-modeling": ["Shape the idea.", "See it in 3D."],
+    "walkthrough-animation": ["Walk through", "your next space."],
+  };
+  const titleLines = displayTitle[slug];
   return (
     <div className="rl-site edition-service-detail">
       <StructuredData data={{ "@context": "https://schema.org", "@graph": [
@@ -72,11 +82,7 @@ export default async function ServicePage({
           <Link className="rl-text-link" href="/services">
             All services
           </Link>
-          <h1 style={{ marginTop: 25 }}>
-            {s.slug === "front-elevation"
-              ? "See your house before it’s built."
-              : s.title}
-          </h1>
+          <h1>{titleLines[0]}<br /><em>{titleLines[1]}</em></h1>
           <p>{s.description}</p>
           <strong className="rl-service-price">
             {servicePrice(slug, pricing)}
@@ -106,6 +112,7 @@ export default async function ServicePage({
               priority
               sizes="(max-width: 600px) 90vw, 45vw"
             />
+            <span className="atelier-image-tag">RenderLine Studio / {s.title}</span>
           </div>
         ) : (
           <div className="rl-scope-box">

@@ -58,3 +58,20 @@
 .studio .studio-message{border-radius:18px}.studio .studio-message.own{border-color:#6c5834;background:#29251e}
 .studio.studio-login .edition-portal-welcome{background:#161619;border-right-color:var(--line)}.studio .edition-portal-welcome h1{font-weight:600;letter-spacing:-.04em}.studio.studio-login>.studio-card h2{font-weight:600}.studio.studio-login .studio-primary{border-radius:999px}
 @media(prefers-reduced-motion:reduce){.studio button{transition:none}.studio button:active{transform:none}}
+
+/* A quiet architectural welcome, with the sign-in task kept on a solid surface. */
+.studio.studio-login .edition-portal-welcome{position:relative;overflow:hidden;background:#151515;padding:48px clamp(32px,5vw,78px);gap:42px;min-height:100svh}
+.atelier-portal-art{position:absolute!important;inset:0;z-index:0!important}.atelier-portal-art img{object-fit:cover;object-position:58% 50%}
+.studio.studio-login .edition-portal-welcome::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#080808a3 0%,#0808089e 30%,#080808e8 80%,#080808f5 100%);z-index:1}
+.edition-portal-welcome>*:not(.atelier-portal-art){position:relative;z-index:2}
+.studio .edition-portal-welcome h1{font-size:clamp(48px,4.7vw,70px);line-height:1.04;font-weight:550;letter-spacing:-.045em;margin-bottom:28px;color:#f5f5f7}
+.studio .edition-portal-welcome h1 em{font-family:Georgia,serif;font-weight:400;color:#e1c18b;letter-spacing:-.05em}
+.studio .edition-portal-welcome p{font-size:15px;line-height:1.9;color:#d0cfcf}
+.edition-portal-features{grid-template-columns:1fr;gap:17px;padding-top:24px;border-top:1px solid #ffffff2c}
+.edition-portal-features span{color:#e0dede;font-size:13px}.edition-portal-brand small{color:#d0cfcf}
+.studio.studio-login>.studio-card{max-width:430px}.studio.studio-login>.studio-card h2{font-size:36px;line-height:1.15;font-weight:500;letter-spacing:-.035em;margin-block:22px 30px}
+.studio.studio-login>.studio-card input{min-height:52px;border-radius:12px;background:#151518}
+.studio.studio-login>.studio-card .studio-primary{margin-top:12px;min-height:48px;font-weight:500}
+@media(max-width:700px){.studio.studio-login .edition-portal-welcome{min-height:0;padding:25px 24px 28px;gap:26px}.studio .edition-portal-welcome h1{font-size:40px;margin-bottom:18px}.studio .edition-portal-welcome p{font-size:13px;line-height:1.8}.edition-portal-features{display:none}.studio.studio-login>.studio-card{margin-block:32px;max-width:none}.studio.studio-login>.studio-card h2{font-size:29px}.studio.studio-login .edition-portal-welcome::after{background:linear-gradient(180deg,#080808b8,#080808dc)}}
+
+.edition-portal-brand small{color:#e4e4e4}

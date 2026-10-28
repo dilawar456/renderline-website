@@ -22,7 +22,7 @@ async function api(path:string,body:unknown){
  const response = await fetch(path,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${session.access_token}`},body:JSON.stringify(body),signal:AbortSignal.timeout(60000)});
  const result = await response.json(); if(!response.ok) throw new Error(result.error || 'Request failed.'); return result;
 }
-export default function Portal(){
+export default function Portal({artwork}:{artwork?:string}){
  const [signedInEmail,setSignedInEmail]=useState('');
  const [profile,setProfile]=useState<Profile|null>(null),[signedIn,setSignedIn]=useState(false),[loading,setLoading]=useState(true),[busy,setBusy]=useState(false),[recovering,setRecovering]=useState(false),[forgot,setForgot]=useState(false);
  const [notice,setNotice]=useState(''),[error,setError]=useState(''),[section,setSection]=useState<Section>('Projects');
@@ -105,7 +105,7 @@ export default function Portal(){
  const organize=async(source:Intake)=>{setDraft(null);setSourceId(source.id);const result=await api('/api/studio/organize',{intake_id:source.id});setDraft(result.brief);};
 
  if(loading)return <div className="studio studio-login"><p role="status">Opening your workspace…</p></div>;
- if(!profile)return <div className="studio studio-login"><PortalWelcome/><div className="studio-card"><span className="studio-eyebrow">INVITED CLIENTS & TEAM</span><h2>{forgot?'Reset your password':'Welcome to your workspace'}</h2>{error&&<p className="studio-error" role="alert">{error}</p>}{notice&&<p className="studio-notice" role="status">{notice}</p>}{signedIn?<><p>Signed in as <strong>{signedInEmail}</strong>.</p><p>Your sign-in is active, but project access could not be loaded.</p><button disabled={busy} onClick={()=>void run(load,'Workspace refreshed.')}>Retry workspace</button><button disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());clearWorkspace();setError('');},'')}>Sign out</button></>:<form onSubmit={e=>{
+ if(!profile)return <div className="studio studio-login"><PortalWelcome artwork={artwork}/><div className="studio-card"><span className="studio-eyebrow">INVITED CLIENTS & TEAM</span><h2>{forgot?'Reset your password':'Welcome to your workspace'}</h2>{error&&<p className="studio-error" role="alert">{error}</p>}{notice&&<p className="studio-notice" role="status">{notice}</p>}{signedIn?<><p>Signed in as <strong>{signedInEmail}</strong>.</p><p>Your sign-in is active, but project access could not be loaded.</p><button disabled={busy} onClick={()=>void run(load,'Workspace refreshed.')}>Retry workspace</button><button disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());clearWorkspace();setError('');},'')}>Sign out</button></>:<form onSubmit={e=>{
   e.preventDefault();const f=new FormData(e.currentTarget);
   void run(async()=>{
    const email=val(f,'email');

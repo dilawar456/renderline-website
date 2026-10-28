@@ -56,13 +56,13 @@ export default async function ProjectPage({
         <Link className="rl-text-link" href={"/portfolio?category=" + category}>
           Back to {label.toLowerCase()}
         </Link>
-        <div className="edition-project-title"><h1>{label}.</h1><Link className="rl-button" href={"/start-project?service=" + serviceHref(category).replace("/services/", "")}>Plan a similar project ↗</Link></div>
+        <div className="edition-project-title"><div><span className="atelier-label">RenderLine portfolio study</span><h1>{label}.</h1></div><Link className="rl-button" href={"/start-project?service=" + serviceHref(category).replace("/services/", "")}>Plan a similar project ↗</Link></div>
         <p>
           A RenderLine portfolio example. Share the features you like so we can
           quote a project-specific scope.
         </p>
       </section>
-      <div className="rl-shell">
+      <div className="rl-shell atelier-project-canvas">
         <a
           href={item.image_url}
           target="_blank"

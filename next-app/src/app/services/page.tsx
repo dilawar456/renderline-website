@@ -1,3 +1,4 @@
+import PortfolioArtwork from "@/components/studio/PortfolioArtwork";
 import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -33,9 +34,10 @@ export default async function ServicesPage({
   return (
     <div className="rl-site edition-services">
       <div className="rl-shell edition-page">
-        <PageHeading title="The right expertise. At every stage." description="Start with a floor plan, develop a complete drawing package, or bring an existing design to life in 3D.">
+        <PageHeading title="Considered spaces. From the first line." description="Plan your space. Resolve the details. See the finished design. Choose the part of the journey you need.">
           <a href="#services-list" className="rl-text-link">Explore the services ↓</a>
         </PageHeading>
+        <div className="atelier-service-intro"><PortfolioArtwork items={items || []} preferred={187} category="exterior" caption="From a drawing to a place you can picture" priority /><div><span className="atelier-label">A connected design process</span><h2>Start with an idea.<br />See what it becomes.</h2><p>Planning, working drawings and visualization, brought together around the needs of your project.</p><Link href="/start-project" className="rl-text-link">Find your starting point ↗</Link></div></div>
         <nav className="edition-discipline-nav" aria-label="Service disciplines"><Link href="/services/house-plans">Plan your space ↗</Link><Link href="/services/drawing-booklets">Detail your design ↗</Link><Link href="/services/exterior-visualization">Visualize your project ↗</Link></nav>
         {query.service && (
           <Link
