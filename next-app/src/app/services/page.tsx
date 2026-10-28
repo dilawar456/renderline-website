@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPortfolioItems } from "@/lib/public-data";
@@ -12,12 +13,12 @@ const legacy: Record<string, string> = {
   interior: "interior-design",
   walkthrough: "walkthrough-animation",
 };
-export const metadata: Metadata = {
+export const metadata: Metadata = publicMetadata({
   title: "House Plans, Elevations & Visualization Services",
   description:
     "Choose house planning, architectural booklets, 3D elevations, interior/exterior design, 3D modeling or walkthrough video services.",
   alternates: { canonical: "/services" },
-};
+});
 export const revalidate = 60;
 export default async function ServicesPage({
   searchParams,

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     // Default ignores of eslint-config-next:
     ".next/**",
     "work/**",
+    ".agents/**",
+    ".taste-skill/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

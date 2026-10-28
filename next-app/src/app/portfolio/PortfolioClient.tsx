@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "@/components/studio/RenderImage";
 import Link from "next/link";
+import { X, ChevronLeft, ChevronRight, ArrowUpRight, Files } from "lucide-react";
 import VideoPreview from "@/components/studio/VideoPreview";
 import { PORTFOLIO_CATEGORIES, workMatches } from "@/lib/services";
 
@@ -233,8 +234,8 @@ export default function PortfolioClient({
                 ))}
               </div>
             ) : (
-              <div className="text-center py-24 text-gray-500 border border-[#222] rounded-2xl bg-[#0a0a0a]">
-                <span className="text-4xl block mb-4">📭</span>
+              <div className="studio-gallery-empty">
+                <Files size={32} strokeWidth={1.3} aria-hidden="true" />
                 <p className="text-lg">
                   No public drawing samples are published in this category yet.
                 </p>
@@ -260,7 +261,7 @@ export default function PortfolioClient({
               <div className="mt-12 text-center">
                 <button
                   type="button"
-                  className="btn-primary"
+                  className="rl-button"
                   onClick={() => setVisibleCount((count) => count + 24)}
                 >
                   Show more projects ({displayItems.length - visibleCount}{" "}
@@ -275,9 +276,9 @@ export default function PortfolioClient({
       {/* Animation / Video Section */}
       {showVideos && (
         <section className="rl-section rl-shell">
-          <h2>Pre-rendered walkthrough videos.</h2>
-          <p>Real RenderLine animations. Choose Play to load a video.</p>
-          <div className="rl-work-grid" style={{ marginTop: 25 }}>
+          <h2>Walkthrough films.</h2>
+          <p>Explore RenderLine spaces in motion. Choose a film to watch.</p>
+          <div className="rl-film-grid" style={{ marginTop: 25 }}>
             {videos.map((vid) => (
               <VideoPreview
                 key={vid.id}
@@ -290,113 +291,20 @@ export default function PortfolioClient({
       )}
 
       {lightboxIndex !== null && displayItems[lightboxIndex] && (
-        <div
-          ref={lightboxRef}
-          className="fixed inset-0 z-[1000] bg-black/95 flex items-center justify-center backdrop-blur-md"
-          onClick={closeLightbox}
-          role="dialog"
-          aria-modal="true"
-          aria-label="Portfolio visualization"
-        >
-          {/* Close Button */}
-          <button
-            ref={closeButtonRef}
-            className="absolute top-6 right-6 text-white/50 hover:text-white hover:bg-white/10 p-2 rounded-full transition-colors z-50"
-            onClick={closeLightbox}
-            type="button"
-            aria-label="Close image"
-          >
-            <svg
-              className="w-8 h-8"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M6 18L18 6M6 6l12 12"
-              ></path>
-            </svg>
-          </button>
-
-          {/* Previous Button */}
-          <button
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white hover:bg-white/10 p-3 rounded-full transition-colors z-50"
-            onClick={(e) => {
-              e.stopPropagation();
-              prevImage();
-            }}
-            type="button"
-            aria-label="Previous image"
-          >
-            <svg
-              className="w-8 h-8"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 19l-7-7 7-7"
-              ></path>
-            </svg>
-          </button>
-
-          {/* Image Container */}
-          <div
-            className="relative w-[90vw] h-[85vh]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Image
-              src={displayItems[lightboxIndex].full_url}
-              unoptimized={displayItems[lightboxIndex].full_url.startsWith("https://res.cloudinary.com/")}
-              alt={`RenderLine ${displayItems[lightboxIndex].category || "architectural"} visualization`}
-              fill
-              className="object-contain"
-              priority
-              sizes="90vw"
-            />
-          </div>
-
-          {/* Next Button */}
-          <button
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-white/50 hover:text-white hover:bg-white/10 p-3 rounded-full transition-colors z-50"
-            onClick={(e) => {
-              e.stopPropagation();
-              nextImage();
-            }}
-            type="button"
-            aria-label="Next image"
-          >
-            <svg
-              className="w-8 h-8"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 5l7 7-7 7"
-              ></path>
-            </svg>
-          </button>
-
-          {/* Counter / Title */}
-          <div className="absolute bottom-6 left-0 right-0 text-center text-gray-400 text-sm">
-            {lightboxIndex + 1} / {displayItems.length}
-            <Link
-              href={`/portfolio/${displayItems[lightboxIndex].id}`}
-              onClick={(e) => e.stopPropagation()}
-              className="block mt-2 text-white underline underline-offset-4"
-            >
-              Project details & quote
-            </Link>
+        <div ref={lightboxRef} className="studio-lightbox" onClick={closeLightbox} role="dialog" aria-modal="true" aria-label="Portfolio visualization">
+          <div className="studio-lightbox-shell" onClick={event=>event.stopPropagation()}>
+            <header className="studio-lightbox-header">
+              <div><span>RenderLine Studio</span><h2>{FILTERS.find(f=>f.key!=="all" && workMatches(displayItems[lightboxIndex],f.key))?.label || "Architectural visualization"}</h2></div>
+              <button ref={closeButtonRef} type="button" onClick={closeLightbox} aria-label="Close image"><X size={23} strokeWidth={1.5} aria-hidden="true" /></button>
+            </header>
+            <div className="studio-lightbox-image">
+              <Image src={displayItems[lightboxIndex].full_url} alt={`RenderLine ${displayItems[lightboxIndex].category || "architectural"} visualization`} fill className="object-contain" priority sizes="90vw" />
+            </div>
+            <footer className="studio-lightbox-footer">
+              <span className="studio-lightbox-count" aria-live="polite"><strong>{lightboxIndex+1}</strong> / {displayItems.length}</span>
+              <div className="studio-lightbox-controls"><button type="button" onClick={prevImage} aria-label="Previous image"><ChevronLeft size={22} strokeWidth={1.6} aria-hidden="true" /></button><button type="button" onClick={nextImage} aria-label="Next image"><ChevronRight size={22} strokeWidth={1.6} aria-hidden="true" /></button></div>
+              <Link href={`/portfolio/${displayItems[lightboxIndex].id}`} className="rl-button">View project<ArrowUpRight size={16} aria-hidden="true" /></Link>
+            </footer>
           </div>
         </div>
       )}

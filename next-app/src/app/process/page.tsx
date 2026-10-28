@@ -1,11 +1,12 @@
+import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { PageHeading, PageAction } from "@/components/studio/InnerPage";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicMetadata({
   title: "Our Design & Visualization Process",
   description: "See how RenderLine Studio moves from your requirements and floor plans to architectural details, 3D visuals and agreed digital deliverables.",
   alternates: { canonical: "/process" },
-};
+});
 export default function ProcessPage() {
   const stages = [
     ["Share your starting point", "Send plot dimensions, drawings, location and references. Tell us the spaces, floors or views you need.", "Your brief"],

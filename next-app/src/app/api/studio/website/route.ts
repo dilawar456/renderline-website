@@ -4,6 +4,7 @@ import { studioSession, apiError } from "@/lib/studio-server";
 import { getPricing } from "@/lib/pricing-server";
 import { validatePricing } from "@/lib/pricing";
 import { validSamples } from "@/lib/drawing-samples";
+import { readJsonObject } from "@/lib/http-security";
 import { supabase } from "@/lib/supabase";
 export async function GET(request: Request) {
   try {
@@ -32,12 +33,7 @@ export async function GET(request: Request) {
 export async function PATCH(request: Request) {
   try {
     await studioSession(request, true);
-    if (Number(request.headers.get("content-length")) > 200000)
-      return Response.json(
-        { error: "Configuration is too large." },
-        { status: 400 },
-      );
-    const body = await request.json();
+    const body = await readJsonObject(request);
     if (!validatePricing(body.pricing) || !validSamples(body.samples))
       return Response.json(
         {

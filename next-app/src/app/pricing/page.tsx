@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPricing } from "@/lib/public-data";
@@ -6,12 +7,12 @@ import { publicWhatsAppNumber } from "@/lib/public-contact";
 import { PageHeading } from "@/components/studio/InnerPage";
 import { money } from "@/lib/pricing";
 import PricingExplorer from "@/components/studio/PricingExplorer";
-export const metadata: Metadata = {
+export const metadata: Metadata = publicMetadata({
   title: "Service Prices & Complete Packages",
   description:
     "PKR guide rates for house plans, drawing booklets, elevations, interiors, commercial packages, structure and submission drawings.",
   alternates: { canonical: "/pricing" },
-};
+});
 export const revalidate = 60;
 export default async function PricingPage() {
   const [pricing, { data }] = await Promise.all([
@@ -33,6 +34,12 @@ export default async function PricingPage() {
           pricing={pricing}
           number={publicWhatsAppNumber(data?.contact_whatsapp)}
         />
+        <section className="rl-faq edition-price-answers" aria-labelledby="price-answers-heading">
+          <h2 id="price-answers-heading">Pricing, explained.</h2>
+          <details><summary>Is the floor-plan price per storey?</summary><p>Standalone dimensioned floor plans cost {money(pricing.floorPlan.upTo10)} for plots up to 10 marla, or {money(pricing.floorPlan.upTo20)} up to 1 kanal. Each price covers up to two storeys in total. Furniture layouts and other architectural working details are separate.</p></details>
+          <details><summary>What is included in a commercial complete package?</summary><p>The published complete package covers interior and exterior visualization with their working drawings, for up to two storeys. Basement and architectural drawings are excluded. Above 10 marla or more than two storeys, share the project details for a custom quotation.</p></details>
+          <details><summary>How is an interior space priced?</summary><p>Interior design is {money(pricing.interior.perSqFt)} per square foot, with a minimum of {money(pricing.interior.minimumPerSpace)} for each individual space. Share each room or space separately so we can confirm its area and scope. Structural drawings and submission drawings are quoted as separate services.</p></details>
+        </section>
       </section>
     </div>
   );

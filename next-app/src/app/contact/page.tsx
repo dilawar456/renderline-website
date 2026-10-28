@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { MessageCircle, Mail } from "lucide-react";
@@ -9,12 +10,12 @@ import {
 } from "@/lib/public-contact";
 import EnquiryLink from "@/components/studio/EnquiryLink";
 import ContactForm from "./ContactForm";
-export const metadata: Metadata = {
+export const metadata: Metadata = publicMetadata({
   title: "Contact RenderLine Studio",
   description:
     "Discuss your house plans, drawing package or architectural visualization project with RenderLine Studio in Lahore, Pakistan.",
   alternates: { canonical: "/contact" },
-};
+});
 export const revalidate = 60;
 export default async function ContactPage() {
   const { data: c } = await getSiteContent(),

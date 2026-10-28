@@ -1,3 +1,6 @@
+import { publicMetadata } from "@/lib/seo";
+import StructuredData from "@/components/studio/StructuredData";
+import { SITE_URL } from "@/lib/site-url";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "@/components/studio/RenderImage";
@@ -27,12 +30,12 @@ export async function generateMetadata({
   const { slug } = await params,
     s = SERVICES.find((s) => s.slug === slug);
   return s
-    ? {
+    ? publicMetadata({
         title: s.title,
         description: s.description,
         alternates: { canonical: "/services/" + s.slug },
-      }
-    : { title: "Service not found" };
+      })
+    : { title: "Service not found", robots: { index: false } };
 }
 export default async function ServicePage({
   params,
@@ -55,6 +58,14 @@ export default async function ServicePage({
     number = publicWhatsAppNumber(c?.contact_whatsapp);
   return (
     <div className="rl-site edition-service-detail">
+      <StructuredData data={{ "@context": "https://schema.org", "@graph": [
+        { "@type": "Service", "@id": SITE_URL + "/services/" + s.slug + "#service", name: s.title, description: s.description, url: SITE_URL + "/services/" + s.slug, provider: { "@id": SITE_URL + "/#studio" }, areaServed: "Pakistan", serviceType: s.title },
+        { "@type": "BreadcrumbList", itemListElement: [
+          { "@type": "ListItem", position: 1, name: "RenderLine Studio", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Services", item: SITE_URL + "/services" },
+          { "@type": "ListItem", position: 3, name: s.title, item: SITE_URL + "/services/" + s.slug },
+        ] },
+      ] }} />
       <div className="rl-shell edition-service-top"><Link href="/services" className="edition-back">Services / {s.title}</Link><a href="#service-scope">Explore the scope ↓</a></div>
       <section className="rl-shell rl-service-hero">
         <div>
@@ -173,7 +184,7 @@ export default async function ServicePage({
             </Link>
           </div>
           {s.category === "animation" ? (
-            <div className="rl-work-grid">
+            <div className="rl-film-grid">
               {(videos || []).slice(1, 4).map((v) => (
                 <VideoPreview key={v.id} url={v.video_url} title={v.title} />
               ))}

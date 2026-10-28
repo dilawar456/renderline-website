@@ -9,8 +9,8 @@
    ============================================= */
 
 :root {
-  --font-cinzel: "Cinzel Variable";
-  --font-outfit: "Outfit Variable";
+  --font-cinzel: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-outfit: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --gold: #d4af37;
   --gold-light: #f0cc60;
   --gold-dim: #b8962e;

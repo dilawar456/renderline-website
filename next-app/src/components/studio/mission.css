@@ -105,64 +105,6 @@
   scrollbar-color: var(--ui-line) var(--ui-bg);
 }
 /* The former lower scroll experience now owns the first viewport. */
-.mission-signature.cinema-section {
-  margin: 0;
-}
-.mission-signature .cinema-stage {
-  height: calc(100svh - var(--nav-height));
-  min-height: 600px;
-}
-.mission-signature[data-enhanced="true"] {
-  height: 210svh;
-}
-.mission-signature[data-enhanced="true"] .cinema-stage {
-  top: var(--nav-height);
-  height: calc(100svh - var(--nav-height));
-  min-height: 0;
-}
-.mission-signature .cinema-frame img {
-  object-position: 60% 50%;
-}
-.mission-signature .cinema-scrim {
-  background:
-    linear-gradient(90deg, rgba(9, 10, 10, 0.72), rgba(9, 10, 10, 0.13) 72%),
-    linear-gradient(0deg, rgba(9, 10, 10, 0.66), transparent 45%);
-}
-.mission-signature .cinema-intro {
-  top: 47%;
-  left: max(56px, calc((100% - 1400px) / 2));
-  right: auto;
-  transform: translateY(-50%);
-  max-width: 700px;
-}
-.rl-site .mission-signature h1 {
-  font-family: var(--font-public);
-  color: #f8f5ee;
-  font-size: clamp(54px, 6.2vw, 92px);
-  line-height: 1.075;
-  letter-spacing: -0.04em;
-  font-weight: 420;
-  margin: 0;
-}
-.rl-site .mission-signature .cinema-intro > p {
-  color: #ece9e1;
-  font-size: 16px;
-  line-height: 1.7;
-  max-width: 470px;
-  margin: 25px 0 28px;
-}
-.mission-signature .cinema-intro .rl-actions {
-  gap: 29px;
-}
-.mission-signature .cinema-intro .rl-button {
-  background: #f0e5ce;
-  border-color: #f0e5ce;
-  color: #221e16 !important;
-}
-.mission-signature .cinema-intro .rl-button:hover {
-  background: #fff2d8;
-  border-color: #fff2d8;
-}
 .mission-hero-quote {
   display: inline-flex;
   gap: 9px;
@@ -174,67 +116,6 @@
 }
 .mission-hero-quote:hover {
   border-color: #fff;
-}
-.mission-signature .cinema-captions {
-  left: max(56px, calc((100% - 1400px) / 2));
-  bottom: 96px;
-  right: auto;
-  width: 300px;
-  min-height: 65px;
-}
-.mission-signature .cinema-caption {
-  gap: 6px;
-}
-.mission-signature .cinema-caption > span:first-child {
-  font-family: var(--font-public);
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: 0;
-}
-.mission-signature .cinema-caption a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  min-height: 32px;
-  text-decoration: none !important;
-  color: #d1cec5 !important;
-}
-.mission-signature .cinema-caption a:hover {
-  color: #fff !important;
-}
-.mission-signature .cinema-controls {
-  bottom: 34px;
-  right: max(56px, calc((100% - 1400px) / 2));
-  border-radius: 10px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  background: #141416bc;
-  padding: 5px;
-}
-.mission-signature .cinema-step {
-  font-family: var(--font-public);
-  font-size: 11px;
-  min-height: 48px;
-  padding: 10px 17px;
-}
-.mission-scroll-cue {
-  position: absolute;
-  bottom: 35px;
-  left: max(56px, calc((100% - 1400px) / 2));
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #f0e6d2;
-  font-size: 11px;
-}
-.mission-scroll-cue svg {
-  animation: mission-scroll-nudge 2.4s 2 ease-in-out;
-}
-.mission-signature .cinema-progress {
-  height: 2px;
-  background: #d6b883;
 }
 .mission-paths {
   padding-top: 62px;
@@ -539,18 +420,6 @@
 .mission-enquiry > .rl-button {
   flex-shrink: 0;
 }
-.mission-home + .spatial-footer {
-  border-top: 0 !important;
-}
-.spatial-footer .rl-section-head > div:first-child > a {
-  font-size: 28px !important;
-}
-.spatial-footer .rl-section-head p {
-  font-size: 12px;
-}
-.spatial-footer nav {
-  font-size: 12px !important;
-}
 .rl-page-intro h1,
 .rl-service-hero h1,
 .premium-portfolio-header h1 {
@@ -575,12 +444,6 @@
   }
 }
 @media (min-width: 1700px) {
-  .mission-signature .cinema-intro {
-    max-width: 850px;
-  }
-  .mission-signature .cinema-frame img {
-    object-position: 50% 50%;
-  }
   .mission-path-grid {
     gap: 42px;
   }
@@ -597,20 +460,6 @@
   }
   .rl-site .rl-shell {
     width: calc(100% - 64px);
-  }
-  .mission-signature .cinema-intro {
-    left: 32px;
-    max-width: 630px;
-  }
-  .rl-site .mission-signature h1 {
-    font-size: 68px;
-  }
-  .mission-signature .cinema-captions,
-  .mission-scroll-cue {
-    left: 32px;
-  }
-  .mission-signature .cinema-controls {
-    right: 32px;
   }
   .mission-path-grid {
     gap: 25px;
@@ -663,74 +512,6 @@
   .rl-site h2 {
     font-size: 33px;
     line-height: 1.17;
-  }
-  .mission-signature .cinema-stage {
-    height: calc(100svh - 74px);
-    min-height: 620px;
-  }
-  .mission-signature[data-enhanced="true"] {
-    height: 185svh;
-  }
-  .mission-signature[data-enhanced="true"] .cinema-stage {
-    top: 74px;
-    height: calc(100svh - 74px);
-    min-height: 0;
-  }
-  .mission-signature .cinema-frame img {
-    object-position: 68% 50%;
-  }
-  .mission-signature .cinema-scrim {
-    background:
-      linear-gradient(90deg, rgba(8, 9, 9, 0.6), rgba(8, 9, 9, 0.24)),
-      linear-gradient(0deg, rgba(8, 9, 9, 0.75), transparent 62%);
-  }
-  .mission-signature .cinema-intro {
-    top: 43%;
-    left: 24px;
-    right: 24px;
-    max-width: 580px;
-  }
-  .rl-site .mission-signature h1 {
-    font-size: clamp(44px, 7.5vw, 62px);
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-  }
-  .rl-site .mission-signature .cinema-intro > p {
-    font-size: 14px;
-    line-height: 1.8;
-    max-width: 390px;
-    margin: 22px 0 25px;
-  }
-  .mission-signature .cinema-intro .rl-actions {
-    gap: 22px;
-  }
-  .mission-signature .cinema-captions {
-    left: 24px;
-    bottom: 115px;
-    min-height: 60px;
-    width: 290px;
-  }
-  .mission-signature .cinema-caption > span:first-child {
-    font-size: 14px;
-  }
-  .mission-signature .cinema-caption a {
-    font-size: 11px;
-  }
-  .mission-signature .cinema-controls {
-    left: 20px;
-    right: 20px;
-    bottom: 26px;
-    padding: 5px;
-    gap: 0;
-  }
-  .mission-signature .cinema-step {
-    font-size: 10px;
-    min-height: 49px;
-    padding: 9px 8px;
-    flex: 1;
-  }
-  .mission-scroll-cue {
-    display: none;
   }
   .mission-paths {
     padding-top: 42px;
@@ -923,43 +704,11 @@
   .mission-enquiry > .rl-button {
     margin-top: 25px;
   }
-  .spatial-footer .rl-section-head > div:first-child > a {
-    font-size: 26px !important;
-  }
 }
 @media (max-width: 480px) {
-  .rl-site .mission-signature h1 {
-    font-size: 44px;
-  }
-  .mission-signature .cinema-intro {
-    top: 41%;
-    left: 23px;
-    right: 23px;
-  }
-  .rl-site .mission-signature .cinema-intro > p {
-    max-width: 330px;
-    font-size: 13px;
-    line-height: 1.8;
-  }
-  .mission-signature .cinema-intro .rl-button {
-    font-size: 12px;
-    padding: 13px 16px;
-    gap: 13px;
-  }
   .mission-hero-quote {
     font-size: 12px;
     gap: 6px;
-  }
-  .mission-signature .cinema-intro .rl-actions {
-    gap: 23px;
-  }
-  .mission-signature .cinema-captions {
-    bottom: 112px;
-    left: 23px;
-  }
-  .mission-signature .cinema-controls {
-    left: 16px;
-    right: 16px;
   }
   .mission-path {
     grid-template-columns: 1fr 90px;
@@ -1023,22 +772,6 @@
   }
 }
 @media (max-width: 370px) {
-  .rl-site .mission-signature h1 {
-    font-size: 40px;
-  }
-  .mission-signature .cinema-intro {
-    left: 22px;
-    right: 22px;
-  }
-  .rl-site .mission-signature .cinema-intro > p {
-    font-size: 12px;
-  }
-  .mission-signature .cinema-intro .rl-actions {
-    gap: 16px;
-  }
-  .mission-signature .cinema-step {
-    font-size: 9px;
-  }
   .mission-path {
     grid-template-columns: 1fr 79px;
     gap: 14px;
@@ -1062,21 +795,6 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mission-signature[data-enhanced="true"] {
-    height: auto;
-  }
-  .mission-signature[data-enhanced="true"] .cinema-stage {
-    position: relative;
-    top: 0;
-    height: calc(100svh - var(--nav-height));
-    min-height: 590px;
-  }
-  .mission-signature .cinema-frame {
-    transform: none !important;
-  }
-  .mission-scroll-cue svg {
-    animation: none;
-  }
   .mission-path img,
   .mission-project img,
   .mission-project-caption svg,
@@ -1103,9 +821,6 @@
 .rl-site select:focus-visible {
   outline-offset: 3px;
 }
-.mission-home .cinema-controls .cinema-step:focus-visible {
-  outline-offset: 1px;
-}
 /* Round-one findings: keep chrome quiet and mobile scene controls unobstructed. */
 .rl-nav {
   background: rgba(12, 12, 14, 0.94);
@@ -1113,15 +828,7 @@
 :root[data-theme="light"] .rl-nav {
   background: rgba(250, 250, 248, 0.95);
 }
-.mission-signature .cinema-intro > p {
-  text-wrap: balance;
-}
 html[data-cinema-visible="true"] .rl-floating-contact {
-  visibility: hidden;
-  pointer-events: none;
-}
-html:has(.mission-signature):not([data-cinema-visible="false"])
-  .rl-floating-contact {
   visibility: hidden;
   pointer-events: none;
 }
@@ -1129,46 +836,24 @@ html:has(.mission-signature):not([data-cinema-visible="false"])
   font-size: 14px;
 }
 @media (max-width: 800px) {
-  .mission-signature .cinema-frame img {
-    object-position: 50% 50%;
-  }
   .mission-project-caption {
     font-size: 12px;
-  }
-  .mission-signature .cinema-step {
-    font-size: 11px;
-  }
-  .rl-site .mission-signature .cinema-intro > p {
-    font-size: 14px;
   }
 }
 @media (max-width: 480px) {
   .mission-project-caption {
     font-size: 12px;
-  }
-  .rl-site .mission-signature .cinema-intro > p {
-    font-size: 14px;
-  }
-  .mission-signature .cinema-step {
-    font-size: 10px;
-  }
-  .mission-signature .cinema-captions {
-    bottom: 125px;
   }
 }
 @media (max-width: 370px) {
   .mission-project-caption {
     font-size: 11px;
   }
-  .rl-site .mission-signature .cinema-intro > p {
-    font-size: 13px;
-  }
 }
 
 /* Round-two: improve small-screen reading without enlarging the chrome. */
 @media (max-width: 480px) {
  .mission-path-copy > p:not(.mission-path-title), .mission-service-row p { font-size: 12px; }
- .mission-signature .cinema-step { font-size: 11px; }
 }
 
 /* Aligned architectural gallery, one natural-scroll hero and compact site chrome. */

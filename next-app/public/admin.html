@@ -1376,10 +1376,20 @@
         }
 
         function updateVideoPreview(url) {
-            const id = url.match(/(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&]+)/);
-            if (id) {
-                document.getElementById('newVideoPreview').innerHTML = `<iframe width="200" height="110" src="https://www.youtube.com/embed/${id[1]}" frameborder="0"></iframe>`;
-            }
+            const preview = document.getElementById('newVideoPreview');
+            preview.replaceChildren();
+            try {
+                const parsed = new URL(url);
+                if (parsed.protocol !== 'https:' || parsed.username || parsed.password) return;
+                const host = parsed.hostname.replace(/^www\./, '');
+                const id = host === 'youtu.be' ? parsed.pathname.slice(1) : ['youtube.com', 'm.youtube.com'].includes(host) ? parsed.searchParams.get('v') : null;
+                if (!id || !/^[A-Za-z0-9_-]{11}$/.test(id)) return;
+                const frame = document.createElement('iframe');
+                frame.width = '200'; frame.height = '110'; frame.title = 'Video preview';
+                frame.src = 'https://www.youtube-nocookie.com/embed/' + id;
+                frame.style.border = '0';
+                preview.append(frame);
+            } catch { /* Incomplete URLs do not create an embed. */ }
         }
 
         // --- 8. MIGRATION TOOLS (Keep intact) ---

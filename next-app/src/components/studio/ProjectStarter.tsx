@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SERVICES } from "@/lib/services";
 import type { Pricing } from "@/lib/pricing";
 import { money, residentialBookletPrice, interiorPrice } from "@/lib/pricing";
@@ -15,6 +15,20 @@ export default function ProjectStarter({
 }) {
   const [service, setService] = useState(initial),
     [step, setStep] = useState(1);
+  const [furthestStep, setFurthestStep] = useState(1);
+  const panel = useRef<HTMLDivElement>(null);
+  const moveFocus = useRef(false);
+  const goToStep = (next: number) => {
+    moveFocus.current = true;
+    setFurthestStep(current => Math.max(current, next));
+    setStep(next);
+  };
+  useEffect(() => {
+    if (!moveFocus.current) return;
+    moveFocus.current = false;
+    panel.current?.scrollIntoView({ block: "start", behavior: "instant" });
+    panel.current?.querySelector<HTMLHeadingElement>("h2")?.focus({ preventScroll: true });
+  }, [step]);
   const [form, setForm] = useState({
     size: "",
     dimensions: "",
@@ -87,14 +101,22 @@ export default function ProjectStarter({
       : "Please review my brief and share a quotation.",
   ].join("\n");
   return (
-    <div className="rl-starter">
+    <div className="rl-starter" ref={panel}>
       <div className="rl-starter-progress" aria-label={`Step ${step} of 3`}>
-        Service <span>—</span> Project details <span>—</span> Your brief{" "}
-        <small>{step} / 3</small>
+        <ol>
+          {["Service", "Details", "Your brief"].map((label, index) => (
+            <li key={label} aria-current={step === index + 1 ? "step" : undefined}>
+              <button type="button" disabled={index + 1 > furthestStep} onClick={() => goToStep(index + 1)} aria-label={`Step ${index + 1}: ${label}`}>
+                <span aria-hidden="true">{index + 1 < step ? "✓" : index + 1}</span>
+                {label}
+              </button>
+            </li>
+          ))}
+        </ol>
       </div>
       {step === 1 && (
         <>
-          <h2>What are you looking for?</h2>
+          <h2 tabIndex={-1}>What are you looking for?</h2>
           <p>
             Start with only the service you need. No account or long form
             required.
@@ -112,14 +134,14 @@ export default function ProjectStarter({
               </button>
             ))}
           </div>
-          <button className="rl-button" onClick={() => setStep(2)}>
+          <button className="rl-button" onClick={() => goToStep(2)}>
             Continue with {chosen.title.toLowerCase()}
           </button>
         </>
       )}
       {step === 2 && (
         <>
-          <h2>A few details help us quote accurately.</h2>
+          <h2 tabIndex={-1}>A few details help us quote accurately.</h2>
           <p>
             Everything here is optional. Share what you know; skip the rest.
           </p>
@@ -132,6 +154,7 @@ export default function ProjectStarter({
                   onChange={(e) =>
                     update(key as keyof typeof form, e.target.value)
                   }
+                  inputMode={key === "size" || key === "area" ? "decimal" : key === "floors" ? "numeric" : undefined}
                   maxLength={300}
                 />
               </label>
@@ -167,11 +190,11 @@ export default function ProjectStarter({
           <div className="rl-actions">
             <button
               className="rl-button rl-button-quiet"
-              onClick={() => setStep(1)}
+              onClick={() => goToStep(1)}
             >
               Back
             </button>
-            <button className="rl-button" onClick={() => setStep(3)}>
+            <button className="rl-button" onClick={() => goToStep(3)}>
               Review my brief
             </button>
           </div>
@@ -179,7 +202,7 @@ export default function ProjectStarter({
       )}
       {step === 3 && (
         <>
-          <h2>Your project, clearly briefed.</h2>
+          <h2 tabIndex={-1}>Your project, clearly briefed.</h2>
           <p>
             Recommended service: <strong>{chosen.title}</strong>.{" "}
             {amount !== null
@@ -190,7 +213,7 @@ export default function ProjectStarter({
           <div className="rl-actions">
             <button
               className="rl-button rl-button-quiet"
-              onClick={() => setStep(2)}
+              onClick={() => goToStep(2)}
             >
               Edit details
             </button>

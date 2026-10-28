@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "@/components/studio/RenderImage";
@@ -17,12 +18,16 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  return {
-    title: "Portfolio visualization",
+  const { data: items } = await getPortfolioItems();
+  const item = items?.find(i => String(i.id) === id);
+  if (!item) notFound();
+  const label = PORTFOLIO_CATEGORIES.find(c => c.key !== "all" && workMatches(item, c.key))?.label || "Architectural visualization";
+  return publicMetadata({
+    title: label + " - Portfolio example " + id,
     description:
       "A genuine RenderLine portfolio visualization. Discuss a similar design and review service scope.",
     alternates: { canonical: "/portfolio/" + id },
-  };
+  });
 }
 export default async function ProjectPage({
   params,
@@ -51,7 +56,7 @@ export default async function ProjectPage({
         <Link className="rl-text-link" href={"/portfolio?category=" + category}>
           Back to {label.toLowerCase()}
         </Link>
-        <div className="edition-project-title"><h1>{label}.</h1><Link className="rl-button" href={"/start-project?service=" + (category === "interior" ? "interior-design" : "exterior-visualization")}>Plan a similar project ↗</Link></div>
+        <div className="edition-project-title"><h1>{label}.</h1><Link className="rl-button" href={"/start-project?service=" + serviceHref(category).replace("/services/", "")}>Plan a similar project ↗</Link></div>
         <p>
           A RenderLine portfolio example. Share the features you like so we can
           quote a project-specific scope.
@@ -76,11 +81,11 @@ export default async function ProjectPage({
               maxHeight: "85vh",
               objectFit: "contain",
               background: "var(--ui-panel)",
-              borderRadius: 0,
             }}
             priority
           />
         </a>
+        <p className="rl-note edition-image-hint">Select the image to open the full-resolution original.</p>
       </div>
       <section className="rl-section rl-shell rl-deliverables">
         <div>

@@ -1,14 +1,15 @@
+import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Image from "@/components/studio/RenderImage";
 import Link from "next/link";
 import { PageAction } from "@/components/studio/InnerPage";
 import { getSiteContent, optimizeCloudinaryUrl } from "@/lib/public-data";
-export const metadata: Metadata = {
+export const metadata: Metadata = publicMetadata({
   title: "About RenderLine Studio",
   description:
     "RenderLine Studio, led by Dilawar Ali in Lahore, creates house plans, architectural drawings and 3D visualizations for homeowners and design professionals.",
   alternates: { canonical: "/about" },
-};
+});
 export const revalidate = 60;
 export default async function AboutPage() {
   const { data: c } = await getSiteContent();

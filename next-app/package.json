@@ -7,12 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs",
+    "verify:release": "node scripts/verify-release.mjs"
   },
   "dependencies": {
-    "@fontsource-variable/cinzel": "^5.3.0",
-    "@fontsource-variable/manrope": "^5.3.0",
-    "@fontsource-variable/outfit": "^5.3.0",
     "@supabase/supabase-js": "^2.98.0",
     "dotenv": "^17.3.1",
     "lucide-react": "^1.62.0",

@@ -51,8 +51,7 @@
   color: #46545f;
   gap: 9px;
 }
-.rl-site :is(a, button, input, select, textarea):focus-visible,
-.rl-nav :is(a, button):focus-visible {
+.rl-site :is(a, button, input, select, textarea):focus-visible, .rl-nav :is(a, button):focus-visible {
   outline: 2px solid #87694d;
   outline-offset: 4px;
 }
@@ -1875,16 +1874,6 @@
 .premium-portfolio-header p {
   font-size: 15px;
 }
-.spatial-footer .rl-section-head p {
-  font-size: 13px;
-}
-.spatial-footer .rl-section-head > div:first-child > a {
-  font-weight: 500;
-  letter-spacing: -0.05em;
-}
-.spatial-footer nav {
-  color: #77796f;
-}
 .spatial-pricing-page .rl-page-intro {
   padding-bottom: 45px;
 }
@@ -2318,9 +2307,6 @@
   }
   .rl-partner-notes h3 {
     font-size: 18px;
-  }
-  .spatial-footer .rl-shell {
-    padding-block: 30px !important;
   }
 }
 @media (max-width: 480px) {

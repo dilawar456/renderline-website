@@ -1,3 +1,4 @@
+import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { FileText, MessageCircle, ShieldCheck } from "lucide-react";
@@ -6,12 +7,12 @@ import { getPricing } from "@/lib/public-data";
 import { getSiteContent } from "@/lib/public-data";
 import { publicWhatsAppNumber } from "@/lib/public-contact";
 import { SERVICES } from "@/lib/services";
-export const metadata: Metadata = {
+export const metadata: Metadata = publicMetadata({
   title: "Start Your Design Project",
   description:
     "Build a short project brief for house plans, working drawings, 3D elevations, interiors or architectural visualization.",
   alternates: { canonical: "/start-project" },
-};
+});
 export default async function StartPage({
   searchParams,
 }: {

@@ -1,5 +1,7 @@
 "use client";
 import { useState } from "react";
+import { videoSource } from "@/lib/video-url";
+import { Play } from "lucide-react";
 export default function VideoPreview({
   url,
   title,
@@ -8,14 +10,14 @@ export default function VideoPreview({
   title?: string;
 }) {
   const [play, setPlay] = useState(false);
-  const id = url.match(
-    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^&\s?]+)/,
-  )?.[1];
-  if (!id || !/^[\w-]{11}$/.test(id))
+  const source = videoSource(url);
+  const id = source?.youtubeId;
+  if (!source) return <p className="rl-note">This film is temporarily unavailable.</p>;
+  if (!id)
     return (
       <a
         className="rl-text-link"
-        href={url}
+        href={source.url}
         target="_blank"
         rel="noopener noreferrer"
       >
@@ -39,9 +41,9 @@ export default function VideoPreview({
           onClick={() => setPlay(true)}
           aria-label={`Play ${title || "RenderLine walkthrough"}`}
         >
-          <span aria-hidden="true">▶</span>
+          <span aria-hidden="true"><Play size={22} strokeWidth={1.4} fill="currentColor" /></span>
           <strong>{title || "Architectural walkthrough"}</strong>
-          <small>Play pre-rendered video</small>
+          <small>Watch walkthrough film</small>
         </button>
       )}
       <p className="rl-note">

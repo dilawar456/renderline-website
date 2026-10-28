@@ -1,12 +1,13 @@
+import { publicMetadata } from "@/lib/seo";
 import type { Metadata } from 'next';
 import { getPortfolioItems, getPortfolioOrder, getPinnedItems, getSiteContent, getVideos, optimizeCloudinaryUrl } from '@/lib/public-data';
 import PortfolioClient from './PortfolioClient';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = publicMetadata({
   alternates: { canonical: "/portfolio" },
     title: 'Portfolio',
     description: 'Explore genuine RenderLine floor-plan studies, front elevations, interiors, exteriors and pre-rendered walkthrough videos.',
-};
+});
 
 // Admin saves invalidate cached content; retain a 60-second fallback.
 export const revalidate = 60;

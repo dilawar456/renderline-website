@@ -1,5 +1,6 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { emptyTracking, invoiceSubtotal, safeLink, validTracking, type Brief, type Intake, type Invoice, type LineItem, type Profile, type Project, type Task, type Tracking, type Update } from '@/lib/studio';
 import './portal.css';
@@ -33,6 +34,8 @@ export default function Portal(){
  const pending=useRef(false),generation=useRef(0);
  const owner=profile?.role==='owner',client=profile?.role==='client';
  const project=projects.find(p=>p.id===projectId);
+ const invalidateRequests=useCallback(()=>{generation.current++;},[]);
+ const profileId=profile?.id;
  const clearWorkspace=useCallback(()=>{
   generation.current++;setCapabilities(null);setProfile(null);setSignedInEmail('');setSignedIn(false);setProjects([]);setTasks([]);setUpdates([]);setInvoices([]);setIntake([]);setPeople([]);setMembers([]);setDraft(null);setPrintInvoice(null);setSourceId('');setProjectId('');setTracking(emptyTracking);setLines([{description:'',quantity:1,rate:0}]);setSection('Projects');setNotice('');
  },[]);
@@ -46,7 +49,7 @@ export default function Portal(){
    if(session){setSignedIn(true);setSignedInEmail(session.user.email||'');}
    setLoading(false);throw Error('The connection was interrupted. Your sign-in is retained; please retry.');
   }
-  if(!user){if(authError)console.error('Workspace authentication failed '+JSON.stringify({name:authError.name,status:authError.status,code:authError.code}));clearWorkspace();setLoading(false);if(authError&&!/session missing/i.test(authError.message))setError('Your session is unavailable. Please sign in again.');return;}
+  if(!user){if(authError&&!/session missing/i.test(authError.message))console.error('Workspace authentication failed '+JSON.stringify({name:authError.name,status:authError.status,code:authError.code}));clearWorkspace();setLoading(false);if(authError&&!/session missing/i.test(authError.message))setError('Your session is unavailable. Please sign in again.');return;}
   setSignedIn(true);setSignedInEmail(user.email||'');
   const p=await supabase.from('studio_profiles').select('*').eq('id',user.id).single();
   if(current!==generation.current)return;
@@ -76,17 +79,17 @@ export default function Portal(){
    // Avoid calling Supabase APIs synchronously inside the auth callback.
    if(event==='SIGNED_IN'||event==='PASSWORD_RECOVERY')window.setTimeout(()=>{void load().catch(()=>{setError('Could not open your workspace. Please retry.');setLoading(false);});},0);
   });
-  return ()=>{generation.current++;subscription.unsubscribe();};
- },[load,clearWorkspace]);
+  return ()=>{invalidateRequests();subscription.unsubscribe();};
+ },[load,clearWorkspace,invalidateRequests]);
  useEffect(()=>{
-  if(!profile)return;
+  if(!profileId)return;
   const update=()=>{
    if(pending.current||document.visibilityState!=='visible'||document.activeElement?.matches('input,textarea,select'))return;
    void load().catch(()=>setError('Unable to refresh. Your unsent work is still here; check your connection.'));
   };
   const timer=window.setInterval(update,30000);window.addEventListener('focus',update);
   return()=>{window.clearInterval(timer);window.removeEventListener('focus',update);};
- },[profile?.id,load]);
+ },[profileId,load]);
  useEffect(()=>{if(!owner)return;let active=true;void api('/api/studio/capabilities',{}).then(result=>{if(active)setCapabilities(result);}).catch(()=>{if(active)setCapabilities(null);});return()=>{active=false;};},[owner,profile?.id]);
  const run=async(action:()=>Promise<void>,message='Saved successfully.')=>{
   if(pending.current)return;pending.current=true;setBusy(true);setError('');setNotice('');
@@ -113,7 +116,7 @@ export default function Portal(){
 
  const sections:Section[]=owner?['Projects','Inbox','Tasks','Updates','Conversation','Invoices','People','Tracking','Account']:client?['Projects','Updates','Conversation','Invoices','Account']:['Projects','Tasks','Updates','Conversation','Account'];
  return <div className="studio studio-shell">
-  <aside className="studio-sidebar"><a href="/portal" className="studio-brand">RenderLine<span>CLIENT & STUDIO PORTAL</span></a><a href="/" className="studio-back-link">← Back to website</a><span className="studio-eyebrow">{profile.role} workspace</span><nav>{sections.map((s,i)=><button key={s} className={s===section?'active':''} disabled={busy} onClick={()=>{setSection(s);setPrintInvoice(null);setError('');setNotice('');}}><span>{String(i+1).padStart(2,'0')}</span>{s}</button>)}</nav>{owner&&<><a className="studio-cms" href="/admin.html">Website content ↗</a><a className="studio-cms" href="/portal/website">Website rates & samples ↗</a></>}<div className="studio-user"><b>{profile.name}</b><small>{profile.email}</small><button disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());},'Signed out.')}>Sign out</button></div></aside>
+  <aside className="studio-sidebar"><a href="/portal" className="studio-brand">RenderLine<span>CLIENT & STUDIO PORTAL</span></a><Link href="/" className="studio-back-link">← Back to website</Link><span className="studio-eyebrow">{profile.role} workspace</span><nav>{sections.map((s,i)=><button key={s} className={s===section?'active':''} disabled={busy} onClick={()=>{setSection(s);setPrintInvoice(null);setError('');setNotice('');}}><span>{String(i+1).padStart(2,'0')}</span>{s}</button>)}</nav>{owner&&<><a className="studio-cms" href="/admin.html">Website content ↗</a><a className="studio-cms" href="/portal/website">Website rates & samples ↗</a></>}<div className="studio-user"><b>{profile.name}</b><small>{profile.email}</small><button disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());},'Signed out.')}>Sign out</button></div></aside>
   <div className="studio-main"><header className="studio-top"><div><span className="studio-eyebrow">YOUR STUDIO, IN SYNC</span><h1>{section==='Updates'?'Updates & files':section==='Projects'&&client?'Your project':section}</h1></div><div className="studio-header-actions"><button disabled={busy} onClick={()=>void run(load,'Workspace refreshed.')}>↻ Refresh</button><button className="studio-mobile-signout" disabled={busy} onClick={()=>void run(async()=>{check(await supabase.auth.signOut());clearWorkspace();},'Signed out.')}>Sign out</button></div></header>
   {recovering&&<div className="studio-notice" role="status">Your reset link is verified. Open Account and choose your new password.</div>}{notice&&<div className="studio-notice" role="status">{notice}</div>}{error&&<div className="studio-error" role="alert">{error}</div>}
   {!['People','Tracking','Account'].includes(section)&&<div className="studio-project-picker"><Field label="Current project"><select disabled={busy} value={projectId} onChange={e=>selectProject(e.target.value)}><option value="">Select a project</option>{projects.map(p=><option key={p.id} value={p.id}>{p.title}</option>)}</select></Field>{project&&<span className="studio-badge">{project.status}</span>}</div>}
